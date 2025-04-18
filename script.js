@@ -69,16 +69,6 @@
                 delay: 1.5
             });
 
-            // Social links animation
-            gsap.from(".social-link", {
-                duration: 1,
-                y: 50,
-                opacity: 0,
-                stagger: 0.2,
-                ease: "back.out(1.7)",
-                delay: 2
-            });
-
             // Progress bars animation
             gsap.utils.toArray('.progress').forEach(progress => {
                 const width = progress.getAttribute('data-width');
