@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yonas Girma | Empowering Tech Visionary</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/TextPlugin.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- New added meta tags and Open Graph -->
+    <meta name="description" content="Yonas Girma's personal portfolio - IT Visionary | Tech Innovator | Digital Creator">
+    <meta name="keywords" content="Yonas Girma, IT Student, Developer, Haramaya, Ethiopia, Portfolio">
+    <meta name="author" content="Yonas Girma">
+    <meta property="og:title" content="Yonas Girma | Empowering Tech Visionary">
+    <meta property="og:description" content="Explore Yonas Girma's digital world - tech projects, crypto business, personal background, and Christian faith.">
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/139625821?v=4">
+    <meta property="og:url" content="https://YonasGr.github.io">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-logo">⚡</div>
+        <div class="progress-containerr">
+            <div class="progress-barr" id="loadingProgress"></div>
+        </div>
+    </div>
+    
+    <div id="particles-js"></div>
+    
+    <div class="floating-shapes" id="floatingShapes"></div>
+    
+    <div class="nav-dots" id="navDots">
+        <div class="dot" data-section="home"></div>
+        <div class="dot" data-section="about"></div>
+        <div class="dot" data-section="skills"></div>
+        <div class="dot" data-section="projects"></div>
+        <div class="dot" data-section="crypto"></div>
+        <div class="dot" data-section="faith"></div>
+    </div>
+    
+    <header id="home">
+        <div class="header-content">
+            <div class="profile-container">
+                <img src="https://avatars.githubusercontent.com/u/139625821?v=4" alt="Yonas Girma" class="profile-img">
+                <div class="profile-back">Yonas</div>
+            </div>
+            <h1><span class="title-animation">Yonas Girma</span> <span class="amharic">(ዮናስ)</span></h1>
+            <p class="subtitle">IT Visionary | Tech Innovator | Digital Creator</p>
+            <div class="social-links">
+                <a href="https://t.me/Yoniprof" class="social-link telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+                <a href="https://github.com/YonasGr" class="social-link github" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://wa.me/qr/DIDRTHI6OTDDB1" class="social-link whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="mailto:yonasGirma222@gmail.com" class="social-link email" target="_blank"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Basic Info</h3>
+                    <ul>
+                        <li><strong>Name:</strong> Yonas Girma <span class="amharic">(ዮናስ)</span></li>
+                        <li><strong>Age:</strong> 21</li>
+                        <li><strong>Birthday:</strong> April 16, 2003</li>
+                        <li><strong>Hometown:</strong> Arba Minch, Ethiopia</li>
+                        <li><strong>Current Location:</strong> Haramaya University</li>
+                        <li><strong>Languages:</strong> Amharic (native), English (fluent)</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Education</h3>
+                    <ul>
+                        <li><strong>Field of Study:</strong> Information Technology (IT)</li>
+                        <li><strong>University:</strong> Haramaya University</li>
+                        <li><strong>Year:</strong> 1st Year, 2nd Semester</li>
+                        <li><strong>Expected Graduation:</strong> 2026</li>
+                        <li><strong>Academic Performance:</strong> Solid overall performance with strong results in several areas</li>
+                        <li><strong>Financial Situation:</strong> Committed to academic goals and seeking financial support through scholarships</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Personality & Values</h3>
+                    <ul>
+                        <li>Curious & Resourceful</li>
+                        <li>Financially Aware</li>
+                        <li>Humble & Honest</li>
+                        <li>Willing to Help Others</li>
+                        <li>Strong Protestant Christian</li>
+                        <li>Passionate about defending the Gospel</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="skills">
+            <h2>Technical Skills</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Programming</h3>
+                    <div class="progress-container">
+                        <div class="skill-name">
+                            <span>FE Web Development(HTML5,CSS,JS)</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="skill-name">
+                            <span>C++</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" data-width="70"></div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="skill-name">
+                            <span>Python</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" data-width="60"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h3>Tech Stack</h3>
+                    <ul>
+                        <li>Linux Enthusiast (Manjaro/Arch-based)</li>
+                        <li>VS Code Developer</li>
+                        <li>Telegram Bot Developer</li>
+                        <li>Experienced with Crypto Wallets (ToneKeeper, Cwallet)</li>
+                        <li>Mobile & App Automation</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Hobbies & Interests</h3>
+                    <ul>
+                        <li>Open-source contribution</li>
+                        <li>Building personal projects/web apps</li>
+                        <li>Ethical hacking & cybersecurity exploration</li>
+                        <li>Learning new programming languages or frameworks</li>
+                        <li>Calculus & Mathematics</li>
+                        <li>Online courses (Coursera, Udemy, freeCodeCamp)</li>
+                        <li>Blogging about tech</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="projects">
+            <h2>Projects & Channels</h2>
+            <div class="projects">
+                <div class="project-card">
+                    <div class="project-img-container">
+                        <img src="https://www.rudaw.net/s3/rudaw.net/ContentFiles/748082Image1.jpg?version=5478780" alt="Jonah Store" class="project-img">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Jonah</h3>
+                        <p>Stay ahead with daily tech tips, business updates, price trends, and motivation to grow! Get the latest in tech news, smart advice, and all the insights you need to level up your life and hustle.</p>
+                        <div class="project-links">
+                            <a href="https://t.me/Jonah_Store" class="project-link" target="_blank">View Channel</a>
+                            <a href="https://t.me/Yoniprof" class="project-link alt" target="_blank">Join</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img-container">
+                        <img src="https://blog.tiinfotech.com/wp-content/uploads/2023/09/Ua22867841_g.jpg" alt="Airline Reservation System" class="project-img" width="100%">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Airline Reservation System</h3>
+                        <p>
+                            A console-based C++ application for managing airline bookings, checking flight availability, and printing tickets.
+                            Simulates real-world airline features like seat tracking and ticket generation.
+                        </p>
+                        <ul>
+                            <li><strong>Author:</strong> Yonas Girma, IT Student, Haramaya University</li>
+                        </ul>
+                        <div class="project-links">
+                            <a href="https://github.com/YonasGr" class="project-link" target="_blank">GitHub</a>
+                            <a href="https://github.com/YonasGr/AirlineReservationSystem" class="project-link alt" target="_blank">View Project</a>
+
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </section>
+        
+        <section id="crypto">
+            <h2>Business - Side Hustles</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Buying/Selling</h3>
+                    <ul>
+                        <li><strong>USDT:</strong> Competitive exchange rates</li>
+                        <li><strong>TON:</strong> Support for the Telegram Open Network</li>
+                        <li><strong>New Telegram Tokens:</strong> Early access and trading opportunities</li>
+                        <li>Secure transactions with optional escrow support</li>
+                        <li>Fast and reliable processing — typically within minutes</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Preferred Wallets</h3>
+                    <ul>
+                        <li><strong>ToneKeeper:</strong> Secure and user-friendly TON wallet</li>
+                        <li><strong>Cwallet:</strong> Multi-chain wallet with broad token support</li>
+                        <li><strong>Trust Wallet:</strong> Mobile-first wallet for easy crypto management</li>
+                        <li><strong>MetaMask:</strong> Web3-ready wallet for browser and mobile use</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Telegram Premium</h3>
+                    <ul>
+                        <li><strong>Premium Subscriptions:</strong> Activate Telegram Premium at affordable prices</li>
+                        <li><strong>Instant Delivery:</strong> Fast activation within minutes after payment</li>
+                        <li><strong>Multiple Options:</strong> Monthly and yearly subscription plans available</li>
+                        <li>Unlock exclusive features: larger uploads, voice-to-text, premium stickers & more</li>
+                        <li>Safe and secure purchase process</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Telegram Stars</h3>
+                    <ul>
+                        <li><strong>Star Packages:</strong> Purchase Telegram Stars for bots and mini-apps</li>
+                        <li><strong>Best Rates:</strong> Competitive pricing for small and bulk orders</li>
+                        <li><strong>Reliable Delivery:</strong> Stars sent directly to your Telegram account</li>
+                        <li>Supports Telegram’s digital economy</li>
+                        <li>Secure transaction with proof provided</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>Old Telegram Groups</h3>
+                    <ul>
+        <li><strong>Available Years:</strong> Groups from 2020, 2021, 2022, and 2023</li>
+        <li><strong>Verified Groups:</strong> Active members, no spam or fake activity</li>
+        <li><strong>Sell Your Group:</strong> Turn inactive or unused groups into value</li>
+        <li>Escrow service available for high-value deals</li>
+        <li>Quick and confidential transfers with admin role handover</li>
+    </ul>
+</div>
+                <div class="info-card">
+    <h3>Online Subscriptions</h3>
+    <ul>
+        <li><strong>Netflix, Steam, Roblox:</strong> Subscription purchases and renewals</li>
+        <li><strong>More Platforms:</strong> Access to multiple digital services</li>
+        <li>Flexible durations — weekly, monthly, yearly</li>
+        <li>Affordable pricing and fast activation</li>
+        <li>Safe payments with transaction proof</li>
+    </ul>
+</div>
+                <div class="info-card">
+    <h3>Cards & Payments</h3>
+    <ul>
+        <li><strong>MasterCard & Visa:</strong> Virtual and physical card options</li>
+        <li><strong>Gift Cards:</strong> Amazon, Apple, Google Play, and more</li>
+        <li>Instant delivery via secure channels</li>
+        <li>Accepted globally and usable for online transactions</li>
+        <li>Balance verification before purchase</li>
+    </ul>
+</div>
+                <div class="info-card">
+    <h3>Game Top-ups</h3>
+    <ul>
+        <li><strong>PUBG, Free Fire, CODM:</strong> Fast UC/diamonds delivery</li>
+        <li><strong>Clash of Clans & Blood Strike:</strong> Quick and secure top-ups</li>
+        <li><strong>More Games:</strong> Support for various popular titles</li>
+        <li>Affordable rates with multiple payment options</li>
+        <li>Instant delivery for most in-game purchases</li>
+    </ul>
+</div>
+                <div class="info-card">
+    <h3>Contact Me on Telegram</h3>
+    <ul>
+        <li><strong>Available for:</strong> Questions, Support, Deals, and Promotions</li>
+        <li><strong>Response Time:</strong> Typically within minutes during the day</li>
+        <li><strong>Languages:</strong> English & Amharic</li>
+        <li>Friendly, fast, and helpful communication guaranteed!</li>
+        <li><strong>Username:</strong> <a href="https://t.me/Yoniprof" target="_blank" class="telegram-link">@Yoniprof</a></li>
+    </ul>
+</div>
+                
+            </div>
+        </section>
+        
+  <section id="faith">
+    <h2>Faith & Beliefs</h2>
+    <div class="info-grid">
+        <div class="info-card">
+            <h3>Christian Faith</h3>
+            <ul>
+                <li>Committed to Protestant Christian doctrine</li>
+                <li>Believe in salvation by grace through faith</li>
+                <li>Engaged in theological study and apologetics</li>
+                <li>Value meaningful interfaith dialogue</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3>Spiritual Influences</h3>
+            <ul>
+                <li>Contemporary Christian thought leaders</li>
+                <li>Global gospel movements</li>
+                <li>Theological apologetics</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3>Music Ministry</h3>
+            <ul>
+                <li>Church musician and worship contributor</li>
+                <li>Specialize in gospel music traditions</li>
+                <li>Create worship-focused content</li>
+            </ul>
+        </div>
+    </div>
+</section>
+    </div>
+
+    <section id="contact">
+    <h2>Get In Touch</h2>
+    <div class="contact-form-container">
+        <form id="contactForm" class="contact-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <input type="text" id="name" name="name" required>
+                    <label for="name">Name</label>
+                    <div class="underline"></div>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" name="phone">
+                    <label for="phone">Phone</label>
+                    <div class="underline"></div>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" name="email" required>
+                    <label for="email">Email</label>
+                    <div class="underline"></div>
+                </div>
+            </div>
+            <div class="form-group full-width">
+                <textarea id="message" name="message" rows="4" required></textarea>
+                <label for="message">Message</label>
+                <div class="underline"></div>
+            </div>
+            <div class="form-footer">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="privacy" name="privacy" required>
+                    <label for="privacy">I have read and understand the privacy policy</label>
+                </div>
+                <div class="captcha-group">
+                    <div class="captcha-box">825F</div>
+                    <input type="text" id="captcha" name="captcha" placeholder="Enter captcha" required>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <span>Submit</span>
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="formMessage" class="form-message"></div>
+        </form>
+    </div>
+</section>
+    
+    <footer>
+        <h2 style="color: var(--gold); margin-bottom: 1.5rem;">Ready to Collaborate?</h2>
+        <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem;">Whether it's tech projects, crypto services, or just to connect, I'd love to hear from you!</p>
+        <a href="https://t.me/Yoniprof" class="contact-btn" id="contactBtn" target="_blank">Contact Me on Telegram</a>
+        <p class="copyright">© 2023 Yonas Girma. All Rights Reserved. </p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
