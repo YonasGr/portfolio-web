@@ -1,0 +1,28 @@
+{
+  "name": "yonasgr.github.io",
+  "version": "1.0.0",
+  "description": "Personal Portfolio",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YonasGr/yonasgr.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/YonasGr/yonasgr.github.io/issues"
+  },
+  "homepage": "https://github.com/YonasGr/yonasgr.github.io#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
+  }
+}
