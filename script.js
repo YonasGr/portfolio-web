@@ -44,20 +44,20 @@
         });
     });
 
-    function initAnimations() {
-        if (typeof gsap === 'undefined') return;
-        gsap.registerPlugin(ScrollTrigger);
+function initAnimations() {
+    if (typeof gsap === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
 
-        // Title and Subtitle animations
-        gsap.to(".title-animation", { duration: 2, text: "Yonas Girma", ease: "power2.inOut" });
-        gsap.to(".subtitle", { duration: 1.5, opacity: 1, y: 0, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+    // Title and Subtitle animations
+    gsap.to(".title-animation", { duration: 2, text: "Yonas Girma", ease: "power2.inOut" });
+    gsap.to(".subtitle", { duration: 1.5, opacity: 1, y: 0, ease: "elastic.out(1, 0.5)", delay: 1.5 });
 
-        animateProgressBars();
-        animateSections();
-        animateFormElements();
-        setupNavDots();
-        setupContactForm();
-    }
+    animateProgressBars();
+    animateSections();
+    animateFormElements();
+    setupNavDots(); // This is the crucial line you were missing
+    setupContactForm();
+}
     
     function animateProgressBars() {
         gsap.utils.toArray('.progress').forEach(progress => {
