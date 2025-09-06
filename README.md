@@ -40,7 +40,7 @@ Deployment: Render
 🤝 Let's Connect
 Feel free to reach out to me! I'm always open to discussing new opportunities, collaborations, or just sharing ideas.
 
-Telegram: https://t.me/Yoniprof
+Telegram: https://t.me/x_Jonah
 
 GitHub: https://github.com/YonasGr
 
