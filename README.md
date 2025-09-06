@@ -1,6 +1,6 @@
 <div align="center">
 <a href="https://yonasgr.onrender.com/" target="_blank">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Live%2520Demo-Visit%2520Website-blue%3Fstyle%3Dfor-the-badge%26logo%3Drender%26logoColor%3Dwhite" alt="Live Demo on Render">
+<img src="demo.png" alt="Live Demo on Render">
 </a>
 </div>
 
@@ -15,7 +15,7 @@ URL: https://yonasgr.onrender.com/
 🎨 Visual Preview
 Here is a glimpse of the website's clean and modern design.
 
-To display your own image here, upload your screenshot (image_69b974.png) to your repository or an image hosting service like Imgur and replace the URL in the Markdown code above.
+<img src="demo.png" alt="Live demo">
 
 ⚙️ Key Features
 Responsive Design: A seamless viewing experience on desktops, tablets, and mobile devices.
