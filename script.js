@@ -8,7 +8,7 @@
         particlesContainer: document.getElementById('particles-js'),
         floatingShapes: document.getElementById('floatingShapes'),
     };
-    const BACKEND_URL = 'https://yonasgirma-porfolio.onrender.com/send-message';
+    const BACKEND_URL = 'https://yonasgirma-backend-service.onrender.com/send-message';
 
     // Remove old particle and floating shapes containers
     if (DOMElements.particlesContainer) DOMElements.particlesContainer.remove();
