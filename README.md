@@ -15,7 +15,7 @@ URL: https://yonasgr.onrender.com/
 🎨 Visual Preview
 Here is a glimpse of the website's clean and modern design.
 
-<img src="demo.png" alt="Live demo">
+<img src="demo.png" alt="Live demo" width="400" height="300">
 
 ⚙️ Key Features
 Responsive Design: A seamless viewing experience on desktops, tablets, and mobile devices.
