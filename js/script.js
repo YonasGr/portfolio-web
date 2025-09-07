@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // A simple animation for sections as they come into view
+    // Select all standard sections including the new certificates section
     const sections = document.querySelectorAll('.standard-section');
     sections.forEach(section => {
         section.style.opacity = '0';

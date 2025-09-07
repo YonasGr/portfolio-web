@@ -1,6 +1,6 @@
 <div align="center">
 <a href="https://yonasgr.onrender.com/" target="_blank">
-<img src="demo.png" alt="Live Demo on Render">
+<img src="assets/preview/demo.png" alt="Live Demo on Render">
 </a>
 </div>
 
@@ -15,7 +15,7 @@ URL: https://yonasgr.onrender.com/
 🎨 Visual Preview
 Here is a glimpse of the website's clean and modern design.
 
-<img src="demo.gif" alt="Live demo">
+<img src="assets/preview/gif/demo.gif" alt="Live demo">
 
 ⚙️ Key Features
 Responsive Design: A seamless viewing experience on desktops, tablets, and mobile devices.
