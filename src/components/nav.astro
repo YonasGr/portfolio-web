@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import ThemeToggle from './theme-toggle.astro';
+
 interface NavItem {
   label: string;
   href: string;
@@ -11,315 +12,212 @@ const navItems: NavItem[] = [
   {
     label: "Home",
     href: "#home",
-    icon: `mdi:home`,
+    icon: "mdi:home",
   },
   {
     label: "Career",
     href: "#career",
-    icon: `mdi:work`,
+    icon: "mdi:work",
   },
   {
     label: "Projects",
     href: "#projects",
-    icon: `mdi:computer`,
+    icon: "mdi:computer",
   },
   {
     label: "Tech",
     href: "#tech",
-    icon: `mdi:code-tags`,
+    icon: "mdi:code-tags",
   },
-  // {
-  //   label: "Education",
-  //   href: "#contact",
-  //   icon: `mdi:message`,
-  // },
   {
     label: "Contact",
     href: "#contact",
-    icon: `mdi:message`,
-  }
+    icon: "mdi:message",
+  },
 ];
 ---
-<div id="theme-toggle-wrapper" class="fixed top-4 right-4 z-50 md:top-4 md:right-4 reveal-content" style="animation-delay: 700ms;">
-  <ThemeToggle />
-</div>
 
-<div class="flex justify-center w-full">
+<header class="fixed bottom-4 md:bottom-auto md:top-5 left-1/2 -translate-x-1/2 z-50 w-[94%] sm:w-auto max-w-fit pointer-events-none reveal-header">
   <nav
     id="main-nav"
-    class="fixed left-1/2 -translate-x-1/2 z-20 border-[1.2px] border-transparent transition-all duration-500 ease-in-out md:top-6 md:bottom-auto bottom-0 w-[80%]"
+    aria-label="Main Navigation"
+    class="pointer-events-auto flex items-center justify-between sm:justify-center gap-1.5 sm:gap-3 md:gap-4 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-card/85 border border-card-border backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.18)] transition-all duration-300 hover:border-accent/30"
   >
-    <div class="container mx-auto flex justify-center items-center p-3 reveal-content" style="animation-delay: 700ms;">
-      <ul
-        class="flex w-full justify-between md:space-x-6 md:justify-center md:gap-12 gap-1"
-      >
-        {
-          navItems.map((item) => (
-            <li class="flex-1 md:flex-none">
-              <a
-                href={item.href}
-                class="flex flex-col items-center gap-1 text-accent transition-colors text-xs md:text-base relative group"
-              >
-                <div class="absolute -left-6 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-all duration-300 scale-0 opacity-0 nav-indicator hidden md:block" />
-                <span class="md:hidden flex items-center justify-center w-6 h-6">
-                  <Icon 
-                    name={item.icon} 
-                    class="nav-icon w-full h-full text-accent/50 group-hover:text-accent transition-colors duration-300" 
-                  />
-                </span>
-                <span class="hidden md:inline-block">{item.label}</span>
-                <span class="md:hidden text-xs">{item.label}</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+    <!-- Brand Monogram -->
+    <a
+      href="#home"
+      class="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-full shrink-0"
+      aria-label="Yonas Girma - Home"
+    >
+      <div class="w-8 h-8 rounded-full bg-accent/15 border border-accent/30 text-accent font-heading font-bold text-xs sm:text-sm flex items-center justify-center group-hover:scale-105 group-hover:bg-accent group-hover:text-background transition-all duration-300 shadow-sm">
+        YG
+      </div>
+      <span class="font-heading font-semibold text-maintext text-sm hidden lg:inline tracking-tight group-hover:text-accent transition-colors">
+        Yonas<span class="text-accent">.</span>
+      </span>
+    </a>
+
+    <!-- Divider -->
+    <div class="h-4 w-px bg-card-border shrink-0 hidden sm:block"></div>
+
+    <!-- Navigation Links -->
+    <ul class="flex items-center gap-1 sm:gap-1.5 md:gap-2">
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="nav-link relative px-2.5 sm:px-3 py-1.5 rounded-full text-xs sm:text-sm font-body font-medium text-subtext hover:text-maintext transition-all duration-200 flex items-center gap-1.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <Icon 
+                name={item.icon} 
+                class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-subtext/75 group-hover:text-accent transition-colors md:hidden" 
+              />
+              <span class="hidden md:inline">{item.label}</span>
+              <span class="md:hidden text-[11px]">{item.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- Divider -->
+    <div class="h-4 w-px bg-card-border shrink-0"></div>
+
+    <!-- Theme Toggle -->
+    <div class="shrink-0 flex items-center">
+      <ThemeToggle />
     </div>
   </nav>
-</div>
+</header>
 
 <style>
-    /* Reveal whole section when website loads */
-  .reveal-content {
+  .reveal-header {
     opacity: 0;
-    transform: translateY(20px);
-    animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    transform: translate(-50%, 15px);
+    animation: revealHeaderIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
-  @keyframes revealIn {
+
+  @keyframes revealHeaderIn {
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate(-50%, 0);
     }
   }
 
-  nav {
-    background-color: transparent;
-    border-color: transparent;
-    backdrop-filter: blur(0px);
-    transition:
-      background-color 0.4s ease,
-      backdrop-filter 0.4s ease,
-      border-radius 0.4s ease,
-      border-color 0.4s ease,
-      width 0.4s ease;
+  .nav-link {
+    transition: color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
   }
 
-   nav.scrolling {
-    background-color: color-mix(in srgb, var(--color-background), transparent 75%);
-    border-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
-    
-    border-radius: 9999px;
-    backdrop-filter: blur(10px);
+  .nav-link:hover:not(.active) {
+    background-color: rgba(var(--color-accent-rgb), 0.08);
+    color: var(--color-maintext);
   }
 
-  nav a.active .nav-indicator {
-    transform: translateY(-50%) scale(1);
-    opacity: 0;
+  .nav-link.active {
+    color: var(--color-accent) !important;
+    background-color: rgba(var(--color-accent-rgb), 0.15);
+    font-weight: 600;
   }
 
-  /* Base state for the link text */
-  nav a {
-    transition: transform 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+  .nav-link.active svg {
+    color: var(--color-accent) !important;
   }
 
-  /* Active state */
-  nav a.active {
-    color: var(--color-maintext) !important;
-    font-weight: 700;
-    transform: scale(1.1);
+  #main-nav.is-scrolled {
+    border-color: rgba(var(--color-accent-rgb), 0.35);
+    box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.4), 0 0 24px -5px rgba(var(--color-accent-rgb), 0.2);
   }
 
-  /* Glow effect */
-  nav a.active span {
-    text-shadow: 0 0 10px color-mix(in srgb, var(--color-maintext) 30%, transparent);
-  }
-
-  /* Ensure the scale doesn't jitter the layout */
-  nav li {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* Icon style for mobile view */
-  .nav-icon {
-    transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease;
-  }
-
-  nav a.active .nav-icon {
-    color: var(--color-maintext) !important;
-    transform: scale(1.2);
-    filter: drop-shadow(0 0 8px var(--color-maintext));
-  }
-
-  @media (max-width: 767px) {
-    nav {
-      width: 100% !important;
-      bottom: 0;
-      border-radius: 1.5rem 1.5rem 0 0;
-      background-color: color-mix(in srgb, var(--color-background), transparent 10%);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid color-mix(in srgb, var(--color-maintext) 15%, transparent);
-    }
-
-    nav.scrolling {
-      border-radius: 1.5rem 1.5rem 0 0;
-      width: 100% !important;
-    }
-
-    /* Hiding bottom bar while scroling on mobile */
-    #main-nav {
-      /* Force Hardware Acceleration (Fixes the white flash) */
-      will-change: transform;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      /* Force it into its own GPU layer permanently */
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-      
-      /* Smooth transition */
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-
-      /* Ensure no default background is fighting the blur */
-      background-clip: padding-box;
-    }
-
-    #main-nav.nav-hidden {
-      /* transform: translateY(110%) !important; */
-      transform: translate3d(0, 110%, 0) !important;
-      
-      /* Optional: Turn off blur when hidden to save GPU cycles */
-      backdrop-filter: blur(0px);
-    }
-
-    /* Hiding theme-toggle while scroling on mobile */
-    #theme-toggle-wrapper {
-      will-change: transform;
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    /* Slide the button UP out of view */
-    #theme-toggle-wrapper.theme-hidden {
-      transform: translateY(-150%) !important;
-    }
-  }
-
-  /* Hover effect */
-  nav a:not(.active):hover {
-    color: var(--color-maintext) !important;
-  }
-
-  nav a:not(.active):hover span {
-    transform: scale(0.95);
-    text-shadow: 0 0 15px var(--color-accent-60);
-  }
-  
-  nav a:not(.active):hover .nav-icon {
-    transform: scale(0.95);
-    color: var(--color-maintext) !important;
-  }
-
-  @media (max-width: 767px) {
-    body {
-      padding-bottom: 70px;
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-header {
+      animation: none;
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
   }
 </style>
 
 <script>
-  //scroll morphing effect, changing width & border radius
-  const nav = document.getElementById("main-nav");
-  const themeWrapper = document.getElementById("theme-toggle-wrapper");
-
-  const maxScroll = 1000;
-  let lastScrollY = window.scrollY;
-  let rafId: number | null = null;
-
-  function updateNav() {
-    const currentScrollY = window.scrollY;
-
-    if (currentScrollY > 0) {
-      nav?.classList.add("scrolling");
-
-      const scrollProgress = Math.min(window.scrollY / maxScroll, 1);
-      const easeProgress = 1 - Math.pow(1 - scrollProgress, 4);
-
-      const minWidth = 620;
-      const maxWidth = window.innerWidth * 0.8;
-      const currentWidth = maxWidth - (maxWidth - minWidth) * easeProgress;
-
-      if (window.innerWidth >= 768) {
-        nav?.style.setProperty("width", `${currentWidth}px`);
-      }
-    } else {
-      nav?.classList.remove("scrolling");
-      // nav?.style.setProperty("width", "80%");
-    }
-    if (window.innerWidth < 768) {
-      // Small buffer (e.g. 10px) to prevent accidental hiding on "jittery" scrolls
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        // Scrolling Down - Hide Nav & theme-toggle
-        nav?.classList.add("nav-hidden");
-        themeWrapper?.classList.add("theme-hidden");
-      } else {
-        // Scrolling Up - Show Nav & theme-toggle
-        nav?.classList.remove("nav-hidden");
-        themeWrapper?.classList.remove("theme-hidden");
-      }
-    }
-
-    lastScrollY = currentScrollY;
-    rafId = null;
-  }
-
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (!rafId) {
-        rafId = requestAnimationFrame(updateNav);
-      }
-    },
-    { passive: true }
-  );
-
-  //smooth scrolling to a linked section
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      e.preventDefault();
-      const target = e.currentTarget as HTMLAnchorElement;
-      const targetId = target.getAttribute("href")?.substring(1) || "";
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({
-          behavior: "smooth",
-        });
-      }
-    });
-  });
-
-  //highlight section by observing visible one on the screen by 50%
-  document.addEventListener("DOMContentLoaded", () => {
+  function setupNavigation() {
+    const nav = document.getElementById("main-nav");
     const sections = document.querySelectorAll("section[id]");
-    const navLinks = document.querySelectorAll("nav a[href^='#']");
-    const observerOptions = { threshold: 0.5 };
+    const navLinks = document.querySelectorAll<HTMLAnchorElement>(".nav-link");
 
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+    // Scroll styling enhancement (No layout reflow, pure class toggle)
+    let isScrolled = false;
+    function handleScroll() {
+      const scrolled = window.scrollY > 40;
+      if (scrolled !== isScrolled) {
+        isScrolled = scrolled;
+        nav?.classList.toggle("is-scrolled", isScrolled);
+      }
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    // Smooth section scrolling with active update
+    document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function (e) {
+        const target = e.currentTarget as HTMLAnchorElement;
+        const targetId = target.getAttribute("href")?.substring(1);
+        if (!targetId) return;
+
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          e.preventDefault();
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+          });
+          
+          if (history.pushState) {
+            history.pushState(null, '', `#${targetId}`);
+          }
+
+          navLinks.forEach((link) => {
+            if (link.getAttribute("href") === `#${targetId}`) {
+              link.classList.add("active");
+            } else {
+              link.classList.remove("active");
+            }
+          });
+        }
+      });
+    });
+
+    // Rock-solid IntersectionObserver for Section Tracking
+    // rootMargin: "-20% 0px -60% 0px" triggers when the top of the section enters the upper-middle viewport
+    const observerOptions: IntersectionObserverInit = {
+      rootMargin: "-20% 0px -60% 0px",
+      threshold: 0,
+    };
+
+    const observerCallback: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          navLinks.forEach((link) => link.classList.remove("active"));
           const id = entry.target.getAttribute("id");
-          const activeLink = document.querySelector(`nav a[href="#${id}"]`);
-          if (activeLink) {
-            activeLink.classList.add("active");
-          }
+          navLinks.forEach((link) => {
+            const href = link.getAttribute("href");
+            if (href === `#${id}`) {
+              link.classList.add("active");
+            } else {
+              link.classList.remove("active");
+            }
+          });
         }
       });
     };
 
-    const observer = new IntersectionObserver(
-      observerCallback,
-      observerOptions
-    );
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
     sections.forEach((section) => observer.observe(section));
-  });
-</script>
 
+    // Default to #home if near top
+    if (window.scrollY < 120) {
+      const homeLink = document.querySelector('.nav-link[href="#home"]');
+      if (homeLink) homeLink.classList.add("active");
+    }
+  }
+
+  setupNavigation();
+  document.addEventListener("astro:after-swap", setupNavigation);
+</script>

@@ -1,93 +1,224 @@
 ---
 import ProjectCard from './project-card.astro';
 import projectsData from '../data/projects.json';
+
+const filterCategories = [
+  { id: 'all', label: 'All Projects', count: projectsData.length },
+  { id: 'mobile-ai', label: 'Mobile & AI', count: 1 },
+  { id: 'creative-web', label: 'Creative Web & 3D', count: 2 },
+  { id: 'full-stack', label: 'Full-Stack & Cloud', count: 3 },
+  { id: 'tooling', label: 'Tooling & Systems', count: 1 }
+];
 ---
 
-<section id="projects" class="section-container overflow-hidden">
-  <div class="container mx-auto">
-    <div class="mb-16 project-header">
-      <h2 class="text-3xl md:text-4xl font-heading font-bold text-maintext mb-2 flex items-center gap-4">
-          <span class="text-accent">/</span> Featured Projects
+<section id="projects" class="section-container relative">
+  <div class="space-y-10 sm:space-y-12">
+    <!-- Editorial Section Header -->
+    <div class="project-header flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="max-w-xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-3">
+          <span>02</span>
+          <span>/</span>
+          <span>SELECTED WORK</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
+          Featured <span class="text-accent">Projects</span>
         </h2>
-      <p class="text-subtext font-body text-sm max-w-md">
-        A selection of professional work, published apps, and experimental prototypes.
-      </p>
+        <p class="text-subtext font-body text-sm sm:text-base mt-2 leading-relaxed">
+          Production software, interactive 3D WebGL experiences, cross-platform mobile apps, and high-performance cloud architectures.
+        </p>
+      </div>
+
+      <!-- Quick Project Count Indicator -->
+      <div class="hidden sm:flex items-center gap-2 text-xs font-mono text-subtext bg-card px-3.5 py-2 rounded-xl border border-card-border">
+        <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+        <span>{projectsData.length} Production Case Studies</span>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Category Filter Bar -->
+    <div class="project-filters flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" role="tablist" aria-label="Project Categories">
+      {filterCategories.map((cat, idx) => (
+        <button
+          type="button"
+          class={`filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-heading font-medium tracking-tight whitespace-nowrap transition-all duration-200 cursor-pointer border ${
+            idx === 0 
+              ? 'active bg-accent text-background border-accent shadow-xs' 
+              : 'bg-card text-subtext border-card-border hover:text-maintext hover:border-accent/30'
+          }`}
+          data-filter={cat.id}
+          role="tab"
+          aria-selected={idx === 0 ? 'true' : 'false'}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Responsive Projects Grid -->
+    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
       {projectsData.map((project) => (
-        <ProjectCard project={project} />
+        <div class="project-item transition-all duration-400 ease-out">
+          <ProjectCard project={project} />
+        </div>
       ))}
     </div>
   </div>
 </section>
 
-
 <style>
-  /* Header Initial State */
-  .project-header {
+  /* Reveal styling */
+  .project-header,
+  .project-filters {
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Cards Initial State */
-  .project-card {
-    opacity: 0; /* Ensuring cards start hidden too */
-    transform: translateY(20px) scale(0.95);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  .project-item {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Shared Revealed State */
   .project-header.reveal,
-  .project-card.reveal {
+  .project-filters.reveal,
+  .project-item.reveal {
     opacity: 1 !important;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) !important;
+  }
+
+  /* Filtering hidden state */
+  .project-item.filtered-out {
+    display: none;
   }
 </style>
 
 <script>
-  const initProjectReveal = () => {
+  function setupProjects() {
+    // 1. Intersection Observer for Scroll Reveals
     const header = document.querySelector('.project-header');
-    const cards = document.querySelectorAll('.project-card');
-    
-    const observer = new IntersectionObserver((entries) => {
+    const filters = document.querySelector('.project-filters');
+    const items = document.querySelectorAll<HTMLElement>('.project-item');
+
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const target = entry.target as HTMLElement;
-          
-          // Check if the intersecting element is the header
-          if (target.classList.contains('project-header')) {
+
+          if (target.classList.contains('project-header') || target.classList.contains('project-filters')) {
             target.classList.add('reveal');
-            observer.unobserve(target);
-          } 
-          // Check if the intersecting element is a project card
-          else if (target.classList.contains('project-card')) {
-            const index = Array.from(cards).indexOf(target);
-            
-            // Stagger effect based on row position (only for cards)
+            revealObserver.unobserve(target);
+          } else if (target.classList.contains('project-item')) {
+            const index = Array.from(items).indexOf(target);
             setTimeout(() => {
               target.classList.add('reveal');
-            }, (index % 3) * 150);
-            
-            observer.unobserve(target);
+            }, (index % 3) * 100);
+            revealObserver.unobserve(target);
           }
         }
       });
-    }, { 
-      threshold: 0.15, 
-      rootMargin: '0px 0px -10px 0px' 
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
     });
 
-    // Observe the header
-    if (header) observer.observe(header);
-    
-    // Observe all cards
-    cards.forEach(card => observer.observe(card));
-  };
+    if (header) revealObserver.observe(header);
+    if (filters) revealObserver.observe(filters);
+    items.forEach((item) => revealObserver.observe(item));
 
-  window.addEventListener('load', initProjectReveal);
+    // Fallback: If elements remain unrevealed after 1s (e.g. fast scrolling), reveal all
+    setTimeout(() => {
+      header?.classList.add('reveal');
+      filters?.classList.add('reveal');
+      items.forEach((item) => item.classList.add('reveal'));
+    }, 1000);
 
-  // Support for Astro View Transitions
-  document.addEventListener('astro:after-swap', initProjectReveal);
+    // 2. Interactive Category Filtering
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const filter = button.getAttribute('data-filter') || 'all';
+
+        // Update button states
+        filterButtons.forEach((btn) => {
+          btn.classList.remove('active', 'bg-accent', 'text-background', 'border-accent', 'shadow-xs');
+          btn.classList.add('bg-card', 'text-subtext', 'border-card-border');
+          btn.setAttribute('aria-selected', 'false');
+        });
+
+        button.classList.add('active', 'bg-accent', 'text-background', 'border-accent', 'shadow-xs');
+        button.classList.remove('bg-card', 'text-subtext', 'border-card-border');
+        button.setAttribute('aria-selected', 'true');
+
+        // Filter cards
+        items.forEach((item) => {
+          const card = item.querySelector('.project-card');
+          const tags = card?.getAttribute('data-filter-tags')?.split(' ') || [];
+
+          if (filter === 'all' || tags.includes(filter)) {
+            item.classList.remove('filtered-out');
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(16px)';
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+              }, 50);
+            });
+          } else {
+            item.classList.add('filtered-out');
+          }
+        });
+      });
+    });
+
+    // 3. GPU-Accelerated 3D Tilt & Spotlight Glare on Cards
+    const interactiveCards = document.querySelectorAll<HTMLElement>('.interactive-card');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+    if (!prefersReducedMotion && !isTouch) {
+      interactiveCards.forEach((card) => {
+        let rafId: number | null = null;
+
+        card.addEventListener('pointermove', (e: PointerEvent) => {
+          if (rafId) cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(() => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+
+            const rotateX = (0.5 - y) * 8; // -4deg to +4deg
+            const rotateY = (x - 0.5) * 8; // -4deg to +4deg
+
+            card.style.setProperty('--rotate-x', `${rotateX.toFixed(2)}deg`);
+            card.style.setProperty('--rotate-y', `${rotateY.toFixed(2)}deg`);
+            card.style.setProperty('--translate-y', '-4px');
+            card.style.setProperty('--glare-x', `${(x * 100).toFixed(1)}%`);
+            card.style.setProperty('--glare-y', `${(y * 100).toFixed(1)}%`);
+            card.style.setProperty('--glare-opacity', '1');
+          });
+        });
+
+        card.addEventListener('pointerleave', () => {
+          if (rafId) cancelAnimationFrame(rafId);
+          card.style.setProperty('--rotate-x', '0deg');
+          card.style.setProperty('--rotate-y', '0deg');
+          card.style.setProperty('--translate-y', '0px');
+          card.style.setProperty('--glare-opacity', '0');
+        });
+      });
+    }
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupProjects);
+  } else {
+    setupProjects();
+  }
+
+  // View transitions support
+  document.addEventListener('astro:after-swap', setupProjects);
 </script>

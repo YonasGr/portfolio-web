@@ -2,126 +2,337 @@
 import { Icon } from 'astro-icon/components';
 import localData from '../data/home.json';
 
+const emailAddress = "yonasgirma222@gmail.com";
+const contactSocials = localData.socials.filter(
+  (s) => s.showInContact && s.url && s.url !== "#" && s.url !== ""
+);
+
+const navLinks = [
+  { name: 'Home', href: '#home' },
+  { name: 'Experience', href: '#career' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Tech Stack', href: '#tech' },
+  { name: 'Contact', href: '#contact' }
+];
 ---
 
-<section id="contact" class="section-container">
-  <div class="container mx-auto">
-    <div class="space-y-12">
-      <div class="contact-header opacity-0 mb-16">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-maintext mb-2 flex items-center gap-4">
-            <span class="text-accent">/</span> Contact Me
-          </h2>
-        <p class="text-subtext font-body text-sm max-w-md">
-          Feel free to reach out. I'm always open to discussing new projects and opportunities.
-        </p>
+<section id="contact" class="section-container relative pb-12">
+  <div class="space-y-12 sm:space-y-16">
+    <!-- Editorial Section Header -->
+    <div class="contact-header max-w-2xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-3">
+        <span>04</span>
+        <span>/</span>
+        <span>GET IN TOUCH</span>
       </div>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
+        Let's Build Something <span class="text-accent">Exceptional</span>
+      </h2>
+      <p class="text-subtext font-body text-sm sm:text-base mt-2 leading-relaxed">
+        Whether you are looking to hire a lead engineer, build an interactive 3D web experience, or scale a cross-platform mobile application, my inbox is always open.
+      </p>
+    </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-        {localData.socials
-        .filter((social) => social.showInContact && social.url && social.url !== "#" && social.url !== "")
-        .map((social) => (
-          <!-- Added 'contact-card' and 'opacity-0' here -->
-          <a 
-            href={social.url} 
-            target="_blank" 
-            class="contact-card opacity-0 group p-8 bg-accent/5 border border-accent/10 rounded-2xl hover:border-accent/40 hover:bg-accent/10 transition-all duration-300"
-          >
-            <Icon 
-              name={social.icon} 
-              class="w-10 h-10 text-accent mb-4 mx-auto group-hover:scale-110 transition-transform" 
-            />
-            <h3 class="text-maintext font-bold mb-1">{social.name}</h3>
-            <p class="text-subtext text-xs truncate px-2">
-              {social.url.replace('https://', '').replace('mailto:', '').replace('wa.me/', '+')}
-            </p>
-          </a>
-        ))}
-      </div>
-
-      <!-- /* FOOTER */ -->
-      <div class="contact-footer opacity-0 pt-20 border-t border-white/5">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p class="text-subtext text-sm font-body order-2 md:order-1">
-            {localData.name} © 2026
+    <!-- Interactive Contact Deck -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Direct Email Action Deck (7 Columns) -->
+      <div class="lg:col-span-7 contact-card interactive-card p-6 sm:p-8 rounded-2xl bg-card border border-card-border hover:border-accent/40 transition-all duration-300 flex flex-col justify-between gap-6">
+        <div class="space-y-3">
+          <div class="inline-flex items-center gap-2 text-xs font-mono text-accent uppercase tracking-wider">
+            <Icon name="mdi:email-fast-outline" class="w-4 h-4" />
+            <span>Direct Email Channel</span>
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-heading font-bold text-maintext tracking-tight">
+            {emailAddress}
+          </h3>
+          <p class="text-subtext font-body text-xs sm:text-sm leading-relaxed">
+            Fastest way to reach me for technical inquiries, project proposals, or engineering roles. Typical response time is under 24 hours.
           </p>
-          <div class="flex items-center flex-wrap justify-center gap-3 text-subtext text-xs font-body order-1 md:order-2">
-            <span>Built using </span>
-            <span class="text-subtext hidden sm:inline">•</span>
-            <div class="flex gap-4">
-              <a href="https://astro.build" target="_blank" class="hover:text-accent transition-colors flex items-center gap-1.5 group">
-                <Icon name="skill-icons:astro" class="w-4 h-4 group-hover:drop-shadow-[0_0_5px_var(--color-accent)]" />
-                <span>Astro</span>
-              </a>
+        </div>
+
+        <!-- Action Buttons: 1-Click Copy + Direct Mailto -->
+        <div class="flex flex-wrap items-center gap-3 pt-2">
+          <button
+            type="button"
+            id="copy-email-btn"
+            data-email={emailAddress}
+            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-background font-heading font-semibold text-xs sm:text-sm transition-all duration-200 hover:opacity-90 hover:shadow-xs active:scale-[0.98] cursor-pointer"
+            aria-label="Copy email address to clipboard"
+          >
+            <span id="copy-icon">
+              <Icon name="mdi:content-copy" class="w-4 h-4" />
+            </span>
+            <span id="copy-text">Copy to Clipboard</span>
+          </button>
+
+          <a
+            href={`mailto:${emailAddress}`}
+            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-card border border-card-border hover:border-accent/40 text-maintext hover:text-accent font-heading font-medium text-xs sm:text-sm transition-all duration-200 active:scale-[0.98]"
+          >
+            <span>Open Email Client</span>
+            <Icon name="mdi:arrow-top-right" class="w-4 h-4" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Availability & Location Status Deck (5 Columns) -->
+      <div class="lg:col-span-5 contact-card interactive-card p-6 sm:p-8 rounded-2xl bg-card border border-card-border hover:border-accent/40 transition-all duration-300 flex flex-col justify-between gap-6">
+        <div class="space-y-4">
+          <!-- Availability Status -->
+          <div class="p-4 rounded-xl bg-accent/5 border border-accent/15 space-y-1.5">
+            <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-accent font-semibold">
+              <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+              <span>Availability Status</span>
             </div>
+            <p class="font-heading font-bold text-maintext text-sm sm:text-base">
+              Available for Q3/Q4 Projects & Roles
+            </p>
+            <div class="flex flex-wrap gap-1.5 pt-1 text-[11px] font-mono text-subtext">
+              <span class="px-2 py-0.5 rounded bg-background/80 border border-card-border">Full-Time</span>
+              <span class="px-2 py-0.5 rounded bg-background/80 border border-card-border">Contract</span>
+              <span class="px-2 py-0.5 rounded bg-background/80 border border-card-border">Consulting</span>
+            </div>
+          </div>
+
+          <!-- Timezone & Location -->
+          <div class="space-y-1">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-subtext">Current Timezone</span>
+            <div class="flex items-center justify-between gap-2">
+              <p class="font-heading font-semibold text-maintext text-sm sm:text-base flex items-center gap-1.5">
+                <Icon name="mdi:map-marker" class="w-4 h-4 text-accent" />
+                <span>Addis Ababa, Ethiopia</span>
+              </p>
+              <span class="font-mono text-xs text-accent px-2 py-0.5 rounded bg-accent/10 border border-accent/20">
+                UTC+3 (EAT)
+              </span>
+            </div>
+            <p class="text-[11px] font-body text-subtext">
+              Experienced working with distributed teams across Americas, Europe, and Asia-Pacific.
+            </p>
           </div>
         </div>
       </div>
-      
     </div>
+
+    <!-- Direct Social Channels Cards -->
+    <div class="space-y-4">
+      <h3 class="text-xs font-mono uppercase tracking-widest text-subtext font-semibold pl-1">
+        Direct Social & Developer Profiles
+      </h3>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+        {contactSocials.map((social) => (
+          <a
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-card group p-4 rounded-xl bg-card border border-card-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-300 flex items-center gap-3.5"
+          >
+            <div class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/15 flex items-center justify-center text-accent group-hover:scale-110 group-hover:bg-accent/20 transition-all duration-300 shrink-0">
+              <Icon name={social.icon} class="w-5 h-5" />
+            </div>
+
+            <div class="overflow-hidden min-w-0 flex-1">
+              <h4 class="font-heading font-bold text-maintext text-sm group-hover:text-accent transition-colors duration-200 truncate">
+                {social.name}
+              </h4>
+              <p class="font-mono text-xs text-subtext truncate">
+                {social.handle || social.name}
+              </p>
+            </div>
+
+            <Icon name="mdi:arrow-top-right" class="w-4 h-4 text-subtext/60 group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Editorial Colophon Footer -->
+    <footer class="contact-footer pt-16 mt-8 border-t border-card-border/60 space-y-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        <!-- Brand & Colophon -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-center md:justify-start gap-2">
+            <span class="font-heading font-bold text-maintext text-base tracking-tight">Yonas Girma</span>
+            <span class="text-card-border">•</span>
+            <span class="font-mono text-xs text-accent">Full-Stack & Creative Engineer</span>
+          </div>
+          <p class="text-xs font-body text-subtext max-w-md">
+            Crafted with precision using Astro, Tailwind CSS v4, and TypeScript. Deployed on high-speed global Edge infrastructure.
+          </p>
+        </div>
+
+        <!-- Quick Navigation Anchor Links -->
+        <nav class="flex flex-wrap items-center justify-center gap-4 text-xs font-heading font-medium text-subtext" aria-label="Footer Navigation">
+          {navLinks.map((link) => (
+            <a href={link.href} class="hover:text-accent transition-colors duration-200">
+              {link.name}
+            </a>
+          ))}
+          <a href="/yonasgr-resume.pdf" target="_blank" class="text-accent hover:underline flex items-center gap-1">
+            <span>Resume</span>
+            <Icon name="mdi:file-document-outline" class="w-3.5 h-3.5" />
+          </a>
+        </nav>
+      </div>
+
+      <!-- Bottom Bar: Copyright & Back-to-Top Trigger -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-card-border/40 text-xs font-mono text-subtext">
+        <p>© 2026 Yonas Girma. All rights reserved.</p>
+
+        <a 
+          href="#home"
+          class="inline-flex items-center gap-1.5 text-subtext hover:text-accent transition-colors duration-200 group"
+          aria-label="Return to top of page"
+        >
+          <span>Back to Top</span>
+          <Icon name="mdi:arrow-up" class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast Notification for Clipboard Copy Feedback -->
+  <div 
+    id="copy-toast" 
+    class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300 flex items-center gap-2 px-4 py-2.5 rounded-full bg-card/95 border border-accent/40 shadow-2xl backdrop-blur-xl text-xs sm:text-sm font-heading font-medium text-maintext"
+    role="status"
+    aria-live="polite"
+  >
+    <span class="w-2 h-2 rounded-full bg-accent animate-ping"></span>
+    <Icon name="mdi:check-circle" class="w-4 h-4 text-accent" />
+    <span>Email copied to clipboard!</span>
   </div>
 </section>
 
 <style>
-  /* Header & Footer Initial State */
+  /* Reveal Animations */
   .contact-header,
+  .contact-card,
+  .social-card,
   .contact-footer {
+    opacity: 0;
     transform: translateY(20px);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Cards Initial State */
-  .contact-card {
-    transform: translateY(20px) scale(0.95);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* Shared Revealed State */
   .contact-header.reveal,
   .contact-card.reveal,
+  .social-card.reveal,
   .contact-footer.reveal {
     opacity: 1 !important;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) !important;
   }
 </style>
 
 <script>
-  const revealContact = () => {
+  function setupContact() {
+    // 1. Scroll Reveal Observer
     const header = document.querySelector('.contact-header');
-    const footer = document.querySelector('.contact-footer');
     const cards = document.querySelectorAll('.contact-card');
-    
+    const socials = document.querySelectorAll('.social-card');
+    const footer = document.querySelector('.contact-footer');
+
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const target = entry.target as HTMLElement;
 
-          if (target.classList.contains('contact-card')) {
-            const index = Array.from(cards).indexOf(target);
-            // Stagger effect for the 4-column grid
+          if (target.classList.contains('social-card')) {
+            const index = Array.from(socials).indexOf(target);
             setTimeout(() => {
               target.classList.add('reveal');
-            }, (index % 4) * 150);
+            }, index * 80);
           } else {
-            // Header and Footer reveal immediately
             target.classList.add('reveal');
           }
-          
+
           observer.unobserve(target);
         }
       });
-    }, { 
-      threshold: 0.15,
-      rootMargin: '0px 0px -10px 0px'
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
     });
 
     if (header) observer.observe(header);
+    cards.forEach((c) => observer.observe(c));
+    socials.forEach((s) => observer.observe(s));
     if (footer) observer.observe(footer);
-    cards.forEach(card => observer.observe(card));
+
+    setTimeout(() => {
+      header?.classList.add('reveal');
+      cards.forEach((c) => c.classList.add('reveal'));
+      socials.forEach((s) => s.classList.add('reveal'));
+      footer?.classList.add('reveal');
+    }, 1000);
+
+    // 2. 1-Click Copy Handler with Toast
+    const copyBtn = document.getElementById('copy-email-btn');
+    const copyText = document.getElementById('copy-text');
+    const toast = document.getElementById('copy-toast');
+    let toastTimeout: number | null = null;
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const email = copyBtn.getAttribute('data-email') || 'yonasgirma222@gmail.com';
+
+        try {
+          if (navigator.clipboard) {
+            await navigator.clipboard.writeText(email);
+          } else {
+            // Fallback for environments where navigator.clipboard is unavailable
+            const textArea = document.createElement('textarea');
+            textArea.value = email;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+              (document as unknown as { execCommand: (cmd: string) => boolean }).execCommand?.('copy');
+            } catch {
+              // Ignore if not supported
+            }
+            document.body.removeChild(textArea);
+          }
+
+          // Update button UI
+          if (copyText) copyText.textContent = 'Copied!';
+          copyBtn.classList.add('bg-emerald-500', 'text-white');
+          copyBtn.classList.remove('bg-accent', 'text-background');
+
+          // Show floating toast
+          if (toast) {
+            toast.classList.remove('opacity-0', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = window.setTimeout(() => {
+              toast.classList.remove('opacity-100', 'translate-y-0');
+              toast.classList.add('opacity-0', 'translate-y-4');
+            }, 2500);
+          }
+
+          // Reset button state after 2.5s
+          setTimeout(() => {
+            if (copyText) copyText.textContent = 'Copy to Clipboard';
+            copyBtn.classList.remove('bg-emerald-500', 'text-white');
+            copyBtn.classList.add('bg-accent', 'text-background');
+          }, 2500);
+        } catch (err) {
+          console.error('Failed to copy email to clipboard', err);
+          if (copyText) copyText.textContent = 'Failed to copy';
+        }
+      });
+    }
   }
-  
-  // Runs on initial load
-  window.addEventListener('load', revealContact);
-  
-  // Support for Astro View Transitions
-  document.addEventListener('astro:after-swap', revealContact);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupContact);
+  } else {
+    setupContact();
+  }
+
+  document.addEventListener('astro:after-swap', setupContact);
 </script>

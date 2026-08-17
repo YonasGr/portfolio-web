@@ -1,33 +1,106 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 interface Props {
   item: {
-    period: string;
-    role: string;
     company: string;
+    role: string;
+    period: string;
+    type?: string;
+    location?: string;
     description: string;
-    skills: string[];
+    achievements?: string[];
+    skills?: string[];
   };
-  variant: 'mobile' | 'desktop-left' | 'desktop-right';
+  isFirst?: boolean;
 }
 
-const { item, variant } = Astro.props;
-
-const isMobile = variant === 'mobile';
-const isLeft = variant === 'desktop-left';
-
-const alignmentClass = isLeft ? "text-right" : "";
-
-const skillContainerClasses = `flex flex-wrap gap-2 ${isLeft ? 'justify-end' : ''}`;
+const { item, isFirst = false } = Astro.props;
 ---
 
-<div class={`bg-accent/5 border border-accent/10 p-4 md:p-6 rounded-2xl hover:border-accent/40 transition-all group ${alignmentClass}`}>
-  <span class={`font-mono text-xs tracking-widest uppercase text-accent/75`}>{item.period}</span>
-  <h3 class="text-xl font-heading font-bold text-maintext mt-1">{item.role}</h3>
-  <p class="text-accent text-sm mb-4">{item.company}</p>
-  <p class="text-subtext font-body text-sm leading-relaxed mb-4">{item.description}</p>
-  <div class={skillContainerClasses}>
-    {item.skills.map((skill: string) => (
-      <span class={`rounded-md text-[10px] px-2 md:px-4 py-1 bg-accent/5 border border-accent/10 text-accent/80 group-hover:border-accent/40 group-hover:text-accent`}>{skill}</span>
-    ))}
+<div class="interactive-card group relative p-6 sm:p-7 rounded-2xl bg-card border border-card-border hover:border-accent/40 transition-all duration-300">
+  <!-- Top Header Area: Role, Period, Company, Type, Location -->
+  <div class="space-y-3 pb-4 border-b border-card-border/50">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+      <div>
+        <h3 class="text-xl sm:text-2xl font-heading font-bold text-maintext tracking-tight group-hover:text-accent transition-colors duration-200">
+          {item.role}
+        </h3>
+        <p class="text-accent font-heading font-medium text-sm sm:text-base mt-0.5 flex items-center gap-2">
+          <span>{item.company}</span>
+          {isFirst && (
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-accent/15 text-accent border border-accent/30">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+              Current
+            </span>
+          )}
+        </p>
+      </div>
+
+      <!-- Period Pill Badge -->
+      <div class="self-start sm:self-auto">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-medium tracking-wide bg-accent/10 border border-accent/20 text-accent whitespace-nowrap">
+          {item.period}
+        </span>
+      </div>
+    </div>
+
+    <!-- Metadata Badges: Type & Location -->
+    <div class="flex flex-wrap items-center gap-2 text-xs font-body text-subtext">
+      {item.type && (
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-white/5 border border-card-border font-mono text-[11px]">
+          <Icon name="mdi:briefcase-outline" class="w-3.5 h-3.5 text-accent/80" />
+          <span>{item.type}</span>
+        </span>
+      )}
+      {item.location && (
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-white/5 border border-card-border font-body text-[11px]">
+          <Icon name="mdi:map-marker-outline" class="w-3.5 h-3.5 text-accent/80" />
+          <span>{item.location}</span>
+        </span>
+      )}
+    </div>
   </div>
+
+  <!-- Role Overview Description -->
+  <div class="py-4">
+    <p class="text-subtext font-body text-sm sm:text-base leading-relaxed">
+      {item.description}
+    </p>
+  </div>
+
+  <!-- Key Architectural & Engineering Achievements -->
+  {item.achievements && item.achievements.length > 0 && (
+    <div class="space-y-2 py-3 border-t border-card-border/40">
+      <h4 class="text-xs font-mono uppercase tracking-widest font-semibold text-maintext/90 flex items-center gap-2">
+        <Icon name="mdi:star-four-points-outline" class="w-3.5 h-3.5 text-accent" />
+        <span>Key Impact & Milestones</span>
+      </h4>
+      <ul class="space-y-2 pt-1">
+        {item.achievements.map((achievement) => (
+          <li class="flex items-start gap-2.5 text-xs sm:text-sm font-body text-subtext/90 leading-relaxed">
+            <span class="text-accent mt-1 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5">
+                <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </span>
+            <span>{achievement}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <!-- Tech Stack / Skills Pills -->
+  {item.skills && item.skills.length > 0 && (
+    <div class="pt-4 border-t border-card-border/50">
+      <div class="flex flex-wrap gap-1.5 sm:gap-2">
+        {item.skills.map((skill: string) => (
+          <span class="rounded-lg text-xs font-mono px-2.5 py-1 bg-accent/5 border border-accent/15 text-accent/85 transition-colors group-hover:border-accent/40 group-hover:text-accent">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  )}
 </div>

@@ -4,100 +4,130 @@ import localTechData from '../data/tech.json';
 
 interface Skill {
   name: string;
-  level: number;
   icon: string;
+  tier: string;
+  level?: number;
+  description?: string;
 }
 
 interface Category {
+  id: string;
   title: string;
+  description: string;
   skills: Skill[];
 }
 
-const BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
-let categories: Category[];
+const categories: Category[] = localTechData.categories;
 
-try {
-  if (BASE_URL) {
-    const response = await fetch(`${BASE_URL}/tech`);
-    const data = await response.json();
-    categories = data.categories;
-  } else {
-    categories = localTechData.categories;
+// Calculate total skills count
+const totalSkills = categories.reduce((acc, cat) => acc + cat.skills.length, 0);
+
+// Helper for tier badge color styling
+function getTierStyle(tier: string): { badgeClass: string; dotClass: string } {
+  const t = tier.toLowerCase();
+  if (t.includes('daily') || t.includes('core')) {
+    return {
+      badgeClass: 'bg-accent/15 text-accent border-accent/30',
+      dotClass: 'bg-accent'
+    };
   }
-} catch {
-  categories = localTechData.categories;
+  if (t.includes('creative') || t.includes('3d')) {
+    return {
+      badgeClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+      dotClass: 'bg-emerald-400'
+    };
+  }
+  if (t.includes('advanced')) {
+    return {
+      badgeClass: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
+      dotClass: 'bg-sky-400'
+    };
+  }
+  return {
+    badgeClass: 'bg-white/5 text-subtext border-card-border',
+    dotClass: 'bg-subtext'
+  };
 }
 ---
 
-<section id="tech" class="section-container overflow-hidden">
-  <div class="container mx-auto">
-    <div class="tech-header flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-      <div>
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-maintext mb-2 flex items-center gap-4">
-          <span class="text-accent">/</span> Tech Stack
+<section id="tech" class="section-container relative">
+  <div class="space-y-12 sm:space-y-16">
+    <!-- Editorial Section Header -->
+    <div class="tech-header flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="max-w-xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-3">
+          <span>03</span>
+          <span>/</span>
+          <span>TOOLBOX</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
+          Technical <span class="text-accent">Ecosystem</span>
         </h2>
-        <p class="text-subtext font-body text-sm max-w-md">
-          Breakdown of my technical skills, categorized by domain and proficiency
+        <p class="text-subtext font-body text-sm sm:text-base mt-2 leading-relaxed">
+          Curated stack of modern languages, creative 3D frameworks, distributed cloud engines, and mobile architectures used in production.
         </p>
       </div>
 
-      <div class="flex flex-wrap gap-4 p-3 rounded-xl bg-accent/5 border border-accent/10 backdrop-blur-sm">
-        {[
-          { label: "Expert", level: 3 },
-          { label: "Proficient", level: 2 },
-          { label: "Beginner", level: 1 }
-        ].map((item, index) => (
-          <div class={`flex items-center gap-2 ${index > 0 ? 'md:border-l md:border-white/10 md:pl-4' : ''}`}>
-            <div class="flex gap-0.5">
-              {[1, 2, 3].map((star) => (
-                <Icon 
-                  name="mdi:star" 
-                  class={`w-3 h-3 ${star <= item.level ? 'text-accent drop-shadow-[0_0_3px_var(--color-accent)]' : 'text-gray-600'}`} 
-                />
-              ))}
-            </div>
-            <span class="text-[10px] uppercase tracking-wider text-subtext">{item.label}</span>
-          </div>
-        ))}
+      <!-- Quick Stack Stats Strip -->
+      <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
+        <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-card-border text-subtext">
+          <span class="w-2 h-2 rounded-full bg-accent"></span>
+          <span>{totalSkills} Technologies</span>
+        </div>
+        <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-card-border text-subtext">
+          <span class="w-2 h-2 rounded-full bg-accent/60"></span>
+          <span>5 Domains</span>
+        </div>
       </div>
     </div>
 
-    <div class="space-y-10">
+    <!-- Domain Categories Stack -->
+    <div class="space-y-10 sm:space-y-12">
       {categories.map((category) => (
-        <div class="space-y-3">
-          <h3 class="text-maintext font-body text-[11px] uppercase tracking-[0.4em] ml-1">
-            {category.title}
-          </h3>
-          
-          <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-5 sm:gap-8">
-            {category.skills.map((skill) => (
-              /* 'skill-card' and 'opacity-0' class already maintain reveal animation */
-              <div class="skill-card opacity-0 group relative flex items-stretch min-h-14 rounded-xl bg-accent/5 border border-accent/15 hover:border-accent/40 hover:bg-accent/10 transition-all duration-300">
-                
-                <div class="shrink-0 w-12 flex items-center justify-center rounded-l-xl bg-accent/15 transition-colors group-hover:bg-accent/20">
-                  <Icon name={skill.icon} class="w-7 h-7 group-hover:scale-110 transition-transform" />
-                </div>
-                
-                <div class="flex items-center px-3 py-2 overflow-hidden w-full">
-                  <span class="font-body text-maintext/90 text-[13px] leading-tight font-medium tracking-tight line-clamp-2">
-                    {skill.name}
-                  </span>
-                </div>
+        <div class="category-block space-y-4">
+          <!-- Category Header -->
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 pb-2 border-b border-card-border/60">
+            <h3 class="text-lg sm:text-xl font-heading font-bold text-maintext tracking-tight flex items-center gap-2.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span>{category.title}</span>
+            </h3>
+            <p class="text-xs sm:text-sm font-body text-subtext">
+              {category.description}
+            </p>
+          </div>
 
-                <div class="absolute -bottom-2 -right-1 z-10 flex gap-0 px-1 py-0.5 bg-container rounded-md border border-white/10 shadow-lg group-hover:border-accent/30 transition-all">
-                  {[1, 2, 3].map((star) => (
-                    <Icon 
-                      name="mdi:star" 
-                      class={`w-3 h-3 transition-colors duration-500 ${
-                        star <= skill.level 
-                          ? 'text-accent drop-shadow-[0_0_3px_var(--color-accent)]' 
-                          : 'text-gray-600'
-                      }`} 
-                    />
-                  ))}
+          <!-- Skills Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+            {category.skills.map((skill) => {
+              const tierInfo = getTierStyle(skill.tier);
+
+              return (
+                <div 
+                  class="skill-chip group relative flex flex-col justify-between p-3.5 rounded-xl bg-card border border-card-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-6px_rgba(var(--color-accent-rgb),0.12)] cursor-default"
+                  title={skill.description || skill.name}
+                >
+                  <!-- Top Row: Icon & Tier Dot -->
+                  <div class="flex items-center justify-between gap-2 mb-3">
+                    <div class="w-9 h-9 rounded-lg bg-background/80 border border-card-border flex items-center justify-center group-hover:scale-110 group-hover:border-accent/30 transition-all duration-300">
+                      <Icon name={skill.icon} class="w-5 h-5" />
+                    </div>
+
+                    <!-- Mini Tier Indicator -->
+                    <span class={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium uppercase border ${tierInfo.badgeClass}`}>
+                      <span class={`w-1 h-1 rounded-full ${tierInfo.dotClass}`}></span>
+                      <span class="truncate max-w-[70px]">{skill.tier}</span>
+                    </span>
+                  </div>
+
+                  <!-- Bottom: Skill Name -->
+                  <div>
+                    <h4 class="text-xs sm:text-sm font-heading font-semibold text-maintext tracking-tight group-hover:text-accent transition-colors duration-200 line-clamp-1">
+                      {skill.name}
+                    </h4>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       ))}
@@ -106,69 +136,67 @@ try {
 </section>
 
 <style>
-  /* Header Initial State */
+  /* Reveal Animations */
   .tech-header {
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Initial state of the card */
-  .skill-card {
-    transform: translateY(20px) scale(0.95);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  .category-block {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Shared Revealed state */
   .tech-header.reveal,
-  .skill-card.reveal {
+  .category-block.reveal {
     opacity: 1 !important;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) !important;
   }
 </style>
 
 <script>
-  function revealSkills() {
+  function setupTechReveal() {
     const header = document.querySelector('.tech-header');
-    const cards = document.querySelectorAll('.skill-card');
-    
+    const categories = document.querySelectorAll<HTMLElement>('.category-block');
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const target = entry.target;
-          
-          // Check if the intersecting element is the header
+          const target = entry.target as HTMLElement;
+
           if (target.classList.contains('tech-header')) {
             target.classList.add('reveal');
             observer.unobserve(target);
-          }
-          // Check if the intersecting element is a skill card
-          else if (target.classList.contains('skill-card')) {
-            // Add a slight delay based on the card's position to create a wave effect
-            const index = Array.from(cards).indexOf(target);
+          } else if (target.classList.contains('category-block')) {
+            const index = Array.from(categories).indexOf(target);
             setTimeout(() => {
               target.classList.add('reveal');
-            }, (index % 6) * 50); // Delay resets every row for a clean staggered look
-            
+            }, index * 100);
             observer.unobserve(target);
           }
         }
       });
     }, {
-      threshold: 0.1, // Trigger when 10% of the card is visible
-      rootMargin: '0px 0px -50px 0px' // Trigger slightly before it hits the viewport
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
     });
 
-    // Observe the header
     if (header) observer.observe(header);
+    categories.forEach((cat) => observer.observe(cat));
 
-    // Observe all cards
-    cards.forEach(card => observer.observe(card));
+    setTimeout(() => {
+      header?.classList.add('reveal');
+      categories.forEach((cat) => cat.classList.add('reveal'));
+    }, 1000);
   }
 
-  // Runs on initial load
-  revealSkills();
-  
-  // Necessary for Astro View Transitions if you use them
-  document.addEventListener('astro:after-swap', revealSkills);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupTechReveal);
+  } else {
+    setupTechReveal();
+  }
+
+  document.addEventListener('astro:after-swap', setupTechReveal);
 </script>

@@ -1,134 +1,290 @@
 ---
+import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import localData from '../data/home.json';
+import yonasgrAvatar from '../assets/yonasgr.png';
 
-//Data Definitions
 interface Social {
   name: string;
   url: string;
   icon: string;
+  handle?: string;
+  showInHero?: boolean;
+  showInContact?: boolean;
+}
+
+interface Stat {
+  label: string;
+  value: string;
+}
+
+interface Availability {
+  status: string;
+  badgeText: string;
+  openTo?: string[];
 }
 
 interface ProfileData {
   name: string;
-  photoUrl: string;
-  intro: string;
-  introHtml: string;
-  resumeUrl: string;
-  socials: Social[];
+  title: string;
+  headline?: string;
+  location?: string;
+  availability?: Availability;
+  stats?: Stat[];
+  bio?: string;
+  intro?: string;
+  photoUrl?: string;
+  webpageTitle?: string;
+  resumeUrl?: string;
+  socials?: Social[];
 }
 
-const isApiLive = import.meta.env.PROD; // Auto true in production
+const isApiLive = import.meta.env.PROD;
 const BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
 
-let data: ProfileData; // data as ProfileData
+let data: ProfileData;
 
 if (isApiLive && BASE_URL) {
   try {
     const response = await fetch(`${BASE_URL}/home`);
     if (!response.ok) throw new Error('Network response was not ok');
-    data = await response.json();
+    data = (await response.json()) as ProfileData;
   } catch (error) {
-    console.error("API Fetch failed, falling back to mock data", error);
-    data = localData as ProfileData;
+    console.error("API Fetch failed, falling back to local data", error);
+    data = localData as unknown as ProfileData;
   }
 } else {
-  data = localData as ProfileData;
+  data = localData as unknown as ProfileData;
 }
 
-const { name, intro, introHtml, resumeUrl, socials } = data;
+const {
+  name = "Yonas Girma",
+  title = "Full-Stack Software Engineer & Creative Developer",
+  headline = "Crafting resilient full-stack systems, fluid interactive web experiences, and high-performance mobile apps.",
+  location = "Addis Ababa, Ethiopia (UTC+3) · Available Worldwide",
+  availability = {
+    status: "available",
+    badgeText: "Available for Q3/Q4 Projects & Full-Time Roles",
+    openTo: ["Full-Time Engineering", "Contract / Architecture", "Technical Consulting"]
+  },
+  stats = [
+    { label: "Years Experience", value: "3+" },
+    { label: "Production Apps Shipped", value: "8+" },
+    { label: "Active Users Reached", value: "25k+" },
+    { label: "Core Technologies", value: "15+" }
+  ],
+  bio = "",
+  intro = "",
+  resumeUrl = "/yonasgr-resume.pdf",
+  socials = []
+} = data;
+
+const heroBio = bio || intro;
+const heroSocials = socials.filter(s => s.showInHero !== false && s.url && s.url !== "#" && s.url !== "");
 ---
 
-<section id="home" class="flex flex-col md:flex-row min-h-[80vh] md:min-h-screen md:pt-20">
-  <div class="w-full md:w-[44%] md:h-screen relative overflow-hidden">
-    <img
-      src="/branding-poster.png"
-      alt="Branding poster"
-      class="w-full h-full object-cover object-[50%_15%]"
-      loading="lazy"
-    />
-    <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black/35 to-transparent pointer-events-none"></div>
+<section id="home" class="min-h-[90vh] md:min-h-screen pt-24 sm:pt-28 md:pt-32 pb-16 md:pb-24 flex flex-col justify-center relative">
+  <!-- Top Showcase Banner Bar -->
+  <div class="reveal-content mb-8 sm:mb-12" style="animation-delay: 50ms;">
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-card/60 border border-card-border backdrop-blur-md text-xs font-mono text-subtext shadow-sm">
+      <div class="flex items-center gap-2">
+        <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-maintext font-medium">yonasgr.dev</span>
+        <span class="text-subtext/40">/</span>
+        <span class="text-accent">portfolio-v2</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-3 text-[11px] text-subtext/80">
+        <span class="px-2 py-0.5 rounded bg-accent/10 border border-accent/20 text-accent font-medium">React · Next.js · Node.js · TypeScript</span>
+        <span class="text-subtext/40">|</span>
+        <span>UTC+3 Global</span>
+      </div>
+    </div>
   </div>
 
-  <div class="w-full md:w-[56%] flex flex-col items-center md:items-start justify-center px-6 sm:px-10 md:px-16 lg:px-20 py-12 md:py-0 relative">
-    <div class="hidden md:block absolute left-8 top-12 bottom-12 w-px bg-accent/20"></div>
-
-    <div class="reveal-content md:pl-6" style="animation-delay: 100ms;">
-      <p class="font-body font-light text-gray leading-relaxed text-center md:text-left">
-        Hello, I'm
-      </p>
-    </div>
-
-    <div class="px-6 sm:px-14 md:px-0 max-w-360 mx-auto md:mx-0 relative z-0 reveal-content md:pl-6" style="animation-delay: 200ms;">
-      <h1 class="text-5xl md:text-7xl font-heading font-bold text-maintext tracking-tight text-center md:text-left">
-        {name}
-      </h1>
-      <br>
-      <p 
-        class="text-gray font-body text-lg leading-relaxed text-center md:text-left" 
-        set:html={intro} 
-      />
-    </div>
-
-    <div class="mt-8 mb-4 reveal-content md:pl-6" style="animation-delay: 300ms;">
-      <a 
-        href={resumeUrl} 
-        target="_blank" 
-        rel="noopener noreferrer"
-        class="group relative inline-flex items-center justify-center px-10 py-2 bg-white/5 border border-white/10 rounded-full text-maintext font-body transition-all duration-300
-
-               border-accent/50 bg-accent/10 shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)]
-               
-               md:border-accent/50 md:bg-accent/10 md:shadow-none md:hover:border-accent/50 md:hover:bg-accent/10 md:hover:shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)] 
-               hover:scale-105"
-      >
-        <div class="flex flex-col items-center justify-center text-center">
-          <span class="tracking-wide text-sm md:text-base font-medium transition-transform duration-300 md:translate-y-2 md:group-hover:translate-y-0">
-            View Resume
+  <!-- Main Hero Editorial Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+    
+    <!-- Left Column: Editorial Narrative & Actions (Col 7) -->
+    <div class="lg:col-span-7 flex flex-col items-start space-y-6">
+      
+      <!-- Availability Pill Badge -->
+      <div class="reveal-content" style="animation-delay: 100ms;">
+        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/30 text-accent text-xs font-mono font-medium tracking-wide shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.15)] hover:bg-accent/15 transition-all">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
           </span>
-          
-          <span class="text-[10px] text-subtext font-light whitespace-nowrap transition-all duration-300 
-                       opacity-100 translate-y-0 
-                       md:opacity-0 md:translate-y-1 md:group-hover:opacity-100 md:group-hover:translate-y-0">
-            Downloads PDF file
-          </span>
+          <span>{availability.badgeText}</span>
         </div>
-        
-        <div class="absolute inset-0 rounded-full blur-md bg-accent/20 -z-10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500"></div>
-      </a>
-    </div>
+      </div>
 
-    <div class="flex gap-6 mt-4 reveal-content md:pl-6" style="animation-delay: 400ms;">
-      {socials.filter((social) => social.url && social.url !== "#" && social.url !== "").map((social) => (
+      <!-- Main Heading & Kicker -->
+      <div class="space-y-3 reveal-content" style="animation-delay: 200ms;">
+        <p class="font-mono text-xs sm:text-sm font-semibold tracking-wider text-accent uppercase">
+          {title}
+        </p>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-maintext tracking-tight leading-[1.06]">
+          {name}
+        </h1>
+        <p class="text-lg sm:text-xl md:text-2xl font-heading font-medium text-maintext/90 leading-snug pt-1">
+          {headline}
+        </p>
+      </div>
+
+      <!-- Narrative Bio -->
+      <div class="reveal-content max-w-2xl" style="animation-delay: 300ms;">
+        <p class="text-subtext font-body text-base sm:text-lg leading-relaxed">
+          {heroBio}
+        </p>
+
+        <!-- Location Indicator -->
+        <div class="flex items-center gap-2 text-subtext/90 text-xs sm:text-sm font-body mt-4">
+          <Icon name="mdi:map-marker" class="w-4 h-4 text-accent shrink-0" />
+          <span>{location}</span>
+        </div>
+      </div>
+
+      <!-- Action CTAs -->
+      <div class="flex flex-wrap items-center gap-4 pt-2 reveal-content" style="animation-delay: 400ms;">
+        <!-- Primary Action: Explore Projects -->
         <a 
-          href={social.url} 
-          target="_blank" 
-          class="group relative flex flex-col items-center justify-center transition-all duration-300 hover:scale-110"
+          href="#projects" 
+          class="group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-accent text-background font-body font-semibold text-sm sm:text-base shadow-[0_0_24px_rgba(var(--color-accent-rgb),0.35)] hover:shadow-[0_0_36px_rgba(var(--color-accent-rgb),0.55)] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
         >
-          <Icon 
-          name={social.icon} 
-          class="w-8 h-8 text-maintext group-hover:text-accent transition-colors duration-300" 
-        />
-
-        <span class="absolute -bottom-6 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 text-xs text-accent font-body">
-          {social.name}
-        </span>
+          <span>Explore Projects</span>
+          <Icon name="mdi:arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </a>
-      ))}
+
+        <!-- Secondary Action: View Resume -->
+        <a 
+          href={resumeUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="group inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-card border border-card-border hover:border-accent/40 hover:bg-accent/10 text-maintext font-body font-medium text-sm sm:text-base transition-all duration-300 hover:scale-[1.02] shadow-sm"
+        >
+          <Icon name="mdi:file-document-outline" class="w-4 h-4 text-accent transition-transform group-hover:scale-110" />
+          <span>View Resume</span>
+          <span class="text-[10px] font-mono text-subtext px-1.5 py-0.5 rounded bg-white/5 border border-white/10 hidden sm:inline">PDF</span>
+        </a>
+      </div>
+
+      <!-- Social Links Row -->
+      <div class="flex items-center gap-3 pt-1 reveal-content" style="animation-delay: 500ms;">
+        <span class="text-xs font-mono text-subtext/70 mr-1 hidden sm:inline">CONNECT:</span>
+        {heroSocials.map((social) => (
+          <a 
+            href={social.url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="group relative p-2.5 rounded-full bg-card border border-card-border hover:border-accent/40 hover:bg-accent/10 text-subtext hover:text-accent transition-all duration-300 hover:scale-110 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            aria-label={`Visit ${social.name}`}
+            title={social.name}
+          >
+            <Icon 
+              name={social.icon} 
+              class="w-5 h-5 transition-colors duration-300" 
+            />
+          </a>
+        ))}
+      </div>
+
     </div>
+
+    <!-- Right Column: Elevated Profile Showcase Card (Col 5) -->
+    <div class="lg:col-span-5 flex justify-center lg:justify-end reveal-content" style="animation-delay: 250ms;">
+      <div class="relative w-full max-w-sm sm:max-w-md lg:max-w-none">
+        
+        <!-- Ambient Back Glow -->
+        <div 
+          class="absolute -inset-4 rounded-3xl opacity-35 blur-2xl pointer-events-none transition-all duration-500 group-hover:opacity-60"
+          style="background: radial-gradient(circle, rgba(var(--color-accent-rgb), 0.35) 0%, transparent 70%);"
+        ></div>
+
+        <!-- Avatar Framing Card -->
+        <div class="relative rounded-3xl overflow-hidden border-2 border-accent/25 bg-card/80 backdrop-blur-xl shadow-[0_0_40px_rgba(var(--color-accent-rgb),0.2)] hover:shadow-[0_0_60px_rgba(var(--color-accent-rgb),0.35)] transition-all duration-500 group">
+          
+          <!-- Image Asset -->
+          <div class="aspect-4/5 overflow-hidden bg-background/50 relative">
+            <Image 
+              src={yonasgrAvatar} 
+              alt={name} 
+              width={600} 
+              height={750} 
+              quality={92} 
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" 
+              loading="eager"
+            />
+
+            <!-- Subtle Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent pointer-events-none"></div>
+
+            <!-- Floating Top Chip -->
+            <div class="absolute top-4 left-4 z-10">
+              <div class="px-3 py-1 rounded-full bg-background/80 border border-card-border backdrop-blur-md text-[11px] font-mono text-accent font-medium shadow-sm flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                <span>Full-Stack Engineer</span>
+              </div>
+            </div>
+
+            <!-- Bottom Information Bar -->
+            <div class="absolute inset-x-0 bottom-0 p-4 sm:p-5 z-10 backdrop-blur-xs flex items-center justify-between border-t border-card-border/50">
+              <div>
+                <div class="text-[11px] font-mono uppercase tracking-wider text-accent font-semibold">
+                  Engineering & Architecture
+                </div>
+                <div class="text-base font-heading font-bold text-maintext">
+                  {name}
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Open for Work</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Quick Stats / Social Proof Strip -->
+  <div class="mt-12 sm:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 reveal-content" style="animation-delay: 600ms;">
+    {stats.map((stat, idx) => (
+      <div class="group p-4 sm:p-6 rounded-2xl bg-card/70 border border-card-border hover:border-accent/35 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_12px_32px_-10px_rgba(var(--color-accent-rgb),0.18)]">
+        <div class="font-mono text-[10px] sm:text-xs text-accent/80 uppercase tracking-wider mb-1">
+          0{idx + 1} / METRIC
+        </div>
+        <div class="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-maintext tracking-tight group-hover:text-accent transition-colors">
+          {stat.value}
+        </div>
+        <div class="text-xs sm:text-sm font-body text-subtext mt-1">
+          {stat.label}
+        </div>
+      </div>
+    ))}
   </div>
 </section>
 
-
-<style is:global>
+<style>
   .reveal-content {
     opacity: 0;
     transform: translateY(20px);
-    animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation: revealIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   @keyframes revealIn {
     to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-content {
+      animation: none;
       opacity: 1;
       transform: translateY(0);
     }

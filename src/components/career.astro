@@ -1,127 +1,140 @@
 ---
-// Import your data and the new component at the top of the file
 import careerData from '../data/career.json';
 import CareerCard from './career-card.astro';
 ---
 
-<section id="career" class="section-container max-w-6xl mx-auto overflow-hidden">
-  <div class="container mx-auto reveal-content" style="animation-delay: 1000ms;">
-    <div>
-      <h2 class="text-3xl md:text-4xl font-heading font-bold text-maintext mb-2 flex items-center gap-4">
-        <span class="text-accent">/</span> Career
-      </h2>
-      <p class="text-subtext font-body text-sm max-w-md pb-8">
-        A brief overview of my career
-      </p>
-    </div>
-
-    <div class="relative">
-      {/* Vertical Line*/}
-      <div class="absolute left-2 md:left-1/2 md:-translate-x-1/2 top-5 bottom-0 w-0.5 bg-linear-to-b from-accent via-white/10 to-transparent"></div>
-
-      {/* Mobile View */}
-      <div class="md:hidden space-y-8">
-        {careerData.map((item, index) => (
-          <div class="scroll-stat relative pl-6">
-            {/* Dot for mobile view*/}
-            <div class="absolute left-0 top-1 z-10">
-              <div class={`w-4 h-4 rounded-full border-4 border-[#0a0a0a] 
-                          ${index === 0 ? 'bg-accent shadow-[0_0_15px_var(--color-accent)] animate-pulse' : 'bg-accent/50'}`}>
-              </div>
-            </div>
-            
-            <CareerCard item={item} variant="mobile" />
-          </div>
-        ))}
+<section id="career" class="section-container relative">
+  <div class="space-y-12 sm:space-y-16">
+    <!-- Editorial Section Header -->
+    <div class="career-header flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="max-w-xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-3">
+          <span>01</span>
+          <span>/</span>
+          <span>JOURNEY</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
+          Experience & <span class="text-accent">Education</span>
+        </h2>
+        <p class="text-subtext font-body text-sm sm:text-base mt-2 leading-relaxed">
+          Track record of technical leadership, full-stack architecture, high-performance systems engineering, and academic foundations.
+        </p>
       </div>
 
-      {/* Desktop View */}
-      <div class="hidden md:block space-y-4">
-        {careerData.map((item, index) => (
-          <div class="scroll-stat relative grid grid-cols-2">
-            {/* Center Dot */}
-            <div class="absolute left-1/2 -translate-x-1/2 top-1 z-10">
-              <div class={`w-4 h-4 rounded-full border-4 border-[#0a0a0a] 
-                          ${index === 0 ? 'bg-accent shadow-[0_0_15px_var(--color-accent)] animate-pulse' : 'bg-accent/50'}`}>
+      <!-- Quick Timeline Stats -->
+      <div class="hidden sm:flex items-center gap-4 text-xs font-mono text-subtext bg-card px-4 py-2.5 rounded-xl border border-card-border">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+          <span>2018 — Present</span>
+        </div>
+        <span class="text-card-border">|</span>
+        <span>4 Key Milestones</span>
+      </div>
+    </div>
+
+    <!-- Linear Editorial Vertical Timeline -->
+    <div class="relative pl-6 sm:pl-10 md:pl-12">
+      <!-- Continuous Accent Spine on Left -->
+      <div 
+        class="absolute left-2.5 sm:left-4 md:left-5 top-3 bottom-6 w-0.5 bg-gradient-to-b from-accent via-accent/40 to-accent/5 pointer-events-none"
+        aria-hidden="true"
+      ></div>
+
+      <!-- Timeline Entries List -->
+      <div class="space-y-8 sm:space-y-12">
+        {careerData.map((item, index) => {
+          const isFirst = index === 0;
+
+          return (
+            <div class="career-item relative transition-all duration-500">
+              <!-- Glowing Milestone Node on Spine -->
+              <div 
+                class="absolute -left-6 sm:-left-10 md:-left-12 top-6 -translate-x-1/2 flex items-center justify-center z-10"
+                aria-hidden="true"
+              >
+                {isFirst ? (
+                  <div class="relative flex items-center justify-center">
+                    <span class="absolute w-6 h-6 rounded-full bg-accent/30 animate-ping opacity-75"></span>
+                    <div class="w-4.5 h-4.5 rounded-full bg-accent ring-4 ring-background shadow-[0_0_16px_var(--color-accent)]"></div>
+                  </div>
+                ) : (
+                  <div class="w-3.5 h-3.5 rounded-full bg-accent/70 ring-4 ring-background border border-accent/50 shadow-xs"></div>
+                )}
               </div>
-            </div>
 
-            {/* Left Side (even items) */}
-            <div class="md:px-6 md:py-0">
-              {index % 2 === 0 ? (
-                <CareerCard item={item} variant="desktop-left" />
-              ) : <div class="h-full pointer-events-none"></div>}
+              <!-- Career Card Content -->
+              <CareerCard item={item} isFirst={isFirst} />
             </div>
-
-            {/* Right Side (odd items) */}
-            <div class="md:px-6 md:py-0">
-              {index % 2 !== 0 ? (
-                <CareerCard item={item} variant="desktop-right" />
-              ) : <div class="h-full pointer-events-none"></div>}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  /* Reveal whole section when website loads */
-  .reveal-content {
+  /* Reveal Animations */
+  .career-header {
     opacity: 0;
     transform: translateY(20px);
-    animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  @keyframes revealIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Initial state of the card */
-  .scroll-stat {
+  .career-item {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(24px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Revealed state while scrolling*/
-  .scroll-stat.reveal {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  .career-header.reveal,
+  .career-item.reveal {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
 </style>
 
 <script>
-  function revealCards() {
-    const cards = document.querySelectorAll('.scroll-stat');
-    
+  function setupCareerReveal() {
+    const header = document.querySelector('.career-header');
+    const items = document.querySelectorAll<HTMLElement>('.career-item');
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Add a slight delay based on the card's position to create a wave effect
-          const index = Array.from(cards).indexOf(entry.target);
-          setTimeout(() => {
-            entry.target.classList.add('reveal');
-          }, (index % 3) * 150); // Delay resets every row for a clean staggered look
-          
-          observer.unobserve(entry.target);
+          const target = entry.target as HTMLElement;
+
+          if (target.classList.contains('career-header')) {
+            target.classList.add('reveal');
+            observer.unobserve(target);
+          } else if (target.classList.contains('career-item')) {
+            const index = Array.from(items).indexOf(target);
+            setTimeout(() => {
+              target.classList.add('reveal');
+            }, (index % 4) * 120);
+            observer.unobserve(target);
+          }
         }
       });
     }, {
-      threshold: 0.15, // Trigger when 15% of the card is visible
-      rootMargin: '0px 0px -10px 0px' // Trigger slightly before it hits the viewport
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
     });
 
-    cards.forEach(card => observer.observe(card));
+    if (header) observer.observe(header);
+    items.forEach((item) => observer.observe(item));
+
+    // Fallback: Reveal all if scrolling fast
+    setTimeout(() => {
+      header?.classList.add('reveal');
+      items.forEach((item) => item.classList.add('reveal'));
+    }, 1000);
   }
 
-  // Runs on initial load
-  revealCards();
-  
-  // Necessary for Astro View Transitions if you use them
-  document.addEventListener('astro:after-swap', revealCards);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupCareerReveal);
+  } else {
+    setupCareerReveal();
+  }
+
+  document.addEventListener('astro:after-swap', setupCareerReveal);
 </script>

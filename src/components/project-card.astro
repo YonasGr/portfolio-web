@@ -1,124 +1,214 @@
 ---
 import { Icon } from 'astro-icon/components';
-const { project } = Astro.props;
 import { Image } from 'astro:assets';
 import { resolveAssetImage } from '../utils/images';
 
+interface Props {
+  project: {
+    id: string;
+    title: string;
+    tagline: string;
+    description: string;
+    category: string;
+    featured?: boolean;
+    year: string;
+    impact?: string;
+    metrics?: string[] | { label: string; value: string }[];
+    highlights?: string[];
+    tech: string[];
+    platforms?: string[];
+    link?: string;
+    github?: string;
+    images: string[];
+  };
+}
+
+const { project } = Astro.props;
+
 // Map through the array of image strings from project JSON
-const optimizedImages = await Promise.all(
+const resolvedImages = await Promise.all(
   project.images.map(async (imgName: string) => {
     return await resolveAssetImage(imgName);
   })
 );
 
-const validImages = optimizedImages.filter(Boolean);
+const validImages = resolvedImages.filter(Boolean);
+const primaryImage = validImages[0] ?? null;
 
-const isSlider = validImages.length > 1;
-const shouldContainImage = validImages.length <= 1;
+// Normalize platforms to MDI icons
+const platformIcons: Record<string, string> = {
+  'ios': 'apple',
+  'apple': 'apple',
+  'macos': 'apple',
+  'android': 'android',
+  'web': 'web',
+  'desktop': 'monitor',
+  'cloud': 'cloud',
+  'api': 'api',
+  'cli': 'console',
+  'terminal': 'console',
+  'mobile web': 'cellphone',
+  'mobile': 'cellphone',
+  'linux': 'linux',
+  'windows': 'microsoft-windows',
+  'npm package': 'npm',
+  'npm': 'npm'
+};
+
+// Filter tags for category filtering
+const categoryLower = project.category.toLowerCase();
+let filterTags = ['all'];
+
+if (categoryLower.includes('mobile') || categoryLower.includes('ai')) {
+  filterTags.push('mobile-ai');
+}
+if (categoryLower.includes('creative') || categoryLower.includes('webgl') || categoryLower.includes('frontend') || categoryLower.includes('ui/ux') || categoryLower.includes('design')) {
+  filterTags.push('creative-web');
+}
+if (categoryLower.includes('full-stack') || categoryLower.includes('backend') || categoryLower.includes('distributed') || categoryLower.includes('api')) {
+  filterTags.push('full-stack');
+}
+if (categoryLower.includes('tooling') || categoryLower.includes('systems') || categoryLower.includes('oss') || categoryLower.includes('cli')) {
+  filterTags.push('tooling');
+}
 ---
 
-<div class="project-card group relative bg-accent/5 border border-accent/10 rounded-2xl overflow-hidden hover:border-accent/40 transition-all duration-500">
-  <div class="aspect-video overflow-hidden relative bg-background/50">
-    <div class="absolute inset-0 bg-accent/10 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
-    
-    <div class={`w-full h-full relative ${isSlider ? 'image-slider' : ''}`}>
-      {
-        validImages.length > 0 ? (
-          validImages.map((imgMetadata, index) => (
-            <Image
-              src={imgMetadata}
-              alt={`${project.title}`}
-              class={`absolute inset-0 w-full h-full ${shouldContainImage ? 'object-contain p-2 sm:p-4' : 'object-cover'} object-center transition-all duration-1000 group-hover:scale-110 ${index === 0 ? "opacity-100 z-0" : "opacity-0 z-[-1]"}`}
-            />
-          ))
-        ) : (
-          /* Fallback box if array is empty or filenames are missing */
-          <img
-            src="/placeholder.jpeg"
-            alt={`${project.title} placeholder`}
-            class="absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
-          />
-        )
-      }
-    </div>
-    
-    <div class="absolute top-3 right-3 flex gap-2 z-20">
-      {project.platforms.map((p: string) => (
-        <div class="p-1.5 bg-background backdrop-blur-md rounded-lg border border-accent/10 text-maintext">
-          <Icon name={`mdi:${p}`} class="w-4 h-4" />
-        </div>
-      ))}
+<article 
+  class="project-card interactive-card group flex flex-col h-full rounded-2xl bg-card border border-card-border overflow-hidden transition-all duration-300 hover:border-accent/40"
+  data-filter-tags={filterTags.join(' ')}
+>
+  <!-- 16:9 Image Preview Container -->
+  <div class="aspect-video relative overflow-hidden bg-background/60 border-b border-card-border/60">
+    <!-- Subtle gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10 pointer-events-none opacity-60 group-hover:opacity-30 transition-opacity duration-300"></div>
+
+    {primaryImage ? (
+      <Image
+        src={primaryImage}
+        alt={`${project.title} Preview`}
+        class="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center bg-accent/5">
+        <Icon name="mdi:image-outline" class="w-12 h-12 text-accent/30" />
+      </div>
+    )}
+
+    <!-- Top Badges Overlay -->
+    <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 z-20 pointer-events-none">
+      <!-- Category Badge -->
+      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-medium tracking-wide uppercase bg-background/85 text-accent border border-card-border backdrop-blur-md shadow-xs">
+        {project.category}
+      </span>
+
+      <!-- Year & Platforms -->
+      <div class="flex items-center gap-1.5">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-background/85 text-subtext border border-card-border backdrop-blur-md">
+          {project.year}
+        </span>
+        {project.platforms && project.platforms.length > 0 && (
+          <div class="flex items-center gap-1 bg-background/85 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-card-border text-subtext">
+            {project.platforms.map((p) => {
+              const iconKey = platformIcons[p.toLowerCase().trim()] || 'web';
+              return (
+                <span title={p} class="inline-block">
+                  <Icon name={`mdi:${iconKey}`} class="w-3.5 h-3.5" />
+                </span>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   </div>
 
-  <div class="p-6 space-y-4">
-    <div class="flex justify-between items-start">
-      <div>
-        <span class="text-accent text-[10px] uppercase tracking-widest font-bold">{project.category}</span>
-        <h3 class="text-xl font-heading font-bold text-maintext mt-1">{project.title}</h3>
-      </div>
-      <a href={project.link} target="_blank" class="text-accent/75 hover:text-accent transition-colors">
-        <Icon name="mdi:open-in-new" class="w-6 h-6" />
-      </a>
+  <!-- Card Body -->
+  <div class="p-5 sm:p-6 flex flex-col flex-1 gap-4">
+    <!-- Header: Title & Tagline -->
+    <div>
+      <h3 class="text-xl font-heading font-bold text-maintext tracking-tight group-hover:text-accent transition-colors duration-200">
+        {project.title}
+      </h3>
+      <p class="font-body text-xs font-medium text-accent/90 mt-1 leading-snug">
+        {project.tagline}
+      </p>
     </div>
 
-    <p class="text-subtext text-sm font-body line-clamp-3">
+    <!-- Description -->
+    <p class="font-body text-subtext text-xs sm:text-sm leading-relaxed line-clamp-3">
       {project.description}
     </p>
 
-    <div class="flex flex-wrap gap-2 pt-2">
+    <!-- Impact Metrics Strip -->
+    {project.metrics && project.metrics.length > 0 && (
+      <div class="grid grid-cols-2 gap-2 py-1">
+        {project.metrics.map((metric: string | { label: string; value: string }) => {
+          const isObject = typeof metric === 'object' && metric !== null;
+          const label = isObject ? (metric as { label: string; value: string }).label : null;
+          const value = isObject ? (metric as { label: string; value: string }).value : String(metric);
+          
+          return (
+            <div class="flex flex-col items-center justify-center p-2 rounded-lg bg-accent/5 border border-accent/10 text-center">
+              <span class="font-mono text-xs font-bold text-maintext tracking-tight">{value}</span>
+              {label && <span class="font-body text-[10px] text-subtext uppercase tracking-wider mt-0.5">{label}</span>}
+            </div>
+          );
+        })}
+      </div>
+    )}
+
+    <!-- Highlights Bullet List -->
+    {project.highlights && project.highlights.length > 0 && (
+      <ul class="space-y-1.5 py-1 border-t border-card-border/40">
+        {project.highlights.slice(0, 3).map((highlight) => (
+          <li class="flex items-start gap-2 text-xs font-body text-subtext/90 leading-normal">
+            <span class="text-accent mt-0.5 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+              </svg>
+            </span>
+            <span>{highlight}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <!-- Tech Stack Pills -->
+    <div class="flex flex-wrap gap-1.5 mt-auto pt-2 border-t border-card-border/40">
       {project.tech.map((t: string) => (
-        <span class="rounded-md text-[10px] px-2 md:px-4 py-1 bg-accent/5 border border-accent/10 text-accent/80  group-hover:border-accent/40 group-hover:text-accent">
+        <span class="rounded-md text-[11px] font-mono px-2.5 py-0.5 bg-accent/5 border border-accent/15 text-accent/85 transition-colors group-hover:border-accent/30">
           {t}
         </span>
       ))}
     </div>
+
+    <!-- Dual Action Buttons -->
+    <div class="flex items-center gap-2.5 pt-3 border-t border-card-border/50">
+      {project.link && (
+        <a
+          href={project.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-accent text-background font-heading font-semibold text-xs transition-all duration-200 hover:opacity-90 hover:shadow-xs active:scale-[0.98]"
+        >
+          <span>Live Preview</span>
+          <Icon name="mdi:open-in-new" class="w-3.5 h-3.5" />
+        </a>
+      )}
+
+      {project.github && (
+        <a
+          href={project.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-card border border-card-border text-maintext font-heading font-medium text-xs transition-all duration-200 hover:border-accent/40 hover:text-accent active:scale-[0.98]"
+          title="View Source Code"
+        >
+          <Icon name="mdi:github" class="w-4 h-4" />
+          <span>Source</span>
+        </a>
+      )}
+    </div>
   </div>
-</div>
-
-<script>
-  function initSliders() {
-    const sliders = document.querySelectorAll('.image-slider');
-    
-    sliders.forEach(slider => {
-      const images = slider.querySelectorAll('img');
-      if (images.length <= 1) return;
-
-      let currentIndex = 0;
-      setInterval(() => {
-        // Hide current
-        images[currentIndex].classList.remove('opacity-100', 'z-0');
-        images[currentIndex].classList.add('opacity-0', 'z-[-1]');
-        
-        // Move to next
-        currentIndex = (currentIndex + 1) % images.length;
-        
-        // Show next
-        images[currentIndex].classList.remove('opacity-0', 'z-[-1]');
-        images[currentIndex].classList.add('opacity-100', 'z-0');
-      }, 3500);
-    });
-  }
-
-  initSliders();
-  document.addEventListener('astro:after-swap', initSliders);
-</script>
-
-<style is:global>
-  .project-card {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(40px);
-    transition: 
-      opacity 0.8s ease-out, 
-      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-      visibility 0.8s;
-    will-change: transform, opacity;
-  }
-
-  .project-card.reveal {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateY(0) !important;
-  }
-</style>
+</article>

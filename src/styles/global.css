@@ -3,27 +3,25 @@
 @import '@fontsource-variable/inter';
 
 @theme {
-  /* Base Colors - Theme used in @layer base{...} */
-  --color-background: #0F0D29;
-  --color-accent: #A78BFA;
-  --color-maintext: #FFFFFF;
-  --color-subtext: #b2bed1;
-  --color-textrain: #7d7b9c;
+  /* Base Colors - Dynamic references mapped to CSS custom properties */
+  --color-background: var(--color-background);
+  --color-accent: var(--color-accent);
+  --color-maintext: var(--color-maintext);
+  --color-subtext: var(--color-subtext);
+  --color-card: var(--color-card);
+  --color-card-border: var(--color-card-border);
+  --color-border: var(--color-border);
+  --color-textrain: var(--color-textrain);
 
   /* Fonts */
   --font-heading: "Space Grotesk Variable", sans-serif;
   --font-body: "Inter Variable", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  /* Custom Animations */
-  --animate-fall: fall linear forwards;
+  /* Custom Keyframes & Animations */
   --animate-bounce-twice: double-bounce-pause 5.6s ease-in-out infinite;
-
-  @keyframes fall {
-    0% { transform: translateY(-5vh); opacity: 0; }
-    10% { opacity: 0.5; }
-    90% { opacity: 0.3; }
-    100% { transform: translateY(90vh); opacity: 0; }
-  }
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-float: float 6s ease-in-out infinite;
 
   @keyframes double-bounce-pause {
     0%, 5.3%, 10.7%, 100% { transform: translateY(0); }
@@ -35,119 +33,240 @@
     0% { transform: translateY(0) scale(1); opacity: 1; }
     100% { transform: translateY(-50px) scale(0.5); opacity: 0; }
   }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
 }
 
 @layer base {
-  /* Default Theme - Dark */
+  /* ==========================================================================
+     Theme Palettes (4 Themes × 2 Modes = 8 Variants)
+     ========================================================================== */
+
+  /* 1. Default Theme — Dark (Deep Indigo / Violet) */
   :root,
   [data-theme="default-dark"] {
     --color-background: #0F0D29;
     --color-accent: #A78BFA;
+    --color-accent-rgb: 167, 139, 250;
+    --accent-rgb: 167, 139, 250;
+    --color-accent-60: rgba(167, 139, 250, 0.6);
     --color-maintext: #FFFFFF;
-    --color-subtext: #b2bed1;
-    --color-textrain: #7d7b9c;
+    --color-subtext: #B2BED1;
+    --color-card: rgba(255, 255, 255, 0.03);
+    --color-card-border: rgba(255, 255, 255, 0.08);
+    --color-border: rgba(167, 139, 250, 0.15);
+    --color-textrain: #7D7B9C;
   }
 
-  /* Default Theme - Light */
+  /* 1. Default Theme — Light */
   [data-theme="default-light"] {
     --color-background: #F5F3FF;
     --color-accent: #7C3AED;
+    --color-accent-rgb: 124, 58, 237;
+    --accent-rgb: 124, 58, 237;
+    --color-accent-60: rgba(124, 58, 237, 0.6);
     --color-maintext: #1E1B4B;
     --color-subtext: #4B5563;
-    --color-textrain: #97a7dc;
+    --color-card: rgba(255, 255, 255, 0.85);
+    --color-card-border: rgba(124, 58, 237, 0.12);
+    --color-border: rgba(124, 58, 237, 0.2);
+    --color-textrain: #97A7DC;
   }
 
-  /* Strategic Architect - Dark */
+  /* 2. Strategic Architect — Dark (Navy / Sky Blue) */
   [data-theme="strategic-dark"] {
     --color-background: #0F172A;
     --color-accent: #38BDF8;
+    --color-accent-rgb: 56, 189, 248;
+    --accent-rgb: 56, 189, 248;
+    --color-accent-60: rgba(56, 189, 248, 0.6);
     --color-maintext: #F1F5F9;
-    --color-subtext: #a0adbf;
-    --color-textrain: #4d5b6f;
+    --color-subtext: #94A3B8;
+    --color-card: rgba(30, 41, 59, 0.5);
+    --color-card-border: rgba(56, 189, 248, 0.12);
+    --color-border: rgba(56, 189, 248, 0.2);
+    --color-textrain: #4D5B6F;
   }
 
-  /* Strategic Architect - Light */
+  /* 2. Strategic Architect — Light */
   [data-theme="strategic-light"] {
     --color-background: #F8FAFC;
     --color-accent: #0284C7;
+    --color-accent-rgb: 2, 132, 199;
+    --accent-rgb: 2, 132, 199;
+    --color-accent-60: rgba(2, 132, 199, 0.6);
     --color-maintext: #0F172A;
     --color-subtext: #475569;
-    --color-textrain: #9eb9da;
+    --color-card: rgba(255, 255, 255, 0.85);
+    --color-card-border: rgba(2, 132, 199, 0.12);
+    --color-border: rgba(2, 132, 199, 0.2);
+    --color-textrain: #9EB9DA;
   }
 
-  /* Modern Innovator - Dark */
+  /* 3. Modern Innovator — Dark (Obsidian / Electric Lime) */
   [data-theme="innovator-dark"] {
     --color-background: #0B0F0E;
     --color-accent: #BEF264;
+    --color-accent-rgb: 190, 242, 100;
+    --accent-rgb: 190, 242, 100;
+    --color-accent-60: rgba(190, 242, 100, 0.6);
     --color-maintext: #FFFFFF;
-    --color-subtext: #c4c3c3;
-    --color-textrain: #567b6c;
+    --color-subtext: #A1A1AA;
+    --color-card: rgba(20, 27, 24, 0.6);
+    --color-card-border: rgba(190, 242, 100, 0.12);
+    --color-border: rgba(190, 242, 100, 0.2);
+    --color-textrain: #567B6C;
   }
 
-  /* Modern Innovator - Light */
+  /* 3. Modern Innovator — Light */
   [data-theme="innovator-light"] {
     --color-background: #F0FDF4;
-    --color-accent: #06aa73;
+    --color-accent: #059669;
+    --color-accent-rgb: 5, 150, 105;
+    --accent-rgb: 5, 150, 105;
+    --color-accent-60: rgba(5, 150, 105, 0.6);
     --color-maintext: #064E3B;
-    --color-subtext: #4B5563;
-    --color-textrain: #7fbc9e;
+    --color-subtext: #374151;
+    --color-card: rgba(255, 255, 255, 0.85);
+    --color-card-border: rgba(5, 150, 105, 0.12);
+    --color-border: rgba(5, 150, 105, 0.2);
+    --color-textrain: #7FBC9E;
   }
 
-  /* Executive Minimalist - Dark */
+  /* 4. Executive Minimalist — Dark (Charcoal / Warm Amber) */
   [data-theme="executive-dark"] {
     --color-background: #121212;
     --color-accent: #EAB308;
+    --color-accent-rgb: 234, 179, 8;
+    --accent-rgb: 234, 179, 8;
+    --color-accent-60: rgba(234, 179, 8, 0.6);
     --color-maintext: #FAFAF9;
-    --color-subtext: #dad0c9;
+    --color-subtext: #D6D3D1;
+    --color-card: rgba(28, 25, 23, 0.6);
+    --color-card-border: rgba(234, 179, 8, 0.12);
+    --color-border: rgba(234, 179, 8, 0.2);
     --color-textrain: #777271;
   }
 
-  /* Executive Minimalist - Light */
+  /* 4. Executive Minimalist — Light */
   [data-theme="executive-light"] {
     --color-background: #FCF8F1;
     --color-accent: #B45309;
+    --color-accent-rgb: 180, 83, 9;
+    --accent-rgb: 180, 83, 9;
+    --color-accent-60: rgba(180, 83, 9, 0.6);
     --color-maintext: #1C1917;
-    --color-subtext: #71665f;
-    --color-textrain: #e2a787;
+    --color-subtext: #57534E;
+    --color-card: rgba(255, 255, 255, 0.85);
+    --color-card-border: rgba(180, 83, 9, 0.12);
+    --color-border: rgba(180, 83, 9, 0.2);
+    --color-textrain: #E2A787;
   }
-
 
   /* Core Element Styles */
   *::selection {
-    @apply bg-accent text-background;
+    background-color: var(--color-accent);
+    color: var(--color-background);
   }
 
   body {
-    @apply font-body antialiased text-maintext;
-    background: linear-gradient(
-      135deg,    
-      color-mix(in srgb, var(--color-background), black 16%) 0%,
-      var(--color-background) 50%,
-      color-mix(in srgb, var(--color-background), white 16%) 100%
-    );
-    background-attachment: fixed;
+    font-family: var(--font-body);
+    background-color: var(--color-background);
+    color: var(--color-maintext);
     min-height: 100vh;
-    /*Transition for theme switching*/
-    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 }
 
 @layer components {
+  /* Layout utilities */
   .section-container {
-    @apply py-12 md:py-20 px-4 md:px-0;
+    @apply py-16 md:py-24 px-4 sm:px-6 md:px-0;
   }
 
-  .falling-letter {
-    @apply absolute font-heading font-extralight select-none pointer-events-none leading-none;
-    animation: fall linear forwards;
+  .bg-container {
+    background-color: var(--color-background);
   }
-  
+
+  /* Interactive 3D Card with Glare & Depth */
+  .interactive-card {
+    position: relative;
+    border-radius: 1rem;
+    background-color: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) translateY(var(--translate-y, 0px));
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
+    overflow: hidden;
+  }
+
+  .interactive-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(400px circle at var(--glare-x, 50%) var(--glare-y, 50%), rgba(var(--color-accent-rgb), 0.12), transparent 60%);
+    pointer-events: none;
+    opacity: var(--glare-opacity, 0);
+    transition: opacity 0.3s ease;
+    border-radius: inherit;
+  }
+
+  .interactive-card:hover {
+    border-color: rgba(var(--color-accent-rgb), 0.4);
+    box-shadow: 0 10px 30px -10px rgba(var(--color-accent-rgb), 0.15);
+  }
+
+  /* Frosted Glass Surface Panel */
+  .glass-panel {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* Ambient Glow Circle Utility */
+  .ambient-glow {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.25;
+    background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
+  }
+
+  /* Badge Pill Component */
+  .badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1rem;
+    background-color: rgba(var(--color-accent-rgb), 0.08);
+    color: var(--color-accent);
+    border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+    transition: all 0.2s ease;
+  }
+
+  .badge-pill:hover {
+    background-color: rgba(var(--color-accent-rgb), 0.15);
+    border-color: rgba(var(--color-accent-rgb), 0.35);
+  }
+
+  /* Launch button animation */
   .launching {
     animation: launch 0.5s ease-in forwards;
   }
 }
 
-/* Custom Scrollbar for a cleaner look */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -156,8 +275,23 @@
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 100px;
-  background-color: color-mix(in srgb, var(--color-accent), transparent 50%);
+  background-color: rgba(var(--color-accent-rgb), 0.3);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: color-mix(in srgb, var(--color-accent), transparent 25%);
+  background-color: rgba(var(--color-accent-rgb), 0.6);
+}
+
+/* Accessibility: Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .interactive-card {
+    transform: none !important;
+  }
 }

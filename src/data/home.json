@@ -1,72 +1,76 @@
 {
   "name": "Yonas Girma",
-  "photoUrl": "branding-poster.png",
-  "intro": "I’m driven by a deep interest in how software can improve everyday workflows and systems, and I enjoy turning complex requirements into simple, usable products. My approach prioritizes impact over complexity—building things that work well, stay maintainable, and deliver measurable value.",
-  "introHtml": "A brief, compelling introduction about who you are and what you do. Mention your core <span class='text-white font-bold'>philosophy</span>, your passion for building digital products, and your drive for creating <span class='text-white font-bold'>efficient</span>, <span class='text-white font-bold'>high-impact</span> solutions.",
-  "webpageTitle": "Yonasgr",
+  "title": "Full-Stack Software Engineer & Creative Developer",
+  "headline": "Crafting resilient full-stack systems, fluid interactive web experiences, and high-performance mobile apps.",
+  "location": "Addis Ababa, Ethiopia (UTC+3) · Available Worldwide",
+  "availability": {
+    "status": "available",
+    "badgeText": "Available for Q3/Q4 Projects & Full-Time Roles",
+    "openTo": [
+      "Full-Time Engineering",
+      "Contract / Architecture",
+      "Technical Consulting"
+    ]
+  },
+  "stats": [
+    { "label": "Years Experience", "value": "3+" },
+    { "label": "Production Apps Shipped", "value": "8+" },
+    { "label": "Active Users Reached", "value": "25k+" },
+    { "label": "Core Technologies", "value": "15+" }
+  ],
+  "bio": "I bridge the gap between robust backend architecture and tactile, high-performance user interfaces. With a focus on React/Next.js, TypeScript, React Native, Node.js, and modern cloud infrastructure, I build products that prioritize speed, maintainability, and measurable user impact.",
+  "intro": "I bridge the gap between robust backend architecture and tactile, high-performance user interfaces. With a focus on React/Next.js, TypeScript, React Native, Node.js, and modern cloud infrastructure, I build products that prioritize speed, maintainability, and measurable user impact.",
+  "photoUrl": "yonasgr.png",
+  "webpageTitle": "Yonas Girma — Full-Stack & Creative Developer",
   "resumeUrl": "/yonasgr-resume.pdf",
-
-  "_comment": "Add your social links below. Leave the 'url' empty to hide the icon. Set 'showInContact' to true or false to control if it appears in the Contact section.",
   "socials": [
     {
       "name": "GitHub",
       "url": "https://github.com/yonasgr",
+      "handle": "@yonasgr",
       "icon": "mdi:github",
-      "showInContact": true
+      "showInContact": true,
+      "showInHero": true
     },
     {
       "name": "LinkedIn",
       "url": "https://linkedin.com/in/yonasgr",
+      "handle": "in/yonasgr",
       "icon": "mdi:linkedin",
-      "showInContact": true
-    },
-    {
-      "name": "Leetcode",
-      "url": "https://leetcode.com/u/yonasgr/",
-      "icon": "devicon-plain:leetcode",
-      "showInContact": false
-    },
-    {
-      "name": "Behance",
-      "url": "#",
-      "icon": "devicon-plain:behance",
-      "showInContact": false
+      "showInContact": true,
+      "showInHero": true
     },
     {
       "name": "Email",
       "url": "mailto:yonasgirma222@gmail.com",
+      "handle": "yonasgirma222@gmail.com",
       "icon": "mdi:email",
-      "showInContact": true
+      "showInContact": true,
+      "showInHero": true
     },
     {
-      "name": "Whatsapp",
+      "name": "WhatsApp",
       "url": "https://wa.me/251909823587",
+      "handle": "+251 909 823 587",
       "icon": "mdi:whatsapp",
-      "showInContact": true
+      "showInContact": true,
+      "showInHero": false
     },
     {
-      "name": "Facebook",
-      "url": "#",
-      "icon": "mdi:facebook",
-      "showInContact": false
-    },
-    {
-      "name": "Messenger",
-      "url": "#",
-      "icon": "mdi:facebook-messenger",
-      "showInContact": true
-    },
-    {
-      "name": "Instagram",
-      "url": "https://instagram.com/yonasggr",
-      "icon": "mdi:instagram",
-      "showInContact": false
-    },
-    {
-      "name": "Twitter",
+      "name": "Twitter / X",
       "url": "https://twitter.com/yonasggr",
+      "handle": "@yonasggr",
       "icon": "mdi:twitter",
-      "showInContact": false
+      "showInContact": true,
+      "showInHero": true
+    },
+    {
+      "name": "LeetCode",
+      "url": "https://leetcode.com/u/yonasgr/",
+      "handle": "yonasgr",
+      "icon": "devicon-plain:leetcode",
+      "showInContact": false,
+      "showInHero": false
     }
   ]
 }
