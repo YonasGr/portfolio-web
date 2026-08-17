@@ -16,33 +16,33 @@ const navLinks = [
 ];
 ---
 
-<section id="contact" class="section-container relative pb-12">
-  <div class="space-y-12 sm:space-y-16">
+<section id="contact" class="section-container relative pb-12 w-full">
+  <div class="space-y-8 sm:space-y-12 md:space-y-16 w-full">
     <!-- Editorial Section Header -->
-    <div class="contact-header max-w-2xl">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-3">
+    <div class="max-w-2xl">
+      <div class="inline-flex items-center gap-2 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-2 sm:mb-3">
         <span>04</span>
         <span>/</span>
         <span>GET IN TOUCH</span>
       </div>
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
+      <h2 class="text-2xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
         Let's Build Something <span class="text-accent">Exceptional</span>
       </h2>
-      <p class="text-subtext font-body text-sm sm:text-base mt-2 leading-relaxed">
+      <p class="text-subtext font-body text-xs sm:text-base mt-1.5 sm:mt-2 leading-relaxed">
         Whether you are looking to hire a lead engineer, build an interactive 3D web experience, or scale a cross-platform mobile application, my inbox is always open.
       </p>
     </div>
 
     <!-- Interactive Contact Deck -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 w-full">
       <!-- Direct Email Action Deck (7 Columns) -->
-      <div class="lg:col-span-7 contact-card interactive-card p-6 sm:p-8 rounded-2xl bg-card border border-card-border hover:border-accent/40 transition-all duration-300 flex flex-col justify-between gap-6">
-        <div class="space-y-3">
-          <div class="inline-flex items-center gap-2 text-xs font-mono text-accent uppercase tracking-wider">
+      <div class="lg:col-span-7 p-4 sm:p-6 md:p-8 rounded-2xl bg-card border border-card-border hover:border-accent/40 transition-colors duration-200 flex flex-col justify-between gap-4 sm:gap-6 shadow-sm w-full">
+        <div class="space-y-2 sm:space-y-3">
+          <div class="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-mono text-accent uppercase tracking-wider">
             <Icon name="mdi:email-fast-outline" class="w-4 h-4" />
             <span>Direct Email Channel</span>
           </div>
-          <h3 class="text-2xl sm:text-3xl font-heading font-bold text-maintext tracking-tight">
+          <h3 class="text-lg sm:text-2xl md:text-3xl font-heading font-bold text-maintext tracking-tight break-all">
             {emailAddress}
           </h3>
           <p class="text-subtext font-body text-xs sm:text-sm leading-relaxed">
@@ -51,43 +51,43 @@ const navLinks = [
         </div>
 
         <!-- Action Buttons: 1-Click Copy + Direct Mailto -->
-        <div class="flex flex-wrap items-center gap-3 pt-2">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3 pt-1">
           <button
             type="button"
             id="copy-email-btn"
             data-email={emailAddress}
-            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-background font-heading font-semibold text-xs sm:text-sm transition-all duration-200 hover:opacity-90 hover:shadow-xs active:scale-[0.98] cursor-pointer"
+            class="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-accent text-background font-heading font-semibold text-xs sm:text-sm transition-all duration-200 hover:opacity-90 active:scale-[0.98] cursor-pointer"
             aria-label="Copy email address to clipboard"
           >
             <span id="copy-icon">
-              <Icon name="mdi:content-copy" class="w-4 h-4" />
+              <Icon name="mdi:content-copy" class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </span>
             <span id="copy-text">Copy to Clipboard</span>
           </button>
 
           <a
             href={`mailto:${emailAddress}`}
-            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-card border border-card-border hover:border-accent/40 text-maintext hover:text-accent font-heading font-medium text-xs sm:text-sm transition-all duration-200 active:scale-[0.98]"
+            class="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-card border border-card-border hover:border-accent/40 text-maintext hover:text-accent font-heading font-medium text-xs sm:text-sm transition-all duration-200 active:scale-[0.98]"
           >
             <span>Open Email Client</span>
-            <Icon name="mdi:arrow-top-right" class="w-4 h-4" />
+            <Icon name="mdi:arrow-top-right" class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </a>
         </div>
       </div>
 
       <!-- Availability & Location Status Deck (5 Columns) -->
-      <div class="lg:col-span-5 contact-card interactive-card p-6 sm:p-8 rounded-2xl bg-card border border-card-border hover:border-accent/40 transition-all duration-300 flex flex-col justify-between gap-6">
-        <div class="space-y-4">
+      <div class="lg:col-span-5 p-4 sm:p-6 md:p-8 rounded-2xl bg-card border border-card-border hover:border-accent/40 transition-colors duration-200 flex flex-col justify-between gap-4 sm:gap-6 shadow-sm w-full">
+        <div class="space-y-3 sm:space-y-4">
           <!-- Availability Status -->
-          <div class="p-4 rounded-xl bg-accent/5 border border-accent/15 space-y-1.5">
-            <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-accent font-semibold">
-              <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+          <div class="p-3 sm:p-4 rounded-xl bg-accent/5 border border-accent/15 space-y-1">
+            <div class="flex items-center gap-1.5 text-[11px] sm:text-xs font-mono uppercase tracking-wider text-accent font-semibold">
+              <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent"></span>
               <span>Availability Status</span>
             </div>
-            <p class="font-heading font-bold text-maintext text-sm sm:text-base">
+            <p class="font-heading font-bold text-maintext text-xs sm:text-base">
               Available for Q3/Q4 Projects & Roles
             </p>
-            <div class="flex flex-wrap gap-1.5 pt-1 text-[11px] font-mono text-subtext">
+            <div class="flex flex-wrap gap-1 pt-0.5 text-[10px] sm:text-[11px] font-mono text-subtext">
               <span class="px-2 py-0.5 rounded bg-background/80 border border-card-border">Full-Time</span>
               <span class="px-2 py-0.5 rounded bg-background/80 border border-card-border">Contract</span>
               <span class="px-2 py-0.5 rounded bg-background/80 border border-card-border">Consulting</span>
@@ -96,17 +96,17 @@ const navLinks = [
 
           <!-- Timezone & Location -->
           <div class="space-y-1">
-            <span class="text-[11px] font-mono uppercase tracking-wider text-subtext">Current Timezone</span>
+            <span class="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-subtext">Current Timezone</span>
             <div class="flex items-center justify-between gap-2">
-              <p class="font-heading font-semibold text-maintext text-sm sm:text-base flex items-center gap-1.5">
-                <Icon name="mdi:map-marker" class="w-4 h-4 text-accent" />
+              <p class="font-heading font-semibold text-maintext text-xs sm:text-base flex items-center gap-1">
+                <Icon name="mdi:map-marker" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />
                 <span>Addis Ababa, Ethiopia</span>
               </p>
-              <span class="font-mono text-xs text-accent px-2 py-0.5 rounded bg-accent/10 border border-accent/20">
+              <span class="font-mono text-[10px] sm:text-xs text-accent px-1.5 py-0.5 rounded bg-accent/10 border border-accent/20">
                 UTC+3 (EAT)
               </span>
             </div>
-            <p class="text-[11px] font-body text-subtext">
+            <p class="text-[10px] sm:text-[11px] font-body text-subtext">
               Experienced working with distributed teams across Americas, Europe, and Asia-Pacific.
             </p>
           </div>
@@ -115,55 +115,55 @@ const navLinks = [
     </div>
 
     <!-- Direct Social Channels Cards -->
-    <div class="space-y-4">
-      <h3 class="text-xs font-mono uppercase tracking-widest text-subtext font-semibold pl-1">
+    <div class="space-y-3 sm:space-y-4 w-full">
+      <h3 class="text-xs font-mono uppercase tracking-widest text-subtext font-semibold pl-0.5">
         Direct Social & Developer Profiles
       </h3>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-4 w-full">
         {contactSocials.map((social) => (
           <a
             href={social.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="social-card group p-4 rounded-xl bg-card border border-card-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-300 flex items-center gap-3.5"
+            class="group p-3 sm:p-4 rounded-xl bg-card border border-card-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-200 flex items-center gap-3 w-full"
           >
-            <div class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/15 flex items-center justify-center text-accent group-hover:scale-110 group-hover:bg-accent/20 transition-all duration-300 shrink-0">
-              <Icon name={social.icon} class="w-5 h-5" />
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-accent/10 border border-accent/15 flex items-center justify-center text-accent transition-colors duration-200 shrink-0">
+              <Icon name={social.icon} class="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
 
             <div class="overflow-hidden min-w-0 flex-1">
-              <h4 class="font-heading font-bold text-maintext text-sm group-hover:text-accent transition-colors duration-200 truncate">
+              <h4 class="font-heading font-bold text-maintext text-xs sm:text-sm group-hover:text-accent transition-colors duration-200 truncate">
                 {social.name}
               </h4>
-              <p class="font-mono text-xs text-subtext truncate">
+              <p class="font-mono text-[11px] sm:text-xs text-subtext truncate">
                 {social.handle || social.name}
               </p>
             </div>
 
-            <Icon name="mdi:arrow-top-right" class="w-4 h-4 text-subtext/60 group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 shrink-0" />
+            <Icon name="mdi:arrow-top-right" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-subtext/60 group-hover:text-accent transition-colors duration-200 shrink-0" />
           </a>
         ))}
       </div>
     </div>
 
     <!-- Editorial Colophon Footer -->
-    <footer class="contact-footer pt-16 mt-8 border-t border-card-border/60 space-y-8">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+    <footer class="pt-10 sm:pt-16 mt-6 sm:mt-8 border-t border-card-border/60 space-y-6 sm:space-y-8 w-full">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-center md:text-left w-full">
         <!-- Brand & Colophon -->
-        <div class="space-y-1.5">
+        <div class="space-y-1">
           <div class="flex items-center justify-center md:justify-start gap-2">
-            <span class="font-heading font-bold text-maintext text-base tracking-tight">Yonas Girma</span>
+            <span class="font-heading font-bold text-maintext text-sm sm:text-base tracking-tight">Yonas Girma</span>
             <span class="text-card-border">•</span>
-            <span class="font-mono text-xs text-accent">Full-Stack & Creative Engineer</span>
+            <span class="font-mono text-[11px] sm:text-xs text-accent">Full-Stack & Creative Engineer</span>
           </div>
-          <p class="text-xs font-body text-subtext max-w-md">
+          <p class="text-[11px] sm:text-xs font-body text-subtext max-w-md">
             Crafted with precision using Astro, Tailwind CSS v4, and TypeScript. Deployed on high-speed global Edge infrastructure.
           </p>
         </div>
 
         <!-- Quick Navigation Anchor Links -->
-        <nav class="flex flex-wrap items-center justify-center gap-4 text-xs font-heading font-medium text-subtext" aria-label="Footer Navigation">
+        <nav class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-heading font-medium text-subtext" aria-label="Footer Navigation">
           {navLinks.map((link) => (
             <a href={link.href} class="hover:text-accent transition-colors duration-200">
               {link.name}
@@ -177,16 +177,16 @@ const navLinks = [
       </div>
 
       <!-- Bottom Bar: Copyright & Back-to-Top Trigger -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-card-border/40 text-xs font-mono text-subtext">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 sm:pt-6 border-t border-card-border/40 text-[11px] sm:text-xs font-mono text-subtext w-full">
         <p>© 2026 Yonas Girma. All rights reserved.</p>
 
         <a 
           href="#home"
-          class="inline-flex items-center gap-1.5 text-subtext hover:text-accent transition-colors duration-200 group"
+          class="inline-flex items-center gap-1 text-subtext hover:text-accent transition-colors duration-200"
           aria-label="Return to top of page"
         >
           <span>Back to Top</span>
-          <Icon name="mdi:arrow-up" class="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
+          <Icon name="mdi:arrow-up" class="w-3.5 h-3.5" />
         </a>
       </div>
     </footer>
@@ -195,79 +195,17 @@ const navLinks = [
   <!-- Toast Notification for Clipboard Copy Feedback -->
   <div 
     id="copy-toast" 
-    class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300 flex items-center gap-2 px-4 py-2.5 rounded-full bg-card/95 border border-accent/40 shadow-2xl backdrop-blur-xl text-xs sm:text-sm font-heading font-medium text-maintext"
+    class="fixed bottom-20 sm:bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200 flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-accent/40 shadow-xl backdrop-blur-xl text-xs sm:text-sm font-heading font-medium text-maintext"
     role="status"
     aria-live="polite"
   >
-    <span class="w-2 h-2 rounded-full bg-accent animate-ping"></span>
     <Icon name="mdi:check-circle" class="w-4 h-4 text-accent" />
     <span>Email copied to clipboard!</span>
   </div>
 </section>
 
-<style>
-  /* Reveal Animations */
-  .contact-header,
-  .contact-card,
-  .social-card,
-  .contact-footer {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .contact-header.reveal,
-  .contact-card.reveal,
-  .social-card.reveal,
-  .contact-footer.reveal {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
-</style>
-
 <script>
   function setupContact() {
-    // 1. Scroll Reveal Observer
-    const header = document.querySelector('.contact-header');
-    const cards = document.querySelectorAll('.contact-card');
-    const socials = document.querySelectorAll('.social-card');
-    const footer = document.querySelector('.contact-footer');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const target = entry.target as HTMLElement;
-
-          if (target.classList.contains('social-card')) {
-            const index = Array.from(socials).indexOf(target);
-            setTimeout(() => {
-              target.classList.add('reveal');
-            }, index * 80);
-          } else {
-            target.classList.add('reveal');
-          }
-
-          observer.unobserve(target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -40px 0px'
-    });
-
-    if (header) observer.observe(header);
-    cards.forEach((c) => observer.observe(c));
-    socials.forEach((s) => observer.observe(s));
-    if (footer) observer.observe(footer);
-
-    setTimeout(() => {
-      header?.classList.add('reveal');
-      cards.forEach((c) => c.classList.add('reveal'));
-      socials.forEach((s) => s.classList.add('reveal'));
-      footer?.classList.add('reveal');
-    }, 1000);
-
-    // 2. 1-Click Copy Handler with Toast
     const copyBtn = document.getElementById('copy-email-btn');
     const copyText = document.getElementById('copy-text');
     const toast = document.getElementById('copy-toast');
@@ -281,7 +219,6 @@ const navLinks = [
           if (navigator.clipboard) {
             await navigator.clipboard.writeText(email);
           } else {
-            // Fallback for environments where navigator.clipboard is unavailable
             const textArea = document.createElement('textarea');
             textArea.value = email;
             textArea.style.position = 'fixed';
@@ -292,37 +229,33 @@ const navLinks = [
             try {
               (document as unknown as { execCommand: (cmd: string) => boolean }).execCommand?.('copy');
             } catch {
-              // Ignore if not supported
+              // Ignore
             }
             document.body.removeChild(textArea);
           }
 
-          // Update button UI
           if (copyText) copyText.textContent = 'Copied!';
           copyBtn.classList.add('bg-emerald-500', 'text-white');
           copyBtn.classList.remove('bg-accent', 'text-background');
 
-          // Show floating toast
           if (toast) {
-            toast.classList.remove('opacity-0', 'translate-y-4');
+            toast.classList.remove('opacity-0', 'translate-y-2');
             toast.classList.add('opacity-100', 'translate-y-0');
 
             if (toastTimeout) clearTimeout(toastTimeout);
             toastTimeout = window.setTimeout(() => {
               toast.classList.remove('opacity-100', 'translate-y-0');
-              toast.classList.add('opacity-0', 'translate-y-4');
-            }, 2500);
+              toast.classList.add('opacity-0', 'translate-y-2');
+            }, 2000);
           }
 
-          // Reset button state after 2.5s
           setTimeout(() => {
             if (copyText) copyText.textContent = 'Copy to Clipboard';
             copyBtn.classList.remove('bg-emerald-500', 'text-white');
             copyBtn.classList.add('bg-accent', 'text-background');
-          }, 2500);
+          }, 2000);
         } catch (err) {
           console.error('Failed to copy email to clipboard', err);
-          if (copyText) copyText.textContent = 'Failed to copy';
         }
       });
     }

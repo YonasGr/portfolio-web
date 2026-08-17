@@ -18,26 +18,8 @@
   --font-body: "Inter Variable", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  /* Custom Keyframes & Animations */
-  --animate-bounce-twice: double-bounce-pause 5.6s ease-in-out infinite;
-  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  --animate-float: float 6s ease-in-out infinite;
-
-  @keyframes double-bounce-pause {
-    0%, 5.3%, 10.7%, 100% { transform: translateY(0); }
-    2.6% { transform: translateY(-8px); }
-    8% { transform: translateY(-8px); }
-  }
-
-  @keyframes launch {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-50px) scale(0.5); opacity: 0; }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
-  }
+  /* Base transition timing */
+  --transition-smooth: 0.2s ease;
 }
 
 @layer base {
@@ -184,14 +166,14 @@
 @layer components {
   /* Layout utilities */
   .section-container {
-    @apply py-16 md:py-24 px-4 sm:px-6 md:px-0;
+    @apply py-12 sm:py-16 md:py-24 px-0;
   }
 
   .bg-container {
     background-color: var(--color-background);
   }
 
-  /* Interactive 3D Card with Glare & Depth */
+  /* Stable, Elegant Card Surface */
   .interactive-card {
     position: relative;
     border-radius: 1rem;
@@ -199,26 +181,14 @@
     border: 1px solid var(--color-card-border);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) translateY(var(--translate-y, 0px));
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-    will-change: transform;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     overflow: hidden;
   }
 
-  .interactive-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(400px circle at var(--glare-x, 50%) var(--glare-y, 50%), rgba(var(--color-accent-rgb), 0.12), transparent 60%);
-    pointer-events: none;
-    opacity: var(--glare-opacity, 0);
-    transition: opacity 0.3s ease;
-    border-radius: inherit;
-  }
-
   .interactive-card:hover {
-    border-color: rgba(var(--color-accent-rgb), 0.4);
-    box-shadow: 0 10px 30px -10px rgba(var(--color-accent-rgb), 0.15);
+    border-color: rgba(var(--color-accent-rgb), 0.35);
+    box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
   }
 
   /* Frosted Glass Surface Panel */
@@ -257,12 +227,6 @@
 
   .badge-pill:hover {
     background-color: rgba(var(--color-accent-rgb), 0.15);
-    border-color: rgba(var(--color-accent-rgb), 0.35);
-  }
-
-  /* Launch button animation */
-  .launching {
-    animation: launch 0.5s ease-in forwards;
   }
 }
 

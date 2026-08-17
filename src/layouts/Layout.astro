@@ -15,10 +15,10 @@ const defaultTheme = `${baseTheme}-dark`;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth overflow-x-hidden w-full max-w-full">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/png" href={favicon.src} />
     <title>{title}</title>
@@ -46,19 +46,19 @@ const defaultTheme = `${baseTheme}-dark`;
       })();
     </script>
   </head>
-  <body class="bg-background text-maintext relative min-h-screen overflow-x-hidden antialiased selection:bg-accent selection:text-background">
+  <body class="bg-background text-maintext relative min-h-screen w-full max-w-full overflow-x-hidden antialiased selection:bg-accent selection:text-background">
     <!-- Ambient Background Lighting & Subtle Pattern Mesh -->
     <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden" aria-hidden="true">
       <div 
-        class="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[90vw] max-w-[1000px] h-[550px] rounded-full blur-[140px] opacity-20 transition-colors duration-500"
+        class="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[90vw] max-w-[800px] h-[400px] sm:h-[550px] rounded-full blur-[100px] sm:blur-[140px] opacity-20 transition-colors duration-500"
         style="background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);"
       ></div>
       <div 
-        class="absolute top-[35%] -left-[15%] w-[55vw] max-w-[650px] h-[500px] rounded-full blur-[160px] opacity-15 transition-colors duration-500"
+        class="absolute top-[35%] -left-[15%] w-[55vw] max-w-[500px] h-[350px] sm:h-[500px] rounded-full blur-[100px] sm:blur-[160px] opacity-15 transition-colors duration-500"
         style="background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);"
       ></div>
       <div 
-        class="absolute top-[70%] -right-[15%] w-[55vw] max-w-[650px] h-[500px] rounded-full blur-[160px] opacity-15 transition-colors duration-500"
+        class="absolute top-[70%] -right-[15%] w-[55vw] max-w-[500px] h-[350px] sm:h-[500px] rounded-full blur-[100px] sm:blur-[160px] opacity-15 transition-colors duration-500"
         style="background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);"
       ></div>
       <div 
@@ -68,33 +68,33 @@ const defaultTheme = `${baseTheme}-dark`;
     </div>
 
     <!-- Main Content Container -->
-    <main class="px-4 sm:px-8 md:px-12 lg:px-20 max-w-7xl mx-auto relative z-0">
+    <main class="px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto relative z-0 w-full">
       <slot />
     </main>
 
     <!-- Floating Back-to-Top with Circular Scroll Progress Ring -->
     <button
       id="to-top"
-      class="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 p-0 rounded-full bg-card border border-card-border shadow-2xl transition-all duration-500 translate-y-20 opacity-0 pointer-events-none group flex items-center justify-center cursor-pointer hover:border-accent/40 backdrop-blur-md"
+      class="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-40 p-0 rounded-full bg-card border border-card-border shadow-lg transition-all duration-300 translate-y-16 opacity-0 pointer-events-none group flex items-center justify-center cursor-pointer hover:border-accent/40 backdrop-blur-md"
       aria-label="Back to top"
     >
-      <svg class="w-13 h-13 sm:w-14 sm:h-14 -rotate-90">
-        <circle cx="28" cy="28" r="24" fill="none" stroke="currentColor" stroke-width="3" class="text-accent/10"></circle>
+      <svg class="w-10 h-10 sm:w-12 sm:h-12 -rotate-90">
+        <circle cx="20" cy="20" r="17" sm:cx="24" sm:cy="24" sm:r="20" fill="none" stroke="currentColor" stroke-width="2.5" class="text-accent/15"></circle>
         <circle
           id="progress-circle"
-          cx="28" cy="28" r="24"
+          cx="20" cy="20" r="17"
           fill="none"
           stroke="currentColor" 
-          stroke-width="3"
-          stroke-dasharray="150.7"
-          stroke-dashoffset="150.7"
+          stroke-width="2.5"
+          stroke-dasharray="106.8"
+          stroke-dashoffset="106.8"
           stroke-linecap="round"
           class="text-accent transition-all duration-100"
         ></circle>
       </svg>
       
-      <div class="absolute text-accent group-hover:scale-110 transition-transform">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <div class="absolute text-accent">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor">
           <path d="M13.0001 7.82843V20H11.0001V7.82843L5.63614 13.1924L4.22192 11.7782L12.0001 4L19.7783 11.7782L18.3641 13.1924L13.0001 7.82843Z"></path>
         </svg>
       </div>
@@ -103,34 +103,26 @@ const defaultTheme = `${baseTheme}-dark`;
     <script>
       const toTopBtn = document.getElementById('to-top');
       const progressCircle = document.getElementById('progress-circle');
-      const circumference = 150.796; // 2 * pi * 24
-      const arrowIcon = toTopBtn?.querySelector('.absolute');
+      const circumference = 106.814; // 2 * pi * 17
 
       function handleScroll() {
         const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
         if (scrollHeight <= 0) return;
         const scrollPercentage = Math.min(1, Math.max(0, window.scrollY / scrollHeight));
         
-        // Update the Circle Progress
+        // Update Circle Progress
         const offset = circumference - (scrollPercentage * circumference);
         if (progressCircle) {
           progressCircle.style.strokeDashoffset = offset.toString();
         }
 
-        // Visibility Logic (Appear when scrolled > 300px)
+        // Visibility Logic
         if (window.scrollY > 300) {
-          toTopBtn?.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+          toTopBtn?.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
           toTopBtn?.classList.add('translate-y-0', 'opacity-100');
         } else {
-          toTopBtn?.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+          toTopBtn?.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
           toTopBtn?.classList.remove('translate-y-0', 'opacity-100');
-        }
-
-        // Bounce micro-interaction near bottom
-        if (scrollPercentage > 0.95) {
-          arrowIcon?.classList.add('animate-bounce-twice');
-        } else {
-          arrowIcon?.classList.remove('animate-bounce-twice');
         }
       }
 
@@ -138,50 +130,7 @@ const defaultTheme = `${baseTheme}-dark`;
       handleScroll();
 
       toTopBtn?.addEventListener('click', () => {
-        arrowIcon?.classList.add('launching');
-
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) {
-          window.scrollTo({ top: 0, behavior: 'auto' });
-          arrowIcon?.classList.remove('launching');
-          return;
-        }
-
-        const startPosition = window.scrollY;
-        const duration = 600;
-        let startTime: number | null = null;
-        let requestID: number;
-
-        const stopAnimation = () => {
-          cancelAnimationFrame(requestID);
-          arrowIcon?.classList.remove('launching');
-          window.removeEventListener('wheel', stopAnimation);
-          window.removeEventListener('touchmove', stopAnimation);
-        };
-
-        function easeOutQuad(t: number, b: number, c: number, d: number) {
-          t /= d;
-          return -c * t * (t - 2) + b;
-        }
-
-        function animation(currentTime: number) {
-          if (startTime === null) startTime = currentTime;
-          const timeElapsed = currentTime - startTime;
-          const run = easeOutQuad(timeElapsed, startPosition, -startPosition, duration);
-          
-          window.scrollTo(0, run);
-
-          if (timeElapsed < duration) {
-            requestID = requestAnimationFrame(animation);
-          } else {
-            stopAnimation();
-          }
-        }
-
-        window.addEventListener('wheel', stopAnimation, { once: true, passive: true });
-        window.addEventListener('touchmove', stopAnimation, { once: true, passive: true });
-
-        requestID = requestAnimationFrame(animation);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     </script>
     <SpeedInsights />

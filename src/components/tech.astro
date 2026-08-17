@@ -50,31 +50,31 @@ function getTierStyle(tier: string): { badgeClass: string; dotClass: string } {
 }
 ---
 
-<section id="tech" class="section-container relative">
-  <div class="space-y-12 sm:space-y-16">
+<section id="tech" class="section-container relative w-full">
+  <div class="space-y-8 sm:space-y-12 md:space-y-16 w-full">
     <!-- Editorial Section Header -->
-    <div class="tech-header flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 w-full">
       <div class="max-w-xl">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-3">
+        <div class="inline-flex items-center gap-2 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-2 sm:mb-3">
           <span>03</span>
           <span>/</span>
           <span>TOOLBOX</span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
+        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
           Technical <span class="text-accent">Ecosystem</span>
         </h2>
-        <p class="text-subtext font-body text-sm sm:text-base mt-2 leading-relaxed">
+        <p class="text-subtext font-body text-xs sm:text-base mt-1.5 sm:mt-2 leading-relaxed">
           Curated stack of modern languages, creative 3D frameworks, distributed cloud engines, and mobile architectures used in production.
         </p>
       </div>
 
       <!-- Quick Stack Stats Strip -->
-      <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
-        <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-card-border text-subtext">
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono">
+        <div class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-card border border-card-border text-subtext">
           <span class="w-2 h-2 rounded-full bg-accent"></span>
           <span>{totalSkills} Technologies</span>
         </div>
-        <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-card-border text-subtext">
+        <div class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-card border border-card-border text-subtext">
           <span class="w-2 h-2 rounded-full bg-accent/60"></span>
           <span>5 Domains</span>
         </div>
@@ -82,13 +82,13 @@ function getTierStyle(tier: string): { badgeClass: string; dotClass: string } {
     </div>
 
     <!-- Domain Categories Stack -->
-    <div class="space-y-10 sm:space-y-12">
+    <div class="space-y-6 sm:space-y-10 md:space-y-12 w-full">
       {categories.map((category) => (
-        <div class="category-block space-y-4">
+        <div class="space-y-3 sm:space-y-4 w-full">
           <!-- Category Header -->
           <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 pb-2 border-b border-card-border/60">
-            <h3 class="text-lg sm:text-xl font-heading font-bold text-maintext tracking-tight flex items-center gap-2.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+            <h3 class="text-base sm:text-xl font-heading font-bold text-maintext tracking-tight flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
               <span>{category.title}</span>
             </h3>
             <p class="text-xs sm:text-sm font-body text-subtext">
@@ -97,25 +97,25 @@ function getTierStyle(tier: string): { badgeClass: string; dotClass: string } {
           </div>
 
           <!-- Skills Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 w-full">
             {category.skills.map((skill) => {
               const tierInfo = getTierStyle(skill.tier);
 
               return (
                 <div 
-                  class="skill-chip group relative flex flex-col justify-between p-3.5 rounded-xl bg-card border border-card-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-6px_rgba(var(--color-accent-rgb),0.12)] cursor-default"
+                  class="group relative flex flex-col justify-between p-2.5 sm:p-3.5 rounded-xl bg-card border border-card-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-200 hover:-translate-y-0.5 shadow-xs cursor-default w-full"
                   title={skill.description || skill.name}
                 >
                   <!-- Top Row: Icon & Tier Dot -->
-                  <div class="flex items-center justify-between gap-2 mb-3">
-                    <div class="w-9 h-9 rounded-lg bg-background/80 border border-card-border flex items-center justify-center group-hover:scale-110 group-hover:border-accent/30 transition-all duration-300">
-                      <Icon name={skill.icon} class="w-5 h-5" />
+                  <div class="flex items-center justify-between gap-1.5 mb-2 sm:mb-3">
+                    <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg bg-background/80 border border-card-border flex items-center justify-center transition-colors duration-200 shrink-0">
+                      <Icon name={skill.icon} class="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
 
                     <!-- Mini Tier Indicator -->
-                    <span class={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium uppercase border ${tierInfo.badgeClass}`}>
+                    <span class={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-medium uppercase border ${tierInfo.badgeClass}`}>
                       <span class={`w-1 h-1 rounded-full ${tierInfo.dotClass}`}></span>
-                      <span class="truncate max-w-[70px]">{skill.tier}</span>
+                      <span class="truncate max-w-[55px] sm:max-w-[70px]">{skill.tier}</span>
                     </span>
                   </div>
 
@@ -134,69 +134,3 @@ function getTierStyle(tier: string): { badgeClass: string; dotClass: string } {
     </div>
   </div>
 </section>
-
-<style>
-  /* Reveal Animations */
-  .tech-header {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .category-block {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .tech-header.reveal,
-  .category-block.reveal {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
-</style>
-
-<script>
-  function setupTechReveal() {
-    const header = document.querySelector('.tech-header');
-    const categories = document.querySelectorAll<HTMLElement>('.category-block');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const target = entry.target as HTMLElement;
-
-          if (target.classList.contains('tech-header')) {
-            target.classList.add('reveal');
-            observer.unobserve(target);
-          } else if (target.classList.contains('category-block')) {
-            const index = Array.from(categories).indexOf(target);
-            setTimeout(() => {
-              target.classList.add('reveal');
-            }, index * 100);
-            observer.unobserve(target);
-          }
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -40px 0px'
-    });
-
-    if (header) observer.observe(header);
-    categories.forEach((cat) => observer.observe(cat));
-
-    setTimeout(() => {
-      header?.classList.add('reveal');
-      categories.forEach((cat) => cat.classList.add('reveal'));
-    }, 1000);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupTechReveal);
-  } else {
-    setupTechReveal();
-  }
-
-  document.addEventListener('astro:after-swap', setupTechReveal);
-</script>

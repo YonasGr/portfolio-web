@@ -3,20 +3,20 @@ import careerData from '../data/career.json';
 import CareerCard from './career-card.astro';
 ---
 
-<section id="career" class="section-container relative">
-  <div class="space-y-12 sm:space-y-16">
+<section id="career" class="section-container relative w-full">
+  <div class="space-y-8 sm:space-y-12 md:space-y-16 w-full">
     <!-- Editorial Section Header -->
-    <div class="career-header flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 w-full">
       <div class="max-w-xl">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-3">
+        <div class="inline-flex items-center gap-2 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-2 sm:mb-3">
           <span>01</span>
           <span>/</span>
           <span>JOURNEY</span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
+        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
           Experience & <span class="text-accent">Education</span>
         </h2>
-        <p class="text-subtext font-body text-sm sm:text-base mt-2 leading-relaxed">
+        <p class="text-subtext font-body text-xs sm:text-base mt-1.5 sm:mt-2 leading-relaxed">
           Track record of technical leadership, full-stack architecture, high-performance systems engineering, and academic foundations.
         </p>
       </div>
@@ -24,7 +24,7 @@ import CareerCard from './career-card.astro';
       <!-- Quick Timeline Stats -->
       <div class="hidden sm:flex items-center gap-4 text-xs font-mono text-subtext bg-card px-4 py-2.5 rounded-xl border border-card-border">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+          <span class="w-2 h-2 rounded-full bg-accent"></span>
           <span>2018 — Present</span>
         </div>
         <span class="text-card-border">|</span>
@@ -33,32 +33,29 @@ import CareerCard from './career-card.astro';
     </div>
 
     <!-- Linear Editorial Vertical Timeline -->
-    <div class="relative pl-6 sm:pl-10 md:pl-12">
+    <div class="relative pl-5 sm:pl-10 md:pl-12 w-full">
       <!-- Continuous Accent Spine on Left -->
       <div 
-        class="absolute left-2.5 sm:left-4 md:left-5 top-3 bottom-6 w-0.5 bg-gradient-to-b from-accent via-accent/40 to-accent/5 pointer-events-none"
+        class="absolute left-2 sm:left-4 md:left-5 top-3 bottom-6 w-0.5 bg-gradient-to-b from-accent via-accent/40 to-accent/5 pointer-events-none"
         aria-hidden="true"
       ></div>
 
       <!-- Timeline Entries List -->
-      <div class="space-y-8 sm:space-y-12">
+      <div class="space-y-6 sm:space-y-10 md:space-y-12 w-full">
         {careerData.map((item, index) => {
           const isFirst = index === 0;
 
           return (
-            <div class="career-item relative transition-all duration-500">
-              <!-- Glowing Milestone Node on Spine -->
+            <div class="relative w-full">
+              <!-- Milestone Node on Spine -->
               <div 
-                class="absolute -left-6 sm:-left-10 md:-left-12 top-6 -translate-x-1/2 flex items-center justify-center z-10"
+                class="absolute -left-5 sm:-left-10 md:-left-12 top-5 sm:top-6 -translate-x-1/2 flex items-center justify-center z-10"
                 aria-hidden="true"
               >
                 {isFirst ? (
-                  <div class="relative flex items-center justify-center">
-                    <span class="absolute w-6 h-6 rounded-full bg-accent/30 animate-ping opacity-75"></span>
-                    <div class="w-4.5 h-4.5 rounded-full bg-accent ring-4 ring-background shadow-[0_0_16px_var(--color-accent)]"></div>
-                  </div>
+                  <div class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-accent ring-4 ring-background shadow-xs"></div>
                 ) : (
-                  <div class="w-3.5 h-3.5 rounded-full bg-accent/70 ring-4 ring-background border border-accent/50 shadow-xs"></div>
+                  <div class="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-accent/70 ring-4 ring-background border border-accent/50"></div>
                 )}
               </div>
 
@@ -71,70 +68,3 @@ import CareerCard from './career-card.astro';
     </div>
   </div>
 </section>
-
-<style>
-  /* Reveal Animations */
-  .career-header {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .career-item {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .career-header.reveal,
-  .career-item.reveal {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
-</style>
-
-<script>
-  function setupCareerReveal() {
-    const header = document.querySelector('.career-header');
-    const items = document.querySelectorAll<HTMLElement>('.career-item');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const target = entry.target as HTMLElement;
-
-          if (target.classList.contains('career-header')) {
-            target.classList.add('reveal');
-            observer.unobserve(target);
-          } else if (target.classList.contains('career-item')) {
-            const index = Array.from(items).indexOf(target);
-            setTimeout(() => {
-              target.classList.add('reveal');
-            }, (index % 4) * 120);
-            observer.unobserve(target);
-          }
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -40px 0px'
-    });
-
-    if (header) observer.observe(header);
-    items.forEach((item) => observer.observe(item));
-
-    // Fallback: Reveal all if scrolling fast
-    setTimeout(() => {
-      header?.classList.add('reveal');
-      items.forEach((item) => item.classList.add('reveal'));
-    }, 1000);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupCareerReveal);
-  } else {
-    setupCareerReveal();
-  }
-
-  document.addEventListener('astro:after-swap', setupCareerReveal);
-</script>

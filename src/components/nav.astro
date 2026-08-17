@@ -37,11 +37,11 @@ const navItems: NavItem[] = [
 ];
 ---
 
-<header class="fixed bottom-4 md:bottom-auto md:top-5 left-1/2 -translate-x-1/2 z-50 w-[94%] sm:w-auto max-w-fit pointer-events-none reveal-header">
+<header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-auto max-w-fit pointer-events-none">
   <nav
     id="main-nav"
     aria-label="Main Navigation"
-    class="pointer-events-auto flex items-center justify-between sm:justify-center gap-1.5 sm:gap-3 md:gap-4 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-card/85 border border-card-border backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.18)] transition-all duration-300 hover:border-accent/30"
+    class="pointer-events-auto flex items-center justify-between sm:justify-center gap-1 sm:gap-2.5 md:gap-3 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-card/90 border border-card-border backdrop-blur-xl shadow-lg transition-all duration-200 hover:border-accent/30 max-w-full"
   >
     <!-- Brand Monogram -->
     <a
@@ -49,7 +49,7 @@ const navItems: NavItem[] = [
       class="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-full shrink-0"
       aria-label="Yonas Girma - Home"
     >
-      <div class="w-8 h-8 rounded-full bg-accent/15 border border-accent/30 text-accent font-heading font-bold text-xs sm:text-sm flex items-center justify-center group-hover:scale-105 group-hover:bg-accent group-hover:text-background transition-all duration-300 shadow-sm">
+      <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-accent/15 border border-accent/30 text-accent font-heading font-bold text-xs sm:text-sm flex items-center justify-center group-hover:bg-accent group-hover:text-background transition-colors duration-200 shadow-xs">
         YG
       </div>
       <span class="font-heading font-semibold text-maintext text-sm hidden lg:inline tracking-tight group-hover:text-accent transition-colors">
@@ -58,23 +58,24 @@ const navItems: NavItem[] = [
     </a>
 
     <!-- Divider -->
-    <div class="h-4 w-px bg-card-border shrink-0 hidden sm:block"></div>
+    <div class="h-3.5 sm:h-4 w-px bg-card-border shrink-0"></div>
 
     <!-- Navigation Links -->
-    <ul class="flex items-center gap-1 sm:gap-1.5 md:gap-2">
+    <ul class="flex items-center gap-0.5 sm:gap-1.5 md:gap-2">
       {
         navItems.map((item) => (
           <li>
             <a
               href={item.href}
-              class="nav-link relative px-2.5 sm:px-3 py-1.5 rounded-full text-xs sm:text-sm font-body font-medium text-subtext hover:text-maintext transition-all duration-200 flex items-center gap-1.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              class="nav-link relative p-2 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-body font-medium text-subtext hover:text-maintext transition-colors duration-150 flex items-center gap-1.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              aria-label={item.label}
+              title={item.label}
             >
               <Icon 
                 name={item.icon} 
-                class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-subtext/75 group-hover:text-accent transition-colors md:hidden" 
+                class="w-4 h-4 sm:hidden text-subtext transition-colors" 
               />
-              <span class="hidden md:inline">{item.label}</span>
-              <span class="md:hidden text-[11px]">{item.label}</span>
+              <span class="hidden sm:inline">{item.label}</span>
             </a>
           </li>
         ))
@@ -82,7 +83,7 @@ const navItems: NavItem[] = [
     </ul>
 
     <!-- Divider -->
-    <div class="h-4 w-px bg-card-border shrink-0"></div>
+    <div class="h-3.5 sm:h-4 w-px bg-card-border shrink-0"></div>
 
     <!-- Theme Toggle -->
     <div class="shrink-0 flex items-center">
@@ -92,21 +93,8 @@ const navItems: NavItem[] = [
 </header>
 
 <style>
-  .reveal-header {
-    opacity: 0;
-    transform: translate(-50%, 15px);
-    animation: revealHeaderIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  @keyframes revealHeaderIn {
-    to {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-  }
-
   .nav-link {
-    transition: color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+    transition: color 0.15s ease, background-color 0.15s ease;
   }
 
   .nav-link:hover:not(.active) {
@@ -126,15 +114,7 @@ const navItems: NavItem[] = [
 
   #main-nav.is-scrolled {
     border-color: rgba(var(--color-accent-rgb), 0.35);
-    box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.4), 0 0 24px -5px rgba(var(--color-accent-rgb), 0.2);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal-header {
-      animation: none;
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
+    box-shadow: 0 8px 30px -10px rgba(0, 0, 0, 0.35);
   }
 </style>
 
