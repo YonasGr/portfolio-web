@@ -61,17 +61,12 @@ const {
   name = "Yonas Girma",
   title = "Full-Stack Software Engineer & Creative Developer",
   headline = "Crafting resilient full-stack systems, fluid interactive web experiences, and high-performance mobile apps.",
-  location = "Addis Ababa, Ethiopia (UTC+3) · Available Worldwide",
-  availability = {
-    status: "available",
-    badgeText: "Available for Q3/Q4 Projects & Full-Time Roles",
-    openTo: ["Full-Time Engineering", "Contract / Architecture", "Technical Consulting"]
-  },
+  location = "Addis Ababa, Ethiopia · Available Worldwide",
   stats = [
     { label: "Years Experience", value: "3+" },
-    { label: "Production Apps Shipped", value: "8+" },
-    { label: "Active Users Reached", value: "25k+" },
-    { label: "Core Technologies", value: "15+" }
+    { label: "Apps Shipped", value: "8+" },
+    { label: "Users Reached", value: "25k+" },
+    { label: "Technologies", value: "15+" }
   ],
   bio = "",
   intro = "",
@@ -81,186 +76,241 @@ const {
 
 const heroBio = bio || intro;
 const heroSocials = socials.filter(s => s.showInHero !== false && s.url && s.url !== "#" && s.url !== "");
+
+// Split name for typographic treatment
+const nameParts = name.split(" ");
+const firstName = nameParts[0] ?? name;
+const lastName = nameParts.slice(1).join(" ");
 ---
 
-<section id="home" class="min-h-[90vh] md:min-h-screen pt-20 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-24 flex flex-col justify-center relative w-full">
-  <!-- Top Showcase Banner Bar -->
-  <div class="mb-6 sm:mb-10 w-full">
-    <div class="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-card border border-card-border backdrop-blur-md text-xs font-mono text-subtext shadow-sm">
-      <div class="flex items-center gap-2">
-        <span class="inline-block h-2 w-2 rounded-full bg-emerald-400"></span>
-        <span class="text-maintext font-medium">yonasgr.dev</span>
-        <span class="text-subtext/40">/</span>
-        <span class="text-accent">portfolio</span>
-      </div>
-      <div class="flex items-center gap-2 sm:gap-3 text-[11px] text-subtext/80">
-        <span class="px-2 py-0.5 rounded bg-accent/10 border border-accent/20 text-accent font-medium hidden sm:inline">React · Next.js · Node.js · TypeScript</span>
-        <span class="text-subtext/40 hidden sm:inline">|</span>
-        <span>UTC+3 Global</span>
-      </div>
-    </div>
-  </div>
+<section id="home" class="hero-section relative w-full pt-28 sm:pt-32 md:pt-36 pb-16 sm:pb-20 md:pb-28">
 
-  <!-- Main Hero Editorial Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center w-full">
-    
-    <!-- Left Column: Editorial Narrative & Actions (Col 7) -->
-    <div class="lg:col-span-7 flex flex-col items-start space-y-4 sm:space-y-6 w-full">
-      
-      <!-- Availability Pill Badge -->
-      <div>
-        <div class="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-accent/10 border border-accent/30 text-accent text-[11px] sm:text-xs font-mono font-medium tracking-wide">
-          <span class="inline-block h-2 w-2 rounded-full bg-emerald-400 shrink-0"></span>
-          <span class="truncate">{availability.badgeText}</span>
-        </div>
+  <!-- Editorial Grid Layout -->
+  <div class="hero-grid grid grid-cols-1 lg:grid-cols-12 gap-x-12 xl:gap-x-16 gap-y-12 items-start w-full">
+
+    <!-- Left Column: Content (7 cols) -->
+    <div class="lg:col-span-7 flex flex-col items-start space-y-7 sm:space-y-8 w-full">
+
+      <!-- Disciplined Kicker Line -->
+      <div class="flex items-center gap-3">
+        <div class="h-px w-8 bg-accent opacity-60"></div>
+        <span class="font-mono text-[11px] tracking-[0.2em] text-accent uppercase font-medium">{title}</span>
       </div>
 
-      <!-- Main Heading & Kicker -->
-      <div class="space-y-2 sm:space-y-3 w-full">
-        <p class="font-mono text-xs sm:text-sm font-semibold tracking-wider text-accent uppercase">
-          {title}
-        </p>
-        <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-maintext tracking-tight leading-[1.08] break-words">
-          {name}
+      <!-- Name Typography Block -->
+      <div class="hero-name-block w-full">
+        <h1 class="hero-name font-heading font-bold text-maintext leading-[0.95] tracking-tight">
+          <span class="block">{firstName}</span>
+          {lastName && <span class="block text-accent/90">{lastName}</span>}
         </h1>
-        <p class="text-base sm:text-xl md:text-2xl font-heading font-medium text-maintext/90 leading-snug pt-1">
-          {headline}
-        </p>
       </div>
+
+      <!-- Headline / Value Proposition -->
+      <p class="hero-headline font-heading font-medium text-maintext/75 leading-snug max-w-xl">
+        {headline}
+      </p>
 
       <!-- Narrative Bio -->
-      <div class="max-w-2xl">
-        <p class="text-subtext font-body text-sm sm:text-base md:text-lg leading-relaxed">
+      {heroBio && (
+        <p class="font-body text-subtext text-sm sm:text-base leading-relaxed max-w-lg">
           {heroBio}
         </p>
+      )}
 
-        <!-- Location Indicator -->
-        <div class="flex items-center gap-1.5 text-subtext/90 text-xs sm:text-sm font-body mt-3 sm:mt-4">
-          <Icon name="mdi:map-marker" class="w-4 h-4 text-accent shrink-0" />
-          <span>{location}</span>
-        </div>
-      </div>
+      <!-- Location — plain, no icons -->
+      <p class="font-mono text-[11px] tracking-[0.12em] text-subtext/60 uppercase">{location}</p>
 
-      <!-- Action CTAs -->
-      <div class="flex flex-wrap items-center gap-3 sm:gap-4 pt-1 sm:pt-2 w-full">
-        <!-- Primary Action: Explore Projects -->
-        <a 
-          href="#projects" 
-          class="group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 rounded-full bg-accent text-background font-body font-semibold text-xs sm:text-sm md:text-base shadow-sm hover:opacity-95 active:scale-[0.99] transition-all duration-200"
+      <!-- CTAs -->
+      <div class="flex flex-wrap items-center gap-3 sm:gap-4 pt-1 w-full">
+        <a
+          href="#projects"
+          class="hero-cta-primary group inline-flex items-center justify-center gap-2.5 px-6 py-3 sm:px-7 sm:py-3.5 font-body font-semibold text-sm transition-all duration-200"
         >
-          <span>Explore Projects</span>
-          <Icon name="mdi:arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          <span>View Work</span>
+          <Icon name="mdi:arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
         </a>
 
-        <!-- Secondary Action: View Resume -->
-        <a 
-          href={resumeUrl} 
-          target="_blank" 
+        <a
+          href={resumeUrl}
+          target="_blank"
           rel="noopener noreferrer"
-          class="group inline-flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-3.5 rounded-full bg-card border border-card-border hover:border-accent/40 hover:bg-accent/10 text-maintext font-body font-medium text-xs sm:text-sm md:text-base transition-all duration-200 shadow-sm"
+          class="hero-cta-secondary inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-7 sm:py-3.5 font-body font-medium text-sm transition-all duration-200"
         >
-          <Icon name="mdi:file-document-outline" class="w-4 h-4 text-accent" />
-          <span>View Resume</span>
-          <span class="text-[10px] font-mono text-subtext px-1.5 py-0.5 rounded bg-white/5 border border-white/10 hidden sm:inline">PDF</span>
+          <Icon name="mdi:file-document-outline" class="w-4 h-4" />
+          <span>Resume</span>
         </a>
       </div>
 
-      <!-- Social Links Row -->
-      <div class="flex items-center gap-2 sm:gap-3 pt-1">
-        <span class="text-xs font-mono text-subtext/70 mr-1 hidden sm:inline">CONNECT:</span>
-        {heroSocials.map((social) => (
-          <a 
-            href={social.url} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="p-2 sm:p-2.5 rounded-full bg-card border border-card-border hover:border-accent/40 hover:bg-accent/10 text-subtext hover:text-accent transition-colors duration-200 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            aria-label={`Visit ${social.name}`}
-            title={social.name}
-          >
-            <Icon 
-              name={social.icon} 
-              class="w-4 h-4 sm:w-5 sm:h-5" 
-            />
-          </a>
-        ))}
-      </div>
-
+      <!-- Social Links — minimal icon row -->
+      {heroSocials.length > 0 && (
+        <div class="flex items-center gap-1.5">
+          {heroSocials.map((social) => (
+            <a
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hero-social-link p-2 text-subtext/50 hover:text-maintext transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
+              aria-label={`Visit ${social.name}`}
+              title={social.name}
+            >
+              <Icon name={social.icon} class="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+            </a>
+          ))}
+        </div>
+      )}
     </div>
 
-    <!-- Right Column: Elevated Profile Showcase Card (Col 5) -->
+    <!-- Right Column: Profile Image (5 cols) -->
     <div class="lg:col-span-5 flex justify-center lg:justify-end w-full">
-      <div class="relative w-full max-w-[300px] sm:max-w-sm md:max-w-md lg:max-w-none">
-        
-        <!-- Ambient Back Glow -->
-        <div 
-          class="absolute -inset-2 rounded-3xl opacity-20 blur-xl pointer-events-none"
-          style="background: radial-gradient(circle, rgba(var(--color-accent-rgb), 0.3) 0%, transparent 70%);"
-        ></div>
+      <div class="profile-frame-outer relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[380px]">
 
-        <!-- Avatar Framing Card -->
-        <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-accent/20 bg-card backdrop-blur-xl shadow-lg transition-all duration-300 hover:border-accent/40">
-          
-          <!-- Image Asset -->
-          <div class="aspect-4/5 overflow-hidden bg-background/50 relative">
-            <Image 
-              src={yonasgrAvatar} 
-              alt={name} 
-              width={600} 
-              height={750} 
-              quality={92} 
-              class="w-full h-full object-cover object-center" 
+        <!-- Large editorial index number — purely typographic -->
+        <div class="absolute -top-6 -left-3 sm:-top-8 sm:-left-4 z-0 pointer-events-none select-none" aria-hidden="true">
+          <span class="font-heading font-bold text-[96px] sm:text-[120px] leading-none text-maintext/[0.04] tracking-tighter">01</span>
+        </div>
+
+        <!-- Profile Image Frame -->
+        <div class="profile-frame relative z-10">
+
+          <!-- Main Image Container -->
+          <div class="profile-image-wrap relative overflow-hidden">
+            <Image
+              src={yonasgrAvatar}
+              alt={name}
+              width={760}
+              height={950}
+              quality={90}
+              class="profile-img w-full h-full object-cover object-center block"
               loading="eager"
             />
 
-            <!-- Subtle Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent pointer-events-none"></div>
+            <!-- Refined gradient fade at bottom -->
+            <div class="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none"></div>
+          </div>
 
-            <!-- Floating Top Chip -->
-            <div class="absolute top-3 left-3 sm:top-4 sm:left-4 z-10">
-              <div class="px-2.5 py-1 rounded-full bg-background/85 border border-card-border backdrop-blur-md text-[10px] sm:text-[11px] font-mono text-accent font-medium shadow-sm flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-                <span>Full-Stack Engineer</span>
-              </div>
+          <!-- Below-image metadata — editorial caption style -->
+          <div class="profile-caption flex items-baseline justify-between mt-4 px-0.5">
+            <div>
+              <div class="font-mono text-[10px] tracking-[0.18em] text-subtext/50 uppercase mb-1">Engineer & Builder</div>
+              <div class="font-heading font-semibold text-maintext text-sm">{name}</div>
             </div>
-
-            <!-- Bottom Information Bar -->
-            <div class="absolute inset-x-0 bottom-0 p-3 sm:p-5 z-10 backdrop-blur-xs flex items-center justify-between border-t border-card-border/50">
-              <div>
-                <div class="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-accent font-semibold">
-                  Engineering & Architecture
-                </div>
-                <div class="text-sm sm:text-base font-heading font-bold text-maintext">
-                  {name}
-                </div>
-              </div>
-              <div class="flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-[11px] font-mono font-medium">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span>Available</span>
-              </div>
+            <div class="font-mono text-[10px] text-subtext/40 tracking-wider text-right">
+              ET · UTC+3
             </div>
-
           </div>
         </div>
+
+        <!-- Thin accent rule decorating the right edge — purely architectural -->
+        <div class="absolute top-8 -right-3 sm:-right-4 bottom-8 w-px bg-accent/20 z-0 pointer-events-none" aria-hidden="true"></div>
 
       </div>
     </div>
 
   </div>
 
-  <!-- Quick Stats Strip -->
-  <div class="mt-8 sm:mt-12 md:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-6 w-full">
+  <!-- Stats Strip — clean, borderless, typographic -->
+  <div class="stats-strip mt-14 sm:mt-16 md:mt-20 grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6 sm:gap-0 w-full">
     {stats.map((stat, idx) => (
-      <div class="p-3.5 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl bg-card border border-card-border hover:border-accent/35 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 shadow-sm">
-        <div class="font-mono text-[10px] sm:text-xs text-accent/80 uppercase tracking-wider mb-0.5 sm:mb-1">
-          0{idx + 1} / METRIC
-        </div>
-        <div class="text-xl sm:text-2xl md:text-4xl font-heading font-bold text-maintext tracking-tight">
-          {stat.value}
-        </div>
-        <div class="text-xs sm:text-sm font-body text-subtext mt-0.5 sm:mt-1">
-          {stat.label}
-        </div>
+      <div class={`stat-item flex flex-col ${idx < stats.length - 1 ? 'sm:border-r border-card-border sm:pr-8 md:pr-10' : ''} ${idx > 0 ? 'sm:pl-8 md:pl-10' : ''}`}>
+        <span class="font-heading font-bold text-maintext text-3xl sm:text-4xl tracking-tight leading-none">{stat.value}</span>
+        <span class="font-mono text-[10px] tracking-[0.14em] text-subtext/55 uppercase mt-2">{stat.label}</span>
       </div>
     ))}
   </div>
+
 </section>
+
+<style>
+  /* Hero name fluid sizing — clamps beautifully across breakpoints */
+  .hero-name {
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    letter-spacing: -0.03em;
+  }
+
+  .hero-headline {
+    font-size: clamp(1rem, 2.2vw, 1.35rem);
+    letter-spacing: -0.01em;
+  }
+
+  /* Profile image — tall editorial portrait ratio */
+  .profile-image-wrap {
+    aspect-ratio: 4 / 5;
+    border-radius: 2px; /* near-square corners — intentional, editorial */
+  }
+
+  .profile-img {
+    filter: none;
+    transition: filter 0.3s ease;
+  }
+
+  /* Primary CTA — solid accent filled */
+  .hero-cta-primary {
+    background-color: var(--color-accent);
+    color: var(--color-background);
+    border-radius: 2px;
+    box-shadow: 0 2px 12px rgba(var(--color-accent-rgb), 0.25);
+  }
+
+  .hero-cta-primary:hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 20px rgba(var(--color-accent-rgb), 0.35);
+    transform: translateY(-1px);
+  }
+
+  .hero-cta-primary:active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Secondary CTA — ghost / outline style */
+  .hero-cta-secondary {
+    color: var(--color-maintext);
+    border: 1px solid var(--color-card-border);
+    border-radius: 2px;
+  }
+
+  .hero-cta-secondary:hover {
+    border-color: rgba(var(--color-accent-rgb), 0.4);
+    color: var(--color-accent);
+    background-color: rgba(var(--color-accent-rgb), 0.04);
+  }
+
+  /* Social links */
+  .hero-social-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* Stats strip */
+  .stat-item {
+    border-color: var(--color-card-border);
+  }
+
+  /* Subtle entrance — no layout jank, just opacity */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-section {
+      animation: hero-fade-in 0.5s ease both;
+    }
+
+    @keyframes hero-fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  /* Mobile: stack portrait below text, centered */
+  @media (max-width: 1023px) {
+    .profile-frame-outer {
+      margin: 0 auto;
+    }
+
+    .profile-image-wrap {
+      aspect-ratio: 3 / 4;
+    }
+  }
+</style>
