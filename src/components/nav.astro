@@ -1,203 +1,170 @@
 ---
-import { Icon } from 'astro-icon/components';
 import ThemeToggle from './theme-toggle.astro';
 
-interface NavItem {
-  label: string;
-  href: string;
-  icon: string;
-}
-
-const navItems: NavItem[] = [
-  {
-    label: "Home",
-    href: "#home",
-    icon: "mdi:home",
-  },
-  {
-    label: "Career",
-    href: "#career",
-    icon: "mdi:work",
-  },
-  {
-    label: "Projects",
-    href: "#projects",
-    icon: "mdi:computer",
-  },
-  {
-    label: "Tech",
-    href: "#tech",
-    icon: "mdi:code-tags",
-  },
-  {
-    label: "Contact",
-    href: "#contact",
-    icon: "mdi:message",
-  },
+const navItems = [
+  { label: "Work",      href: "#projects" },
+  { label: "Career",    href: "#career"   },
+  { label: "Tech",      href: "#tech"     },
+  { label: "Contact",   href: "#contact"  },
 ];
 ---
 
-<header class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-auto max-w-fit pointer-events-none">
-  <nav
-    id="main-nav"
-    aria-label="Main Navigation"
-    class="pointer-events-auto flex items-center justify-between sm:justify-center gap-1 sm:gap-2.5 md:gap-3 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-card/90 border border-card-border backdrop-blur-xl shadow-lg transition-all duration-200 hover:border-accent/30 max-w-full"
-  >
-    <!-- Brand Monogram -->
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 w-full"
+  style="border-bottom: 1px solid transparent; transition: border-color 0.3s, background 0.3s;"
+>
+  <div class="w-full px-5 sm:px-8 md:px-14 lg:px-20 max-w-[1440px] mx-auto h-12 sm:h-14 flex items-center justify-between gap-6">
+
+    <!-- Logo -->
     <a
       href="#home"
-      class="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-full shrink-0"
-      aria-label="Yonas Girma - Home"
+      class="nav-logo flex items-center gap-2.5 shrink-0 group focus:outline-none"
+      aria-label="Yonas Girma – Home"
     >
-      <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-accent/15 border border-accent/30 text-accent font-heading font-bold text-xs sm:text-sm flex items-center justify-center group-hover:bg-accent group-hover:text-background transition-colors duration-200 shadow-xs">
+      <div
+        class="w-7 h-7 sm:w-8 sm:h-8 rounded-md flex items-center justify-center font-heading font-black text-xs sm:text-sm transition-all duration-200"
+        style="background: var(--accent); color: var(--on-accent);"
+      >
         YG
       </div>
-      <span class="font-heading font-semibold text-maintext text-sm hidden lg:inline tracking-tight group-hover:text-accent transition-colors">
-        Yonas<span class="text-accent">.</span>
+      <span class="font-heading font-bold text-sm hidden sm:inline tracking-tight transition-colors duration-200" style="color: var(--text-1);">
+        Yonas Girma
       </span>
     </a>
 
-    <!-- Divider -->
-    <div class="h-3.5 sm:h-4 w-px bg-card-border shrink-0"></div>
+    <!-- Center nav links -->
+    <nav aria-label="Main navigation" class="hidden md:flex items-center gap-0.5">
+      {navItems.map(item => (
+        <a
+          href={item.href}
+          class="nav-link px-3.5 py-1.5 rounded-md font-body text-sm font-medium transition-colors duration-150 focus:outline-none"
+          style="color: var(--text-2);"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
 
-    <!-- Navigation Links -->
-    <ul class="flex items-center gap-0.5 sm:gap-1.5 md:gap-2">
-      {
-        navItems.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              class="nav-link relative p-2 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-body font-medium text-subtext hover:text-maintext transition-colors duration-150 flex items-center gap-1.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              aria-label={item.label}
-              title={item.label}
-            >
-              <Icon 
-                name={item.icon} 
-                class="w-4 h-4 sm:hidden text-subtext transition-colors" 
-              />
-              <span class="hidden sm:inline">{item.label}</span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-
-    <!-- Divider -->
-    <div class="h-3.5 sm:h-4 w-px bg-card-border shrink-0"></div>
-
-    <!-- Theme Toggle -->
-    <div class="shrink-0 flex items-center">
+    <!-- Right: theme + hire CTA + mobile menu dots -->
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
       <ThemeToggle />
+
+      <a
+        href="mailto:yonasgirma222@gmail.com"
+        class="btn-primary hidden sm:inline-flex text-xs px-4 py-2"
+        style="padding: 0.45rem 1.1rem; font-size: 0.8125rem;"
+      >
+        Hire Me
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
+          <path d="M16.004 9.41421L7.39768 18.0208L5.98347 16.6066L14.5898 8H7.00404V6H18.004V17H16.004V9.41421Z"/>
+        </svg>
+      </a>
+
+      <!-- Mobile hamburger (icon only) -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden flex items-center justify-center w-8 h-8 rounded-md transition-colors duration-150 focus:outline-none"
+        style="border: 1px solid var(--border); color: var(--text-2);"
+        aria-label="Open navigation"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+          <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z"/>
+        </svg>
+      </button>
     </div>
-  </nav>
+  </div>
+
+  <!-- Mobile dropdown -->
+  <div
+    id="mobile-menu"
+    class="md:hidden hidden"
+    style="border-top: 1px solid var(--border); background: var(--bg);"
+  >
+    <div class="px-5 py-4 flex flex-col gap-1">
+      {navItems.map(item => (
+        <a
+          href={item.href}
+          class="mobile-nav-link px-3 py-2.5 rounded-md font-body text-sm font-medium transition-colors duration-150"
+          style="color: var(--text-2);"
+        >
+          {item.label}
+        </a>
+      ))}
+      <a
+        href="mailto:yonasgirma222@gmail.com"
+        class="mt-2 btn-primary text-sm justify-center"
+      >
+        Hire Me ↗
+      </a>
+    </div>
+  </div>
 </header>
 
 <style>
-  .nav-link {
-    transition: color 0.15s ease, background-color 0.15s ease;
-  }
-
-  .nav-link:hover:not(.active) {
-    background-color: rgba(var(--color-accent-rgb), 0.08);
-    color: var(--color-maintext);
+  .nav-link:hover,
+  .mobile-nav-link:hover {
+    color: var(--text-1) !important;
+    background: var(--surface);
   }
 
   .nav-link.active {
-    color: var(--color-accent) !important;
-    background-color: rgba(var(--color-accent-rgb), 0.15);
-    font-weight: 600;
+    color: var(--accent) !important;
+    background: var(--accent-dim-2);
   }
 
-  .nav-link.active svg {
-    color: var(--color-accent) !important;
-  }
-
-  #main-nav.is-scrolled {
-    border-color: rgba(var(--color-accent-rgb), 0.35);
-    box-shadow: 0 8px 30px -10px rgba(0, 0, 0, 0.35);
+  #site-header.scrolled {
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-color: var(--border) !important;
   }
 </style>
 
 <script>
-  function setupNavigation() {
-    const nav = document.getElementById("main-nav");
-    const sections = document.querySelectorAll("section[id]");
-    const navLinks = document.querySelectorAll<HTMLAnchorElement>(".nav-link");
+  function setup() {
+    const header = document.getElementById('site-header');
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
+    const sections = document.querySelectorAll<HTMLElement>('section[id]');
 
-    // Scroll styling enhancement (No layout reflow, pure class toggle)
-    let isScrolled = false;
-    function handleScroll() {
-      const scrolled = window.scrollY > 40;
-      if (scrolled !== isScrolled) {
-        isScrolled = scrolled;
-        nav?.classList.toggle("is-scrolled", isScrolled);
-      }
-    }
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    // Scroll styling
+    const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 
-    // Smooth section scrolling with active update
-    document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", function (e) {
-        const target = e.currentTarget as HTMLAnchorElement;
-        const targetId = target.getAttribute("href")?.substring(1);
-        if (!targetId) return;
+    // Mobile toggle
+    mobileBtn?.addEventListener('click', () => {
+      mobileMenu?.classList.toggle('hidden');
+    });
 
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-          e.preventDefault();
-          targetElement.scrollIntoView({
-            behavior: "smooth",
-          });
-          
-          if (history.pushState) {
-            history.pushState(null, '', `#${targetId}`);
-          }
+    // Close mobile on link click
+    document.querySelectorAll('.mobile-nav-link, .nav-link').forEach(link => {
+      link.addEventListener('click', () => mobileMenu?.classList.add('hidden'));
+    });
 
-          navLinks.forEach((link) => {
-            if (link.getAttribute("href") === `#${targetId}`) {
-              link.classList.add("active");
-            } else {
-              link.classList.remove("active");
-            }
-          });
-        }
+    // Smooth scroll
+    document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href')?.slice(1);
+        const el = id && document.getElementById(id);
+        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
       });
     });
 
-    // Rock-solid IntersectionObserver for Section Tracking
-    // rootMargin: "-20% 0px -60% 0px" triggers when the top of the section enters the upper-middle viewport
-    const observerOptions: IntersectionObserverInit = {
-      rootMargin: "-20% 0px -60% 0px",
-      threshold: 0,
-    };
-
-    const observerCallback: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
+    // Active section tracking
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const id = entry.target.getAttribute("id");
-          navLinks.forEach((link) => {
-            const href = link.getAttribute("href");
-            if (href === `#${id}`) {
-              link.classList.add("active");
-            } else {
-              link.classList.remove("active");
-            }
-          });
+          const id = entry.target.id;
+          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${id}`));
         }
       });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    sections.forEach((section) => observer.observe(section));
-
-    // Default to #home if near top
-    if (window.scrollY < 120) {
-      const homeLink = document.querySelector('.nav-link[href="#home"]');
-      if (homeLink) homeLink.classList.add("active");
-    }
+    }, { rootMargin: '-25% 0px -65% 0px' });
+    sections.forEach(s => io.observe(s));
   }
 
-  setupNavigation();
-  document.addEventListener("astro:after-swap", setupNavigation);
+  setup();
+  document.addEventListener('astro:after-swap', setup);
 </script>

@@ -5,210 +5,179 @@ import { resolveAssetImage } from '../utils/images';
 
 interface Props {
   project: {
-    id: string;
-    title: string;
-    tagline: string;
-    description: string;
-    category: string;
-    featured?: boolean;
-    year: string;
-    impact?: string;
+    id: string; title: string; tagline: string; description: string;
+    category: string; featured?: boolean; year: string; impact?: string;
     metrics?: string[] | { label: string; value: string }[];
-    highlights?: string[];
-    tech: string[];
-    platforms?: string[];
-    link?: string;
-    github?: string;
-    images: string[];
+    highlights?: string[]; tech: string[]; platforms?: string[];
+    link?: string; github?: string; images: string[];
   };
+  variant?: 'hero' | 'default';
 }
 
-const { project } = Astro.props;
+const { project, variant = 'default' } = Astro.props;
 
-// Map through the array of image strings from project JSON
-const resolvedImages = await Promise.all(
-  project.images.map(async (imgName: string) => {
-    return await resolveAssetImage(imgName);
-  })
-);
-
+const resolvedImages = await Promise.all(project.images.map(img => resolveAssetImage(img)));
 const validImages = resolvedImages.filter(Boolean);
 const primaryImage = validImages[0] ?? null;
 
-// Normalize platforms to MDI icons
-const platformIcons: Record<string, string> = {
-  'ios': 'apple',
-  'apple': 'apple',
-  'macos': 'apple',
-  'android': 'android',
-  'web': 'web',
-  'desktop': 'monitor',
-  'cloud': 'cloud',
-  'api': 'api',
-  'cli': 'console',
-  'terminal': 'console',
-  'mobile web': 'cellphone',
-  'mobile': 'cellphone',
-  'linux': 'linux',
-  'windows': 'microsoft-windows',
-  'npm package': 'npm',
-  'npm': 'npm'
-};
-
-// Filter tags for category filtering
-const categoryLower = project.category.toLowerCase();
+// Filter tags for category
+const cl = project.category.toLowerCase();
 let filterTags = ['all'];
+if (cl.includes('mobile') || cl.includes('ai')) filterTags.push('mobile-ai');
+if (cl.includes('creative') || cl.includes('webgl') || cl.includes('frontend') || cl.includes('ui/ux')) filterTags.push('creative-web');
+if (cl.includes('full-stack') || cl.includes('backend') || cl.includes('api')) filterTags.push('full-stack');
+if (cl.includes('tooling') || cl.includes('systems') || cl.includes('cli')) filterTags.push('tooling');
 
-if (categoryLower.includes('mobile') || categoryLower.includes('ai')) {
-  filterTags.push('mobile-ai');
-}
-if (categoryLower.includes('creative') || categoryLower.includes('webgl') || categoryLower.includes('frontend') || categoryLower.includes('ui/ux') || categoryLower.includes('design')) {
-  filterTags.push('creative-web');
-}
-if (categoryLower.includes('full-stack') || categoryLower.includes('backend') || categoryLower.includes('distributed') || categoryLower.includes('api')) {
-  filterTags.push('full-stack');
-}
-if (categoryLower.includes('tooling') || categoryLower.includes('systems') || categoryLower.includes('oss') || categoryLower.includes('cli')) {
-  filterTags.push('tooling');
-}
+const isHero = variant === 'hero';
 ---
 
-<article 
-  class="project-card interactive-card group flex flex-col h-full rounded-2xl bg-card border border-card-border overflow-hidden transition-all duration-200 hover:border-accent/40 w-full"
+<article
+  class:list={["project-card group relative overflow-hidden w-full h-full", isHero ? "hero-card" : "default-card"]}
+  style="border: 1px solid var(--border); border-radius: 1rem; background: var(--surface); transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;"
   data-filter-tags={filterTags.join(' ')}
 >
-  <!-- 16:9 Image Preview Container -->
-  <div class="aspect-video relative overflow-hidden bg-background/60 border-b border-card-border/60 w-full">
-    <!-- Subtle gradient overlay -->
-    <div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10 pointer-events-none opacity-60 group-hover:opacity-30 transition-opacity duration-300"></div>
-
+  <!-- Image zone -->
+  <div class:list={["relative overflow-hidden w-full shrink-0", isHero ? "aspect-[16/7] sm:aspect-[21/8]" : "aspect-[16/9]"]}>
     {primaryImage ? (
       <Image
         src={primaryImage}
-        alt={`${project.title} Preview`}
-        class="w-full h-full object-cover object-center transition-opacity duration-300"
+        alt={`${project.title} preview`}
+        class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]"
         loading="lazy"
       />
     ) : (
-      <div class="w-full h-full flex items-center justify-center bg-accent/5">
-        <Icon name="mdi:image-outline" class="w-10 h-10 text-accent/30" />
+      <div class="w-full h-full flex items-center justify-center" style="background: var(--surface-2);">
+        <Icon name="mdi:image-outline" class="w-10 h-10" style="color: var(--text-3);" />
       </div>
     )}
 
-    <!-- Top Badges Overlay -->
-    <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-1.5 z-20 pointer-events-none">
-      <!-- Category Badge -->
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono font-medium tracking-wide uppercase bg-background/85 text-accent border border-card-border backdrop-blur-md shadow-xs truncate max-w-[150px]">
+    <!-- Dark overlay -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: linear-gradient(to top, var(--bg) 0%, rgba(8,8,9,0.4) 40%, transparent 70%); opacity: 0.85; transition: opacity 0.3s;"
+    ></div>
+
+    <!-- Badges top-left -->
+    <div class="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
+      <span
+        class="px-2.5 py-1 rounded-full font-mono text-[10px] tracking-wider uppercase"
+        style="background: rgba(8,8,9,0.75); color: var(--accent); border: 1px solid rgba(var(--accent-rgb),0.2); backdrop-filter: blur(6px);"
+      >
         {project.category}
       </span>
-
-      <!-- Year & Platforms -->
-      <div class="flex items-center gap-1">
-        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] font-mono font-medium bg-background/85 text-subtext border border-card-border backdrop-blur-md">
-          {project.year}
-        </span>
-        {project.platforms && project.platforms.length > 0 && (
-          <div class="hidden sm:flex items-center gap-1 bg-background/85 backdrop-blur-md px-1.5 py-0.5 rounded border border-card-border text-subtext">
-            {project.platforms.map((p) => {
-              const iconKey = platformIcons[p.toLowerCase().trim()] || 'web';
-              return (
-                <span title={p} class="inline-block">
-                  <Icon name={`mdi:${iconKey}`} class="w-3.5 h-3.5" />
-                </span>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <span
+        class="px-2.5 py-1 rounded-full font-mono text-[10px]"
+        style="background: rgba(8,8,9,0.75); color: var(--text-2); border: 1px solid var(--border); backdrop-filter: blur(6px);"
+      >
+        {project.year}
+      </span>
     </div>
+
+    <!-- Arrow icon on hover -->
+    {(project.link || project.github) && (
+      <div
+        class="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+      >
+        <div class="w-7 h-7 rounded-full flex items-center justify-center" style="background: var(--accent); color: var(--on-accent);">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
+            <path d="M16.004 9.41421L7.39768 18.0208L5.98347 16.6066L14.5898 8H7.00404V6H18.004V17H16.004V9.41421Z"/>
+          </svg>
+        </div>
+      </div>
+    )}
   </div>
 
-  <!-- Card Body -->
-  <div class="p-4 sm:p-5 md:p-6 flex flex-col flex-1 gap-3 sm:gap-4 w-full">
-    <!-- Header: Title & Tagline -->
+  <!-- Body -->
+  <div class="p-5 sm:p-6 flex flex-col gap-3 sm:gap-4">
     <div>
-      <h3 class="text-lg sm:text-xl font-heading font-bold text-maintext tracking-tight group-hover:text-accent transition-colors duration-200">
+      <h3
+        class="font-heading font-black tracking-tight leading-tight mb-0.5 transition-colors duration-200 group-hover:color-accent"
+        style={`font-size: ${isHero ? 'clamp(1.4rem,3vw,2.2rem)' : 'clamp(1.1rem,2vw,1.4rem)'}; color: var(--text-1);`}
+      >
         {project.title}
       </h3>
-      <p class="font-body text-xs font-medium text-accent/90 mt-0.5 leading-snug">
+      <p class="font-body text-xs sm:text-sm font-medium" style="color: var(--accent);">
         {project.tagline}
       </p>
     </div>
 
-    <!-- Description -->
-    <p class="font-body text-subtext text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-3">
+    <p
+      class:list={["font-body text-sm leading-relaxed", isHero ? "line-clamp-3" : "line-clamp-2"]}
+      style="color: var(--text-2);"
+    >
       {project.description}
     </p>
 
-    <!-- Impact Metrics Strip -->
-    {project.metrics && project.metrics.length > 0 && (
-      <div class="grid grid-cols-2 gap-1.5 py-0.5">
-        {project.metrics.map((metric: string | { label: string; value: string }) => {
-          const isObject = typeof metric === 'object' && metric !== null;
-          const label = isObject ? (metric as { label: string; value: string }).label : null;
-          const value = isObject ? (metric as { label: string; value: string }).value : String(metric);
-          
+    <!-- Metrics (hero only) -->
+    {isHero && project.metrics && project.metrics.length > 0 && (
+      <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+        {(project.metrics as any[]).slice(0, 4).map((m: any) => {
+          const isObj = typeof m === 'object';
           return (
-            <div class="flex flex-col items-center justify-center p-1.5 sm:p-2 rounded-lg bg-accent/5 border border-accent/10 text-center">
-              <span class="font-mono text-[11px] sm:text-xs font-bold text-maintext tracking-tight">{value}</span>
-              {label && <span class="font-body text-[9px] sm:text-[10px] text-subtext uppercase tracking-wider mt-0.5 line-clamp-1">{label}</span>}
+            <div
+              class="flex flex-col items-center justify-center py-2.5 px-2 rounded-lg text-center"
+              style="background: var(--accent-dim-2); border: 1px solid rgba(var(--accent-rgb),0.15);"
+            >
+              <span class="font-mono text-xs font-bold" style="color: var(--text-1);">{isObj ? m.value : m}</span>
+              {isObj && m.label && <span class="font-mono text-[9px] uppercase tracking-wider mt-0.5" style="color: var(--text-2);">{m.label}</span>}
             </div>
           );
         })}
       </div>
     )}
 
-    <!-- Highlights Bullet List -->
-    {project.highlights && project.highlights.length > 0 && (
-      <ul class="space-y-1 py-1 border-t border-card-border/40 hidden sm:block">
-        {project.highlights.slice(0, 2).map((highlight) => (
-          <li class="flex items-start gap-1.5 text-xs font-body text-subtext/90 leading-normal">
-            <span class="text-accent mt-0.5 shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
-                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
-              </svg>
-            </span>
-            <span class="line-clamp-1">{highlight}</span>
-          </li>
+    <!-- Tech + actions row -->
+    <div class="flex flex-wrap items-center justify-between gap-3 pt-3" style="border-top: 1px solid var(--border);">
+      <div class="flex flex-wrap gap-1.5">
+        {project.tech.slice(0, isHero ? 6 : 4).map((t: string) => (
+          <span class="tag">{t}</span>
         ))}
-      </ul>
-    )}
+        {project.tech.length > (isHero ? 6 : 4) && (
+          <span class="tag">+{project.tech.length - (isHero ? 6 : 4)}</span>
+        )}
+      </div>
 
-    <!-- Tech Stack Pills -->
-    <div class="flex flex-wrap gap-1 mt-auto pt-2 border-t border-card-border/40">
-      {project.tech.map((t: string) => (
-        <span class="rounded text-[10px] sm:text-[11px] font-mono px-2 py-0.5 bg-accent/5 border border-accent/15 text-accent/85 transition-colors group-hover:border-accent/30">
-          {t}
-        </span>
-      ))}
-    </div>
-
-    <!-- Dual Action Buttons -->
-    <div class="flex items-center gap-2 pt-2.5 border-t border-card-border/50">
-      {project.link && (
-        <a
-          href={project.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-accent text-background font-heading font-semibold text-xs transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
-        >
-          <span>Live Demo</span>
-          <Icon name="mdi:open-in-new" class="w-3.5 h-3.5" />
-        </a>
-      )}
-
-      {project.github && (
-        <a
-          href={project.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-card-border text-maintext font-heading font-medium text-xs transition-all duration-150 hover:border-accent/40 hover:text-accent active:scale-[0.98]"
-          title="View Source Code"
-        >
-          <Icon name="mdi:github" class="w-3.5 h-3.5" />
-          <span>Code</span>
-        </a>
-      )}
+      <div class="flex items-center gap-1.5 shrink-0">
+        {project.github && (
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-ghost text-xs py-1.5 px-3"
+            style="padding: 0.35rem 0.75rem; font-size: 0.75rem; border-radius: 9999px;"
+          >
+            <Icon name="mdi:github" class="w-3.5 h-3.5" />
+            Code
+          </a>
+        )}
+        {project.link && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary text-xs"
+            style="padding: 0.35rem 0.85rem; font-size: 0.75rem; border-radius: 9999px;"
+          >
+            Demo ↗
+          </a>
+        )}
+      </div>
     </div>
   </div>
 </article>
+
+<style>
+  .project-card:hover {
+    border-color: var(--border-accent) !important;
+    box-shadow: 0 16px 48px -16px rgba(0,0,0,0.6);
+    transform: translateY(-4px);
+  }
+
+  .project-card:hover h3 {
+    color: var(--accent) !important;
+  }
+
+  .project-card:hover .absolute.inset-0 {
+    opacity: 0.5 !important;
+  }
+</style>

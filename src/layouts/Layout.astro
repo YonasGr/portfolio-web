@@ -4,18 +4,14 @@ import { SITE_CONFIG } from '../config.ts';
 import favicon from '../assets/Y-Logo.png';
 import SpeedInsights from "@vercel/speed-insights/astro";
 
-interface Props {
-  title: string;
-}
-
+interface Props { title: string; }
 const { title } = Astro.props;
-
 const baseTheme = SITE_CONFIG.baseTheme;
 const defaultTheme = `${baseTheme}-dark`;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth overflow-x-hidden w-full max-w-full">
+<html lang="en" class="scroll-smooth overflow-x-hidden w-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -23,116 +19,81 @@ const defaultTheme = `${baseTheme}-dark`;
     <link rel="icon" type="image/png" href={favicon.src} />
     <title>{title}</title>
 
-    <!-- THEME PERSISTENCE SCRIPT (Inline to prevent flash of unstyled theme) -->
+    <!-- Prevent theme flash -->
     <script is:inline define:vars={{ defaultTheme }}>
       (function() {
-        const validThemes = [
-          'default-dark', 'default-light',
-          'strategic-dark', 'strategic-light',
-          'innovator-dark', 'innovator-light',
-          'executive-dark', 'executive-light'
-        ];
+        const valid = ['default-dark','default-light','strategic-dark','strategic-light','innovator-dark','innovator-light','executive-dark','executive-light'];
         try {
-          const savedTheme = localStorage.getItem('theme');
-          if (savedTheme && validThemes.includes(savedTheme)) {
-            document.documentElement.setAttribute('data-theme', savedTheme);
-          } else {
-            document.documentElement.setAttribute('data-theme', defaultTheme);
-            localStorage.setItem('theme', defaultTheme);
-          }
-        } catch (e) {
+          const saved = localStorage.getItem('theme');
+          document.documentElement.setAttribute('data-theme', (saved && valid.includes(saved)) ? saved : defaultTheme);
+        } catch(e) {
           document.documentElement.setAttribute('data-theme', defaultTheme);
         }
       })();
     </script>
   </head>
-  <body class="bg-background text-maintext relative min-h-screen w-full max-w-full overflow-x-hidden antialiased selection:bg-accent selection:text-background">
-    <!-- Ambient Background Lighting & Subtle Pattern Mesh -->
-    <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden" aria-hidden="true">
-      <div 
-        class="absolute -top-[25%] left-1/2 -translate-x-1/2 w-[90vw] max-w-[800px] h-[400px] sm:h-[550px] rounded-full blur-[100px] sm:blur-[140px] opacity-20 transition-colors duration-500"
-        style="background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);"
-      ></div>
-      <div 
-        class="absolute top-[35%] -left-[15%] w-[55vw] max-w-[500px] h-[350px] sm:h-[500px] rounded-full blur-[100px] sm:blur-[160px] opacity-15 transition-colors duration-500"
-        style="background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);"
-      ></div>
-      <div 
-        class="absolute top-[70%] -right-[15%] w-[55vw] max-w-[500px] h-[350px] sm:h-[500px] rounded-full blur-[100px] sm:blur-[160px] opacity-15 transition-colors duration-500"
-        style="background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);"
-      ></div>
-      <div 
-        class="absolute inset-0 opacity-[0.02]"
-        style="background-image: radial-gradient(var(--color-maintext) 1px, transparent 1px); background-size: 36px 36px;"
-      ></div>
-    </div>
 
-    <!-- Main Content Container -->
-    <main class="px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto relative z-0 w-full">
-      <slot />
-    </main>
+  <body style="background-color: var(--bg); color: var(--text-1);" class="relative min-h-screen w-full overflow-x-hidden antialiased">
 
-    <!-- Floating Back-to-Top with Circular Scroll Progress Ring -->
+    <!-- Noise texture overlay (very subtle) -->
+    <div
+      class="fixed inset-0 -z-20 pointer-events-none"
+      style="background-image: url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E\"); background-size: 200px; opacity: 0.4;"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Accent glow — top center -->
+    <div
+      class="fixed -z-10 top-[-20vh] left-1/2 -translate-x-1/2 w-[70vw] max-w-[900px] h-[55vh] pointer-events-none"
+      style="background: radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb), 0.12) 0%, transparent 70%); transition: background 0.5s ease;"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Slot — NO container padding here, sections handle their own padding -->
+    <slot />
+
+    <!-- Back-to-top button -->
     <button
       id="to-top"
-      class="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-40 p-0 rounded-full bg-card border border-card-border shadow-lg transition-all duration-300 translate-y-16 opacity-0 pointer-events-none group flex items-center justify-center cursor-pointer hover:border-accent/40 backdrop-blur-md"
+      class="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all duration-300 translate-y-14 opacity-0 pointer-events-none cursor-pointer"
+      style="background: var(--surface-2); border: 1px solid var(--border);"
       aria-label="Back to top"
     >
-      <svg class="w-10 h-10 sm:w-12 sm:h-12 -rotate-90">
-        <circle cx="20" cy="20" r="17" sm:cx="24" sm:cy="24" sm:r="20" fill="none" stroke="currentColor" stroke-width="2.5" class="text-accent/15"></circle>
-        <circle
-          id="progress-circle"
-          cx="20" cy="20" r="17"
-          fill="none"
-          stroke="currentColor" 
-          stroke-width="2.5"
-          stroke-dasharray="106.8"
-          stroke-dashoffset="106.8"
-          stroke-linecap="round"
-          class="text-accent transition-all duration-100"
-        ></circle>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4" style="color: var(--accent);">
+        <path d="M13 7.828V20h-2V7.828l-5.364 5.364-1.414-1.414L12 4l7.778 7.778-1.414 1.414L13 7.828z"/>
       </svg>
-      
-      <div class="absolute text-accent">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor">
-          <path d="M13.0001 7.82843V20H11.0001V7.82843L5.63614 13.1924L4.22192 11.7782L12.0001 4L19.7783 11.7782L18.3641 13.1924L13.0001 7.82843Z"></path>
-        </svg>
-      </div>
     </button>
 
     <script>
-      const toTopBtn = document.getElementById('to-top');
-      const progressCircle = document.getElementById('progress-circle');
-      const circumference = 106.814; // 2 * pi * 17
-
-      function handleScroll() {
-        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-        if (scrollHeight <= 0) return;
-        const scrollPercentage = Math.min(1, Math.max(0, window.scrollY / scrollHeight));
-        
-        // Update Circle Progress
-        const offset = circumference - (scrollPercentage * circumference);
-        if (progressCircle) {
-          progressCircle.style.strokeDashoffset = offset.toString();
-        }
-
-        // Visibility Logic
-        if (window.scrollY > 300) {
-          toTopBtn?.classList.remove('translate-y-16', 'opacity-0', 'pointer-events-none');
-          toTopBtn?.classList.add('translate-y-0', 'opacity-100');
-        } else {
-          toTopBtn?.classList.add('translate-y-16', 'opacity-0', 'pointer-events-none');
-          toTopBtn?.classList.remove('translate-y-0', 'opacity-100');
-        }
-      }
-
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      handleScroll();
-
-      toTopBtn?.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+      const btn = document.getElementById('to-top');
+      window.addEventListener('scroll', () => {
+        if (!btn) return;
+        const show = window.scrollY > 400;
+        btn.classList.toggle('translate-y-14', !show);
+        btn.classList.toggle('opacity-0', !show);
+        btn.classList.toggle('pointer-events-none', !show);
+        btn.classList.toggle('translate-y-0', show);
+        btn.classList.toggle('opacity-100', show);
+      }, { passive: true });
+      btn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
+
+    <!-- Scroll reveal -->
+    <script>
+      function setupReveal() {
+        document.querySelectorAll('.reveal').forEach(el => {
+          new IntersectionObserver(([entry], obs) => {
+            if (entry.isIntersecting) {
+              el.classList.add('visible');
+              obs.disconnect();
+            }
+          }, { rootMargin: '0px 0px -6% 0px', threshold: 0.04 }).observe(el);
+        });
+      }
+      setupReveal();
+      document.addEventListener('astro:after-swap', setupReveal);
+    </script>
+
     <SpeedInsights />
   </body>
 </html>

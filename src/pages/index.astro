@@ -2,20 +2,20 @@
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/nav.astro";
 import Home from "../components/home.astro";
-import Tech from "../components/tech.astro";
-import Projects from "../components/projects.astro";
-import Contact from "../components/contact.astro";
 import Career from "../components/career.astro";
+import Projects from "../components/projects.astro";
+import Tech from "../components/tech.astro";
+import Contact from "../components/contact.astro";
 import localData from '../data/home.json';
 
 interface ProfileData {
   webpageTitle: string;
 }
 
-const isApiLive = import.meta.env.PROD; // Auto true in production
+const isApiLive = import.meta.env.PROD;
 const BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
 
-let data: ProfileData; // data as ProfileData
+let data: ProfileData;
 
 if (isApiLive && BASE_URL) {
   try {
@@ -34,10 +34,10 @@ const { webpageTitle } = data;
 ---
 
 <Layout title={webpageTitle}>
-  	<Nav />
-	<Home />
-	<Career />
-	<Projects />
-	<Tech />
-	<Contact />
+  <Nav />
+  <Home />
+  <Career />
+  <Projects />
+  <Tech />
+  <Contact />
 </Layout>

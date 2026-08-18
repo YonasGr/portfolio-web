@@ -2,135 +2,137 @@
 import { Icon } from 'astro-icon/components';
 import localTechData from '../data/tech.json';
 
-interface Skill {
-  name: string;
-  icon: string;
-  tier: string;
-  level?: number;
-  description?: string;
-}
-
-interface Category {
-  id: string;
-  title: string;
-  description: string;
-  skills: Skill[];
-}
+interface Skill { name: string; icon: string; tier: string; level?: number; description?: string; }
+interface Category { id: string; title: string; description: string; skills: Skill[]; }
 
 const categories: Category[] = localTechData.categories;
+const totalSkills = categories.reduce((a, c) => a + c.skills.length, 0);
 
-// Calculate total skills count
-const totalSkills = categories.reduce((acc, cat) => acc + cat.skills.length, 0);
-
-// Helper for tier badge color styling
-function getTierStyle(tier: string): { badgeClass: string; dotClass: string } {
+function tierColor(tier: string): string {
   const t = tier.toLowerCase();
-  if (t.includes('daily') || t.includes('core')) {
-    return {
-      badgeClass: 'bg-accent/15 text-accent border-accent/30',
-      dotClass: 'bg-accent'
-    };
-  }
-  if (t.includes('creative') || t.includes('3d')) {
-    return {
-      badgeClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-      dotClass: 'bg-emerald-400'
-    };
-  }
-  if (t.includes('advanced')) {
-    return {
-      badgeClass: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
-      dotClass: 'bg-sky-400'
-    };
-  }
-  return {
-    badgeClass: 'bg-white/5 text-subtext border-card-border',
-    dotClass: 'bg-subtext'
-  };
+  if (t.includes('daily') || t.includes('core'))       return 'var(--accent)';
+  if (t.includes('creative') || t.includes('3d'))      return '#34d399';
+  if (t.includes('advanced'))                          return '#38bdf8';
+  return 'var(--text-2)';
 }
 ---
 
-<section id="tech" class="section-container relative w-full">
-  <div class="space-y-8 sm:space-y-12 md:space-y-16 w-full">
-    <!-- Editorial Section Header -->
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 w-full">
-      <div class="max-w-xl">
-        <div class="inline-flex items-center gap-2 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-2 sm:mb-3">
-          <span>03</span>
-          <span>/</span>
-          <span>TOOLBOX</span>
-        </div>
-        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
-          Technical <span class="text-accent">Ecosystem</span>
-        </h2>
-        <p class="text-subtext font-body text-xs sm:text-base mt-1.5 sm:mt-2 leading-relaxed">
-          Curated stack of modern languages, creative 3D frameworks, distributed cloud engines, and mobile architectures used in production.
-        </p>
-      </div>
-
-      <!-- Quick Stack Stats Strip -->
-      <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono">
-        <div class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-card border border-card-border text-subtext">
-          <span class="w-2 h-2 rounded-full bg-accent"></span>
-          <span>{totalSkills} Technologies</span>
-        </div>
-        <div class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-card border border-card-border text-subtext">
-          <span class="w-2 h-2 rounded-full bg-accent/60"></span>
-          <span>5 Domains</span>
-        </div>
-      </div>
+<section
+  id="tech"
+  class="reveal w-full py-20 sm:py-28 md:py-32 px-5 sm:px-8 md:px-14 lg:px-20 max-w-[1440px] mx-auto"
+>
+  <!-- Section header -->
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14 sm:mb-16">
+    <div>
+      <div class="label mb-3">03 — Toolbox</div>
+      <h2
+        class="font-heading font-black tracking-[-0.04em] leading-[0.92]"
+        style="font-size: clamp(2.4rem, 6vw, 4.5rem); color: var(--text-1);"
+      >
+        Technical<br /><span style="color: var(--accent);">Ecosystem.</span>
+      </h2>
     </div>
 
-    <!-- Domain Categories Stack -->
-    <div class="space-y-6 sm:space-y-10 md:space-y-12 w-full">
-      {categories.map((category) => (
-        <div class="space-y-3 sm:space-y-4 w-full">
-          <!-- Category Header -->
-          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 pb-2 border-b border-card-border/60">
-            <h3 class="text-base sm:text-xl font-heading font-bold text-maintext tracking-tight flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-              <span>{category.title}</span>
-            </h3>
-            <p class="text-xs sm:text-sm font-body text-subtext">
-              {category.description}
-            </p>
-          </div>
-
-          <!-- Skills Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4 w-full">
-            {category.skills.map((skill) => {
-              const tierInfo = getTierStyle(skill.tier);
-
-              return (
-                <div 
-                  class="group relative flex flex-col justify-between p-2.5 sm:p-3.5 rounded-xl bg-card border border-card-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-200 hover:-translate-y-0.5 shadow-xs cursor-default w-full"
-                  title={skill.description || skill.name}
-                >
-                  <!-- Top Row: Icon & Tier Dot -->
-                  <div class="flex items-center justify-between gap-1.5 mb-2 sm:mb-3">
-                    <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg bg-background/80 border border-card-border flex items-center justify-center transition-colors duration-200 shrink-0">
-                      <Icon name={skill.icon} class="w-4 h-4 sm:w-5 sm:h-5" />
-                    </div>
-
-                    <!-- Mini Tier Indicator -->
-                    <span class={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-medium uppercase border ${tierInfo.badgeClass}`}>
-                      <span class={`w-1 h-1 rounded-full ${tierInfo.dotClass}`}></span>
-                      <span class="truncate max-w-[55px] sm:max-w-[70px]">{skill.tier}</span>
-                    </span>
-                  </div>
-
-                  <!-- Bottom: Skill Name -->
-                  <div>
-                    <h4 class="text-xs sm:text-sm font-heading font-semibold text-maintext tracking-tight group-hover:text-accent transition-colors duration-200 line-clamp-1">
-                      {skill.name}
-                    </h4>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+    <div class="flex items-center gap-2 shrink-0">
+      <div
+        class="flex items-center gap-2 px-4 py-2 rounded-full font-mono text-xs"
+        style="border: 1px solid var(--border); color: var(--text-2); background: var(--surface);"
+      >
+        <span class="w-2 h-2 rounded-full" style="background: var(--accent);"></span>
+        {totalSkills} Technologies
+      </div>
     </div>
   </div>
+
+  <!-- Categories -->
+  <div class="space-y-12 sm:space-y-16">
+    {categories.map(cat => (
+      <div>
+        <!-- Category header -->
+        <div
+          class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-4 mb-5"
+          style="border-bottom: 1px solid var(--border);"
+        >
+          <h3
+            class="font-heading font-bold tracking-tight flex items-center gap-2"
+            style="font-size: 1.1rem; color: var(--text-1);"
+          >
+            <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background: var(--accent);"></span>
+            {cat.title}
+          </h3>
+          <p class="font-body text-sm" style="color: var(--text-2);">{cat.description}</p>
+        </div>
+
+        <!-- Skills grid — same structure, new visual -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
+          {cat.skills.map(skill => {
+            const color = tierColor(skill.tier);
+            return (
+              <div
+                class="group relative flex flex-col justify-between p-3 sm:p-4 rounded-xl cursor-default"
+                style="background: var(--surface); border: 1px solid var(--border); transition: border-color 0.2s, transform 0.2s, background 0.2s;"
+                title={skill.description || skill.name}
+              >
+                <!-- Icon + tier dot -->
+                <div class="flex items-start justify-between mb-3">
+                  <div
+                    class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center"
+                    style="background: var(--surface-2); border: 1px solid var(--border);"
+                  >
+                    <Icon name={skill.icon} class="w-4 h-4 sm:w-5 sm:h-5" />
+                  </div>
+                  <span
+                    class="w-1.5 h-1.5 rounded-full mt-1 shrink-0"
+                    style={`background: ${color};`}
+                    title={skill.tier}
+                  ></span>
+                </div>
+
+                <!-- Name -->
+                <div>
+                  <h4
+                    class="font-heading font-semibold text-xs sm:text-sm tracking-tight line-clamp-1"
+                    style="color: var(--text-1); transition: color 0.2s;"
+                  >
+                    {skill.name}
+                  </h4>
+                  <p class="font-mono text-[9px] sm:text-[10px] uppercase tracking-wide mt-0.5 truncate" style={`color: ${color};`}>
+                    {skill.tier}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Legend -->
+  <div class="flex flex-wrap items-center gap-4 mt-12 pt-6" style="border-top: 1px solid var(--border);">
+    <span class="font-mono text-[10px] tracking-wider uppercase" style="color: var(--text-2);">Tier legend:</span>
+    {[
+      { label: 'Daily Driver', color: 'var(--accent)' },
+      { label: 'Creative / 3D', color: '#34d399' },
+      { label: 'Advanced', color: '#38bdf8' },
+      { label: 'Proficient', color: 'var(--text-2)' },
+    ].map(t => (
+      <div class="flex items-center gap-1.5 font-mono text-[10px]" style="color: var(--text-2);">
+        <span class="w-1.5 h-1.5 rounded-full" style={`background: ${t.color};`}></span>
+        {t.label}
+      </div>
+    ))}
+  </div>
 </section>
+
+<style>
+  section div[class*="rounded-xl"]:hover {
+    border-color: var(--border-accent) !important;
+    background: var(--surface-2) !important;
+    transform: translateY(-3px);
+  }
+
+  section div[class*="rounded-xl"]:hover h4 {
+    color: var(--accent) !important;
+  }
+</style>

@@ -2,110 +2,47 @@
 import ProjectCard from './project-card.astro';
 import projectsData from '../data/projects.json';
 
-const filterCategories = [
-  { id: 'all', label: 'All Projects', count: projectsData.length },
-  { id: 'mobile-ai', label: 'Mobile & AI', count: 1 },
-  { id: 'creative-web', label: 'Creative Web & 3D', count: 2 },
-  { id: 'full-stack', label: 'Full-Stack & Cloud', count: 3 },
-  { id: 'tooling', label: 'Tooling & Systems', count: 1 }
-];
+const [heroProject, ...restProjects] = projectsData;
 ---
 
-<section id="projects" class="section-container relative w-full">
-  <div class="space-y-6 sm:space-y-10 md:space-y-12 w-full">
-    <!-- Editorial Section Header -->
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 w-full">
-      <div class="max-w-xl">
-        <div class="inline-flex items-center gap-2 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono tracking-widest uppercase text-accent bg-accent/10 border border-accent/20 mb-2 sm:mb-3">
-          <span>02</span>
-          <span>/</span>
-          <span>SELECTED WORK</span>
-        </div>
-        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-heading font-bold text-maintext tracking-tight">
-          Featured <span class="text-accent">Projects</span>
-        </h2>
-        <p class="text-subtext font-body text-xs sm:text-base mt-1.5 sm:mt-2 leading-relaxed">
-          Production software, interactive 3D WebGL experiences, cross-platform mobile apps, and high-performance cloud architectures.
-        </p>
-      </div>
-
-      <!-- Quick Project Count Indicator -->
-      <div class="hidden sm:flex items-center gap-2 text-xs font-mono text-subtext bg-card px-3.5 py-2 rounded-xl border border-card-border">
-        <span class="w-2 h-2 rounded-full bg-accent"></span>
-        <span>{projectsData.length} Production Case Studies</span>
-      </div>
+<section
+  id="projects"
+  class="reveal w-full py-20 sm:py-28 md:py-32 px-5 sm:px-8 md:px-14 lg:px-20 max-w-[1440px] mx-auto"
+>
+  <!-- Section header -->
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14 sm:mb-16">
+    <div>
+      <div class="label mb-3">02 — Selected Work</div>
+      <h2
+        class="font-heading font-black tracking-[-0.04em] leading-[0.92]"
+        style="font-size: clamp(2.4rem, 6vw, 4.5rem); color: var(--text-1);"
+      >
+        Featured<br /><span style="color: var(--accent);">Projects.</span>
+      </h2>
     </div>
 
-    <!-- Category Filter Bar -->
-    <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none w-auto" role="tablist" aria-label="Project Categories">
-      {filterCategories.map((cat, idx) => (
-        <button
-          type="button"
-          class={`filter-btn px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-heading font-medium tracking-tight whitespace-nowrap transition-colors duration-150 cursor-pointer border shrink-0 ${
-            idx === 0 
-              ? 'active bg-accent text-background border-accent' 
-              : 'bg-card text-subtext border-card-border hover:text-maintext hover:border-accent/30'
-          }`}
-          data-filter={cat.id}
-          role="tab"
-          aria-selected={idx === 0 ? 'true' : 'false'}
-        >
-          {cat.label}
-        </button>
-      ))}
-    </div>
-
-    <!-- Responsive Projects Grid -->
-    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full">
-      {projectsData.map((project) => (
-        <div class="project-item w-full">
-          <ProjectCard project={project} />
-        </div>
-      ))}
+    <div
+      class="hidden sm:flex items-center gap-3 shrink-0 px-4 py-2 rounded-full font-mono text-xs"
+      style="border: 1px solid var(--border); color: var(--text-2); background: var(--surface);"
+    >
+      <span class="w-2 h-2 rounded-full" style="background: var(--accent);"></span>
+      {projectsData.length} production case studies
     </div>
   </div>
+
+  <!-- Hero project — full width -->
+  {heroProject && (
+    <div class="mb-5 sm:mb-6">
+      <ProjectCard project={heroProject} variant="hero" />
+    </div>
+  )}
+
+  <!-- Rest — asymmetric grid -->
+  {restProjects.length > 0 && (
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+      {restProjects.map(p => (
+        <ProjectCard project={p} variant="default" />
+      ))}
+    </div>
+  )}
 </section>
-
-<script>
-  function setupProjects() {
-    const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-    const items = document.querySelectorAll<HTMLElement>('.project-item');
-
-    filterButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        const filter = button.getAttribute('data-filter') || 'all';
-
-        // Update button states
-        filterButtons.forEach((btn) => {
-          btn.classList.remove('active', 'bg-accent', 'text-background', 'border-accent');
-          btn.classList.add('bg-card', 'text-subtext', 'border-card-border');
-          btn.setAttribute('aria-selected', 'false');
-        });
-
-        button.classList.add('active', 'bg-accent', 'text-background', 'border-accent');
-        button.classList.remove('bg-card', 'text-subtext', 'border-card-border');
-        button.setAttribute('aria-selected', 'true');
-
-        // Filter cards smoothly
-        items.forEach((item) => {
-          const card = item.querySelector('.project-card');
-          const tags = card?.getAttribute('data-filter-tags')?.split(' ') || [];
-
-          if (filter === 'all' || tags.includes(filter)) {
-            item.classList.remove('hidden');
-          } else {
-            item.classList.add('hidden');
-          }
-        });
-      });
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupProjects);
-  } else {
-    setupProjects();
-  }
-
-  document.addEventListener('astro:after-swap', setupProjects);
-</script>

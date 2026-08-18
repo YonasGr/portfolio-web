@@ -41,10 +41,10 @@
       "showInHero": true
     },
     {
-      "name": "Email",
-      "url": "mailto:yonasgirma222@gmail.com",
-      "handle": "yonasgirma222@gmail.com",
-      "icon": "mdi:email",
+      "name": "Telegram",
+      "url": "https://t.me/yonasgr",
+      "handle": "@yonasgr",
+      "icon": "mdi:telegram",
       "showInContact": true,
       "showInHero": true
     },
@@ -61,6 +61,30 @@
       "url": "https://twitter.com/yonasggr",
       "handle": "@yonasggr",
       "icon": "mdi:twitter",
+      "showInContact": true,
+      "showInHero": true
+    },
+    {
+      "name": "Instagram",
+      "url": "https://instagram.com/yonasgr",
+      "handle": "@yonasgr",
+      "icon": "mdi:instagram",
+      "showInContact": true,
+      "showInHero": true
+    },
+    {
+      "name": "Facebook",
+      "url": "https://facebook.com/yonasggr",
+      "handle": "yonasggr",
+      "icon": "mdi:facebook",
+      "showInContact": true,
+      "showInHero": false
+    },
+    {
+      "name": "Email",
+      "url": "mailto:yonasgirma222@gmail.com",
+      "handle": "yonasgirma222@gmail.com",
+      "icon": "mdi:email-outline",
       "showInContact": true,
       "showInHero": true
     },
