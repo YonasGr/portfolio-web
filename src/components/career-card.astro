@@ -120,10 +120,16 @@ const yearLabel = yearMatch ? yearMatch[0] : '—';
 <style>
   .career-row:hover {
     background: var(--surface);
-    padding-left: 1rem;
-    padding-right: 1rem;
-    margin-left: -1rem;
-    margin-right: -1rem;
+  }
+
+  /* Only apply the lateral expansion on screens wide enough to handle it */
+  @media (min-width: 1024px) {
+    .career-row:hover {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      margin-left: -1rem;
+      margin-right: -1rem;
+    }
   }
 
   .career-row:hover h3 {

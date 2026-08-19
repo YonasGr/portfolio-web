@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import localData from '../data/home.json';
-import yonasgrAvatar from '../assets/yonasgr.png';
+import yonasgrAvatar from '../assets/profile-pic.jpg';
 
 const {
   name = "Yonas Girma",
@@ -123,12 +123,12 @@ const heroBrandIcons: Record<string, { icon: string; color: string }> = {
   <!-- Social links — bottom strip with real icons -->
   {heroSocials.length > 0 && (
     <div
-      class="w-full px-5 sm:px-8 md:px-14 lg:px-20 py-4 flex items-center gap-4"
-      style="border-top: 1px solid var(--border);"
+      class="social-strip-scroll w-full px-5 sm:px-8 md:px-14 lg:px-20 py-3 sm:py-4 flex items-center gap-3 sm:gap-4 overflow-x-auto"
+      style="border-top: 1px solid var(--border); scrollbar-width: none; -ms-overflow-style: none;"
     >
-      <span class="font-mono text-[10px] tracking-[0.18em] uppercase shrink-0" style="color: var(--text-2);">Find me on</span>
-      <div class="h-px flex-1" style="background: var(--border);"></div>
-      <div class="flex items-center gap-1.5 sm:gap-2">
+      <span class="font-mono text-[10px] tracking-[0.18em] uppercase shrink-0 whitespace-nowrap" style="color: var(--text-2);">Find me on</span>
+      <div class="h-px flex-1 shrink-0 min-w-[1rem]" style="background: var(--border);"></div>
+      <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
         {heroSocials.map((s: any) => {
           const brand = heroBrandIcons[s.name] || { icon: s.icon || "mdi:open-in-new", color: "var(--accent)" };
           return (
@@ -138,11 +138,11 @@ const heroBrandIcons: Record<string, { icon: string; color: string }> = {
               rel="noopener noreferrer"
               title={s.name}
               aria-label={s.name}
-              class="social-icon-btn flex items-center gap-2 px-3 py-1.5 rounded-lg font-mono text-[11px] transition-all duration-200 focus:outline-none"
+              class="social-icon-btn flex items-center gap-1.5 px-2 py-1.5 sm:px-3 rounded-lg font-mono text-[11px] transition-all duration-200 focus:outline-none shrink-0"
               style="color: var(--text-2); border: 1px solid transparent;"
             >
-              <Icon name={brand.icon} class="w-4 h-4 transition-transform duration-200" style={`color: ${brand.color};`} />
-              <span>{s.name}</span>
+              <Icon name={brand.icon} class="w-4 h-4 transition-transform duration-200 shrink-0" style={`color: ${brand.color};`} />
+              <span class="social-label whitespace-nowrap">{s.name}</span>
             </a>
           );
         })}
@@ -172,6 +172,21 @@ const heroBrandIcons: Record<string, { icon: string; color: string }> = {
 
   .social-icon-btn:hover svg {
     transform: scale(1.15);
+  }
+
+  /* Hide scrollbar on the social strip while keeping scroll functionality */
+  .social-strip-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Show social labels only on sm+ screens (≥640px) */
+  .social-label {
+    display: none;
+  }
+  @media (min-width: 480px) {
+    .social-label {
+      display: inline;
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {
