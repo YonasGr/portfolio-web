@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 interface Props {
   item: {
     company: string;
@@ -12,131 +14,344 @@ interface Props {
   };
   isFirst?: boolean;
   index?: number;
+  isEven?: boolean;
 }
 
-const { item, isFirst = false, index = 0 } = Astro.props;
+const { item, isFirst = false, index = 0, isEven = true } = Astro.props;
 
-// Extract the year from the period string
+// Extract the primary year
 const yearMatch = item.period.match(/\d{4}/);
 const yearLabel = yearMatch ? yearMatch[0] : '—';
+
+// Icon mapping based on role/type
+function getNodeIcon(type?: string, role?: string) {
+  const str = `${type || ''} ${role || ''}`.toLowerCase();
+  if (str.includes('education') || str.includes('university') || str.includes('b.sc')) return 'mdi:school-outline';
+  if (str.includes('lead') || str.includes('product')) return 'mdi:rocket-launch-outline';
+  if (str.includes('fintech') || str.includes('cloud')) return 'mdi:shield-check-outline';
+  if (str.includes('creative') || str.includes('interactive') || str.includes('3d')) return 'mdi:cube-outline';
+  return 'mdi:code-braces';
+}
+
+const nodeIcon = getNodeIcon(item.type, item.role);
 ---
 
-<div
-  class="career-row group w-full py-8 sm:py-10 cursor-default"
-  style="border-bottom: 1px solid var(--border); transition: background 0.2s ease;"
->
-  <div class="grid grid-cols-1 lg:grid-cols-[120px_1fr_auto] gap-4 sm:gap-6 lg:gap-10 items-start">
+<div class={`cyber-node-row group relative w-full ${isEven ? 'is-even' : 'is-odd'}`}>
+  <!-- Grid layout: Mobile (Icon 40px + Card 1fr) | Tablet (48px + 1fr) | Desktop (Card / Beacon 64px / Meta staggered) -->
+  <div class="grid grid-cols-[40px_1fr] sm:grid-cols-[48px_1fr] lg:grid-cols-[1fr_64px_1fr] gap-3 sm:gap-6 lg:gap-10 items-start lg:items-center">
 
-    <!-- Year number — large muted typographic element -->
-    <div class="hidden lg:block">
-      <span
-        class="font-heading font-black leading-none select-none text-year"
-        style="font-size: 3.5rem; color: var(--text-3); transition: color 0.2s;"
-      >
-        {yearLabel}
-      </span>
-    </div>
+    <!-- DESKTOP LEFT COLUMN (Card if isEven, Meta if isOdd) -->
+    <div class="hidden lg:block node-left-slot">
+      {isEven ? (
+        <!-- Card on Left -->
+        <div class="cyber-card p-6 sm:p-8 relative rounded-2xl">
+          <!-- Card top bar -->
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-md" style="background: var(--surface-2); color: var(--accent); border: 1px solid var(--border);">
+                {item.type || 'Engineering'}
+              </span>
+              {isFirst && (
+                <span
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-mono text-[11px] tracking-wider uppercase font-bold"
+                  style="background: var(--accent-dim); color: var(--accent); border: 1px solid var(--border-accent);"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full animate-ping" style="background: var(--accent);"></span>
+                  Active Dispatch
+                </span>
+              )}
+            </div>
+            <span class="font-mono text-xs text-[var(--text-3)]">SYS.NODE // 0{index + 1}</span>
+          </div>
 
-    <!-- Main content -->
-    <div class="space-y-3">
-      <!-- Role + company + badges -->
-      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1.5">
-        <h3
-          class="font-heading font-black tracking-tight leading-none"
-          style="font-size: clamp(1.15rem, 2.5vw, 1.5rem); color: var(--text-1); transition: color 0.2s;"
-        >
-          {item.role}
-        </h3>
-        <span class="font-heading font-semibold text-sm sm:text-base" style="color: var(--accent);">
-          @ {item.company}
-        </span>
-        {isFirst && (
-          <span
-            class="inline-flex items-center px-2.5 py-0.5 rounded-full font-mono text-[10px] tracking-wider uppercase font-semibold"
-            style="background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(var(--accent-rgb),0.25);"
-          >
-            Current
-          </span>
-        )}
-      </div>
+          <!-- Role & Company -->
+          <h3 class="font-heading font-black text-xl sm:text-2xl tracking-tight leading-snug mb-1 text-[var(--text-1)] group-hover:text-[var(--accent)] transition-colors duration-200">
+            {item.role}
+          </h3>
+          <div class="font-heading font-semibold text-sm sm:text-base text-[var(--accent)] mb-3">
+            @ {item.company}
+          </div>
 
-      <!-- Meta: period, type, location (mobile year here) -->
-      <div class="flex flex-wrap items-center gap-2 font-mono text-[11px]" style="color: var(--text-2);">
-        <span class="lg:hidden font-bold" style="color: var(--text-3);">{yearLabel}</span>
-        {item.period && <span>{item.period}</span>}
-        {item.type && (
-          <>
-            <span style="color: var(--text-3);">·</span>
-            <span>{item.type}</span>
-          </>
-        )}
-        {item.location && (
-          <>
-            <span style="color: var(--text-3);">·</span>
-            <span>{item.location}</span>
-          </>
-        )}
-      </div>
+          <!-- Description -->
+          <p class="font-body text-sm sm:text-[0.925rem] leading-relaxed text-[var(--text-2)] mb-4">
+            {item.description}
+          </p>
 
-      <!-- Description -->
-      <p class="font-body text-sm sm:text-base leading-relaxed max-w-3xl" style="color: var(--text-2);">
-        {item.description}
-      </p>
+          <!-- Key Deliverables / Achievements -->
+          {item.achievements && item.achievements.length > 0 && (
+            <div class="space-y-2 mb-5 pt-1">
+              {item.achievements.map((ach) => (
+                <div class="flex items-start gap-2.5 text-xs sm:text-sm text-[var(--text-2)] leading-relaxed">
+                  <Icon name="mdi:chevron-right" class="w-4 h-4 shrink-0 text-[var(--accent)] mt-0.5" />
+                  <span>{ach}</span>
+                </div>
+              ))}
+            </div>
+          )}
 
-      <!-- Achievements -->
-      {item.achievements && item.achievements.length > 0 && (
-        <ul class="space-y-1.5 pt-1">
-          {item.achievements.map(a => (
-            <li class="flex items-start gap-2 font-body text-sm leading-relaxed" style="color: var(--text-2);">
-              <span class="mt-1 shrink-0 w-1 h-1 rounded-full" style="background: var(--accent);"></span>
-              {a}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <!-- Skills -->
-      {item.skills && item.skills.length > 0 && (
-        <div class="flex flex-wrap gap-1.5 pt-1">
-          {item.skills.map((s: string) => (
-            <span class="tag">{s}</span>
-          ))}
+          <!-- Tech Chips -->
+          {item.skills && item.skills.length > 0 && (
+            <div class="flex flex-wrap gap-1.5 pt-3 border-t border-[var(--border)]">
+              {item.skills.map((skill: string) => (
+                <span class="tag text-[10px] sm:text-[11px] py-1 px-2.5">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <!-- Meta details on Left (when card is on Right) -->
+        <div class="text-right space-y-2 pr-4">
+          <div class="font-heading font-black text-5xl lg:text-6xl text-[var(--text-3)] group-hover:text-[var(--accent)] transition-colors duration-300 select-none">
+            {yearLabel}
+          </div>
+          <div class="font-mono text-xs text-[var(--text-2)] flex items-center justify-end gap-1.5">
+            <Icon name="mdi:calendar-outline" class="w-3.5 h-3.5 text-[var(--accent)]" />
+            <span>{item.period}</span>
+          </div>
+          {item.location && (
+            <div class="font-mono text-[11px] text-[var(--text-2)] flex items-center justify-end gap-1.5">
+              <Icon name="mdi:map-marker-radius-outline" class="w-3.5 h-3.5 text-[var(--accent)]" />
+              <span>{item.location}</span>
+            </div>
+          )}
+          <div class="pt-2">
+            <span class="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-[var(--text-3)] px-2 py-0.5 rounded border border-[var(--border)]">
+              STAGE 0{index + 1} // VERIFIED
+            </span>
+          </div>
         </div>
       )}
     </div>
 
-    <!-- Right: index number (decorative) -->
-    <div class="hidden lg:flex items-start pt-1">
-      <span
-        class="font-mono text-xs tracking-widest"
-        style="color: var(--text-3);"
+    <!-- CENTER ORBIT HUD BEACON (Desktop & Mobile anchor) -->
+    <div class="node-beacon-slot relative z-10 flex flex-col items-center justify-center pt-1.5 sm:pt-2 lg:pt-0">
+      <div
+        class={`beacon-disc relative flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-full backdrop-blur-md transition-all duration-300 ${
+          isFirst ? 'is-active-beacon' : ''
+        }`}
       >
-        0{index + 1}
-      </span>
+        <!-- Outer rotating dashed ring -->
+        <div class="absolute -inset-1 rounded-full border border-dashed border-[var(--accent)] opacity-40 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-700"></div>
+
+        <!-- Node Core -->
+        <div class="relative w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold" style="background: var(--bg); color: var(--accent); border: 1.5px solid var(--accent);">
+          <Icon name={nodeIcon} class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+        </div>
+
+        {isFirst && (
+          <span class="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-[var(--accent)]"></span>
+          </span>
+        )}
+      </div>
+    </div>
+
+    <!-- DESKTOP RIGHT COLUMN (Meta if isEven, Card if isOdd) -->
+    <div class="node-right-slot w-full min-w-0">
+      <!-- MOBILE VIEW: Always display full Card here -->
+      <div class="block lg:hidden w-full">
+        <div class="cyber-card p-4 sm:p-6 relative rounded-xl sm:rounded-2xl">
+          <!-- Mobile Header Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-2.5">
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <span class="font-heading font-black text-base sm:text-lg text-[var(--accent)]">{yearLabel}</span>
+              <span class="text-[var(--text-3)] text-xs">·</span>
+              <span class="font-mono text-[10px] sm:text-[11px] text-[var(--text-2)]">{item.period}</span>
+            </div>
+            {isFirst ? (
+              <span class="font-mono text-[9px] sm:text-[10px] px-2 py-0.5 rounded font-bold uppercase text-[var(--accent)] bg-[var(--accent-dim)] border border-[var(--border-accent)]">
+                Active
+              </span>
+            ) : item.type ? (
+              <span class="font-mono text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded text-[var(--text-2)] bg-[var(--surface-2)] border border-[var(--border)]">
+                {item.type}
+              </span>
+            ) : null}
+          </div>
+
+          <h3 class="font-heading font-black text-sm sm:text-lg tracking-tight leading-snug mb-0.5 text-[var(--text-1)] break-words">
+            {item.role}
+          </h3>
+          <div class="font-heading font-semibold text-xs sm:text-sm text-[var(--accent)] mb-2 break-words">
+            @ {item.company}
+          </div>
+
+          {item.location && (
+            <div class="font-mono text-[10px] sm:text-[11px] text-[var(--text-2)] flex items-center gap-1 mb-2.5">
+              <Icon name="mdi:map-marker-radius-outline" class="w-3 h-3 text-[var(--accent)] shrink-0" />
+              <span class="truncate">{item.location}</span>
+            </div>
+          )}
+
+          <p class="font-body text-xs sm:text-sm leading-relaxed text-[var(--text-2)] mb-3">
+            {item.description}
+          </p>
+
+          {item.achievements && item.achievements.length > 0 && (
+            <div class="space-y-1.5 mb-3">
+              {item.achievements.map((ach) => (
+                <div class="flex items-start gap-1.5 text-[11px] sm:text-xs text-[var(--text-2)] leading-relaxed">
+                  <Icon name="mdi:chevron-right" class="w-3.5 h-3.5 shrink-0 text-[var(--accent)] mt-0.5" />
+                  <span>{ach}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {item.skills && item.skills.length > 0 && (
+            <div class="flex flex-wrap gap-1 pt-2.5 border-t border-[var(--border)]">
+              {item.skills.map((skill: string) => (
+                <span class="tag text-[9px] sm:text-[10px] py-0.5 px-2">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- DESKTOP VIEW: Meta if isEven, Card if isOdd -->
+      <div class="hidden lg:block">
+        {isEven ? (
+          <!-- Meta details on Right (when card is on Left) -->
+          <div class="text-left space-y-2 pl-4">
+            <div class="font-heading font-black text-5xl lg:text-6xl text-[var(--text-3)] group-hover:text-[var(--accent)] transition-colors duration-300 select-none">
+              {yearLabel}
+            </div>
+            <div class="font-mono text-xs text-[var(--text-2)] flex items-center gap-1.5">
+              <Icon name="mdi:calendar-outline" class="w-3.5 h-3.5 text-[var(--accent)]" />
+              <span>{item.period}</span>
+            </div>
+            {item.location && (
+              <div class="font-mono text-[11px] text-[var(--text-2)] flex items-center gap-1.5">
+                <Icon name="mdi:map-marker-radius-outline" class="w-3.5 h-3.5 text-[var(--accent)]" />
+                <span>{item.location}</span>
+              </div>
+            )}
+            <div class="pt-2">
+              <span class="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-[var(--text-3)] px-2 py-0.5 rounded border border-[var(--border)]">
+                STAGE 0{index + 1} // VERIFIED
+              </span>
+            </div>
+          </div>
+        ) : (
+          <!-- Card on Right -->
+          <div class="cyber-card p-6 sm:p-8 relative rounded-2xl">
+            <!-- Card top bar -->
+            <div class="flex items-center justify-between gap-3 mb-4">
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-md" style="background: var(--surface-2); color: var(--accent); border: 1px solid var(--border);">
+                  {item.type || 'Engineering'}
+                </span>
+              </div>
+              <span class="font-mono text-xs text-[var(--text-3)]">SYS.NODE // 0{index + 1}</span>
+            </div>
+
+            <!-- Role & Company -->
+            <h3 class="font-heading font-black text-xl sm:text-2xl tracking-tight leading-snug mb-1 text-[var(--text-1)] group-hover:text-[var(--accent)] transition-colors duration-200">
+              {item.role}
+            </h3>
+            <div class="font-heading font-semibold text-sm sm:text-base text-[var(--accent)] mb-3">
+              @ {item.company}
+            </div>
+
+            <!-- Description -->
+            <p class="font-body text-sm sm:text-[0.925rem] leading-relaxed text-[var(--text-2)] mb-4">
+              {item.description}
+            </p>
+
+            <!-- Key Deliverables / Achievements -->
+            {item.achievements && item.achievements.length > 0 && (
+              <div class="space-y-2 mb-5 pt-1">
+                {item.achievements.map((ach) => (
+                  <div class="flex items-start gap-2.5 text-xs sm:text-sm text-[var(--text-2)] leading-relaxed">
+                    <Icon name="mdi:chevron-right" class="w-4 h-4 shrink-0 text-[var(--accent)] mt-0.5" />
+                    <span>{ach}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <!-- Tech Chips -->
+            {item.skills && item.skills.length > 0 && (
+              <div class="flex flex-wrap gap-1.5 pt-3 border-t border-[var(--border)]">
+                {item.skills.map((skill: string) => (
+                  <span class="tag text-[10px] sm:text-[11px] py-1 px-2.5">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   </div>
 </div>
 
 <style>
-  .career-row:hover {
+  .cyber-card {
     background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Only apply the lateral expansion on screens wide enough to handle it */
-  @media (min-width: 1024px) {
-    .career-row:hover {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      margin-left: -1rem;
-      margin-right: -1rem;
+  .cyber-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0.6;
+    transition: width 0.3s ease, opacity 0.3s ease;
+  }
+
+  @media (min-width: 640px) {
+    .cyber-card::before {
+      width: 28px;
     }
   }
 
-  .career-row:hover h3 {
-    color: var(--accent) !important;
+  .cyber-node-row:hover .cyber-card {
+    border-color: var(--border-accent);
+    background: var(--surface-2);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.5), 0 0 20px var(--accent-dim);
   }
 
-  .career-row:hover .text-year {
-    color: var(--text-2) !important;
+  @media (min-width: 1024px) {
+    .cyber-node-row:hover .cyber-card {
+      transform: translateY(-3px);
+    }
+  }
+
+  .cyber-node-row:hover .cyber-card::before {
+    width: 48px;
+    opacity: 1;
+  }
+
+  .beacon-disc {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.4);
+  }
+
+  .cyber-node-row:hover .beacon-disc {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-dim);
+    transform: scale(1.06);
+  }
+
+  .is-active-beacon {
+    border-color: var(--border-accent);
+    box-shadow: 0 0 16px var(--accent-dim);
   }
 </style>
+
+
