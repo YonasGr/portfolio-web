@@ -89,6 +89,14 @@
       "showInHero": true
     },
     {
+      "name": "Buy Me a Coffee",
+      "url": "https://www.buymeacoffee.com/yonasgr",
+      "handle": "yonasgr",
+      "icon": "mdi:coffee",
+      "showInContact": true,
+      "showInHero": true
+    },
+    {
       "name": "LeetCode",
       "url": "https://leetcode.com/u/yonasgr/",
       "handle": "yonasgr",

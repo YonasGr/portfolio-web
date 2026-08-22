@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { SITE_CONFIG } from '../config.ts';
 import favicon from '../assets/Y-Logo.png';
 import SpeedInsights from "@vercel/speed-insights/astro";
+import BuyMeCoffee from '../components/buy-me-coffee.astro';
 
 interface Props { title: string; }
 const { title } = Astro.props;
@@ -51,6 +52,9 @@ const defaultTheme = `${baseTheme}-dark`;
 
     <!-- Slot — NO container padding here, sections handle their own padding -->
     <slot />
+
+    <!-- Floating Buy Me a Coffee button -->
+    <BuyMeCoffee username="yonasgr" />
 
     <!-- Back-to-top button -->
     <button
